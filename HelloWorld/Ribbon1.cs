@@ -17,13 +17,15 @@ namespace HelloWorld
 
         private void btnHello_Click(object sender, RibbonControlEventArgs e)
         {
-            ObjModel.SetSelection<string>("Hello World");
+            ObjModel.SetSelection("Hello World");
         }
 
         private void btnConvert_Click(object sender, RibbonControlEventArgs e)
         {
             var converter = new StringParser();
-            ObjModel.SetSelection<string>(converter.ConvertToNumber(ObjModel.GetSelection().Value));
+            var cellValue = ObjModel.Get(GetOptions.SelectionValue);
+            ObjModel.SetSelection(converter.ConvertToNumber(cellValue));
+            //only convert cells containing text
         }
     }
 }

@@ -8,15 +8,25 @@ namespace HelloWorld
 {
     public class StringParser
     {
-        public string ConvertToNumber(string cellValue)
+        public dynamic ConvertToNumber(dynamic cellValue)
         {
-            var returnString = new StringBuilder();
-            foreach (char c in cellValue)
+            if (cellValue != null)
             {
-                int num = Math.Abs(c - '0');
-                returnString.Append(num.ToString());
+                if (cellValue is string)
+                {
+                    var returnString = new StringBuilder();
+                    foreach (char c in cellValue)
+                    {
+                        int num = (int)c;
+                        returnString.Append(num.ToString());
+                    }
+                    return returnString.ToString();
+                }
+                else
+                    return cellValue;
             }
-            return returnString.ToString();
+            else
+                return null;
         }
 
     }

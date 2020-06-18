@@ -12,23 +12,38 @@ namespace HelloWorld
     public enum GetOptions
     {
         ActiveSheet,
-        Selection
+        SelectionCell,
+        SelectionValue
     }
 
     public static class ObjModel
     {
-        public static Range GetSelection()
+        private static Range GetSelectionCell()
         {
             return Globals.ThisAddIn.Application.Selection;
         }
-        public static void SetSelection<T>(T newValue)
+        private static dynamic GetSelectionValue()
         {
-            Range selection = Globals.ThisAddIn.Application.Selection;
-            selection.Value = newValue;
+            return GetSelectionCell().Value;
         }
-        public static Worksheet GetActiveSheet()
+        public static void SetSelection(dynamic newValue)
+        {
+            GetSelectionCell().Value = newValue;
+        }
+        private static Worksheet GetActiveSheet()
         {
             return Globals.ThisAddIn.GetActiveWorksheet();
+        }
+        public static dynamic Get(GetOptions opt)
+        {
+            if (opt == GetOptions.ActiveSheet)
+                return GetActiveSheet();
+            else if (opt == GetOptions.SelectionCell)
+                return GetSelectionCell();
+            else if (opt == GetOptions.SelectionValue)
+                return GetSelectionValue();
+            else
+                throw new KeyNotFoundException();
         }
     }
 }
