@@ -39,6 +39,7 @@
             this.menu1 = this.Factory.CreateRibbonMenu();
             this.btnHello = this.Factory.CreateRibbonButton();
             this.btnConvert = this.Factory.CreateRibbonButton();
+            this.btnPrimeFactors = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.SuspendLayout();
@@ -53,6 +54,7 @@
             // 
             this.group1.Items.Add(this.menu1);
             this.group1.Items.Add(this.btnConvert);
+            this.group1.Items.Add(this.btnPrimeFactors);
             this.group1.Label = "group1";
             this.group1.Name = "group1";
             // 
@@ -75,6 +77,12 @@
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConvert_Click);
             // 
+            // btnPrimeFactors
+            // 
+            this.btnPrimeFactors.Label = "Get Prime Factors";
+            this.btnPrimeFactors.Name = "btnPrimeFactors";
+            this.btnPrimeFactors.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPrimeFactors_Click);
+            // 
             // Ribbon1
             // 
             this.Name = "Ribbon1";
@@ -96,6 +104,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnHello;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConvert;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPrimeFactors;
     }
 
     partial class ThisRibbonCollection

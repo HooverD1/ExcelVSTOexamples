@@ -27,5 +27,11 @@ namespace HelloWorld
             ObjModel.SetSelection(converter.ConvertToNumber(cellValue));
             //only convert cells containing text
         }
+
+        private void btnPrimeFactors_Click(object sender, RibbonControlEventArgs e)
+        {
+            var cellValue = ObjModel.Get(GetOptions.SelectionValue);
+            ObjModel.SetSelection(MathUtils.GetPrimeFactorization(cellValue));
+        }
     }
 }
