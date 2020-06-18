@@ -28,7 +28,8 @@ namespace HelloWorld
         }
         public static void SetSelection(dynamic newValue)
         {
-            GetSelectionCell().Value = newValue;
+            if (newValue != null)
+                GetSelectionCell().Value = newValue;
         }
         private static Worksheet GetActiveSheet()
         {
