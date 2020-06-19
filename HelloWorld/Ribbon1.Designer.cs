@@ -35,28 +35,29 @@
         private void InitializeComponent()
         {
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
+            this.groupHello = this.Factory.CreateRibbonGroup();
             this.menu1 = this.Factory.CreateRibbonMenu();
             this.btnHello = this.Factory.CreateRibbonButton();
             this.btnConvert = this.Factory.CreateRibbonButton();
             this.btnPrimeFactors = this.Factory.CreateRibbonButton();
+            this.groupMathUtils = this.Factory.CreateRibbonGroup();
             this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
+            this.groupHello.SuspendLayout();
+            this.groupMathUtils.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
-            this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.groupHello);
+            this.tab1.Groups.Add(this.groupMathUtils);
             this.tab1.Label = "Hello";
             this.tab1.Name = "tab1";
             // 
-            // group1
+            // groupHello
             // 
-            this.group1.Items.Add(this.menu1);
-            this.group1.Items.Add(this.btnConvert);
-            this.group1.Items.Add(this.btnPrimeFactors);
-            this.group1.Label = "group1";
-            this.group1.Name = "group1";
+            this.groupHello.Items.Add(this.menu1);
+            this.groupHello.Label = "Hello";
+            this.groupHello.Name = "groupHello";
             // 
             // menu1
             // 
@@ -83,6 +84,13 @@
             this.btnPrimeFactors.Name = "btnPrimeFactors";
             this.btnPrimeFactors.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPrimeFactors_Click);
             // 
+            // groupMathUtils
+            // 
+            this.groupMathUtils.Items.Add(this.btnConvert);
+            this.groupMathUtils.Items.Add(this.btnPrimeFactors);
+            this.groupMathUtils.Label = "Math Utilities";
+            this.groupMathUtils.Name = "groupMathUtils";
+            // 
             // Ribbon1
             // 
             this.Name = "Ribbon1";
@@ -91,8 +99,10 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
+            this.groupHello.ResumeLayout(false);
+            this.groupHello.PerformLayout();
+            this.groupMathUtils.ResumeLayout(false);
+            this.groupMathUtils.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -100,11 +110,12 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupHello;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnHello;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConvert;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPrimeFactors;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupMathUtils;
     }
 
     partial class ThisRibbonCollection

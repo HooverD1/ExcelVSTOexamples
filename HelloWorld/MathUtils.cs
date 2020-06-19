@@ -60,5 +60,11 @@ namespace HelloWorld
             factorList.Sort();
             return string.Join(",", factorList);
         }
+
+        public static double GetGradient()
+        {
+            //Func<double, double> f =
+            return 0;
+        }
     }
 }

@@ -12,12 +12,17 @@ namespace HelloWorld
     public enum GetOptions
     {
         ActiveSheet,
-        SelectionCell,
+        ActiveWorkbook,
+        SelectionRange,
         SelectionValue
     }
 
     public static class ObjModel
     {
+        private static Workbook GetActiveWorkbook()
+        {
+            return Globals.ThisAddIn.Application.ActiveWorkbook;
+        }
         private static Range GetSelectionCell()
         {
             return Globals.ThisAddIn.Application.Selection;
@@ -39,10 +44,12 @@ namespace HelloWorld
         {
             if (opt == GetOptions.ActiveSheet)
                 return GetActiveSheet();
-            else if (opt == GetOptions.SelectionCell)
+            else if (opt == GetOptions.SelectionRange)
                 return GetSelectionCell();
             else if (opt == GetOptions.SelectionValue)
                 return GetSelectionValue();
+            else if (opt == GetOptions.ActiveWorkbook)
+                return GetActiveWorkbook();
             else
                 throw new KeyNotFoundException();
         }
