@@ -36,7 +36,7 @@ namespace HelloWorld
 
         private void btnOnes_Click(object sender, RibbonControlEventArgs e)
         {
-            MathUtils.testrange();
+            MathUtils.AddFormula("=1");
         }
     }
 }

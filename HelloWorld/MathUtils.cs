@@ -68,11 +68,13 @@ namespace HelloWorld
         {
             return "=1";
         }
-        public static void testrange()
+        public static void AddFormula(string formula)
         {
-            Range myrange = ObjModel.Get(GetOptions.SheetRange, ObjModel.Get(GetOptions.ActiveSheet), "A1");
-            MyDelegate mydel = Ones;
-            myrange.Formula(mydel(myrange));
+            //Range myrange = ObjModel.Get(GetOptions.SheetRange, ObjModel.Get(GetOptions.ActiveSheet), "A1");
+            //MyDelegate mydel = Ones;
+            //myrange.Formula(mydel(myrange));
+            var sheet = ObjModel.Get(GetOptions.ActiveSheet);
+            sheet.Cells[1, 1].Formula = formula;
         }
 
         private static double MyFunction(double x, double y)
