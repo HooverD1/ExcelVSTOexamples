@@ -61,9 +61,15 @@ namespace HelloWorld
             return string.Join(",", factorList);
         }
 
+        private static double MyFunction(double x, double y)
+        {
+            return x * y;
+        }
+
         public static double GetGradient()
         {
-            //Func<double, double> f =
+            Func<double, double, double> f = MyFunction;
+            //double firstDeriv = Math.Fir
             return 0;
         }
     }
