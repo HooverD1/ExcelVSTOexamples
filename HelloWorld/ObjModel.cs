@@ -20,6 +20,7 @@ namespace HelloWorld
 
     public static class ObjModel
     {
+        //=========================================================GET=========================================
         private static Workbook GetActiveWorkbook()
         {
             return Globals.ThisAddIn.Application.ActiveWorkbook;
@@ -32,19 +33,13 @@ namespace HelloWorld
         {
             return GetSelectionCell().Value;
         }
-        public static void SetSelection(dynamic newValue)
-        {
-            if (newValue != null)
-                GetSelectionCell().Value = newValue;
-        }
         private static Worksheet GetActiveSheet()
         {
             return Globals.ThisAddIn.GetActiveWorksheet();
         }
-        private static Range GetSheetRange()
+        private static Range GetSheetRange(Worksheet sheet, string rangeString)
         {
-            var sheet = GetActiveSheet();
-            var range = sheet.Range["A1:C10"];
+            return sheet.Range[rangeString];
         }
         public static dynamic Get(GetOptions opt)
         {
@@ -56,8 +51,23 @@ namespace HelloWorld
                 return GetSelectionValue();
             else if (opt == GetOptions.ActiveWorkbook)
                 return GetActiveWorkbook();
+            else if (opt == GetOptions.SheetRange)
+                throw new FieldAccessException();       //Requires Get(opt, sheet, rangeString) overload
             else
                 throw new KeyNotFoundException();
+        }
+        public static dynamic Get(GetOptions opt, Worksheet sheet, string rangeString)
+        {
+            if (opt == GetOptions.SheetRange)
+                return GetSheetRange(sheet, rangeString);
+            else
+                throw new KeyNotFoundException();
+        }
+            //==================================SET===================================
+        public static void SetSelection(dynamic newValue)
+        {
+            if (newValue != null)
+                GetSelectionCell().Value = newValue;
         }
     }
 }

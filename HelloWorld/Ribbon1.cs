@@ -33,5 +33,10 @@ namespace HelloWorld
             var cellValue = ObjModel.Get(GetOptions.SelectionValue);
             ObjModel.SetSelection(MathUtils.GetPrimeFactorization(cellValue));
         }
+
+        private void btnOnes_Click(object sender, RibbonControlEventArgs e)
+        {
+            MathUtils.testrange();
+        }
     }
 }

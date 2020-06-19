@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using Microsoft.Office.Tools.Ribbon;
+using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace HelloWorld
 {
@@ -59,6 +62,17 @@ namespace HelloWorld
             }
             factorList.Sort();
             return string.Join(",", factorList);
+        }
+        public delegate string MyDelegate(Range range);
+        public static string Ones(Range range)
+        {
+            return "=1";
+        }
+        public static void testrange()
+        {
+            Range myrange = ObjModel.Get(GetOptions.SheetRange, ObjModel.Get(GetOptions.ActiveSheet), "A1");
+            MyDelegate mydel = Ones;
+            myrange.Formula(mydel(myrange));
         }
 
         private static double MyFunction(double x, double y)
