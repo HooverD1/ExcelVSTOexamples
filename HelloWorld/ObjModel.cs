@@ -14,7 +14,8 @@ namespace HelloWorld
         ActiveSheet,
         ActiveWorkbook,
         SelectionRange,
-        SelectionValue
+        SelectionValue,
+        SheetRange
     }
 
     public static class ObjModel
@@ -39,6 +40,11 @@ namespace HelloWorld
         private static Worksheet GetActiveSheet()
         {
             return Globals.ThisAddIn.GetActiveWorksheet();
+        }
+        private static Range GetSheetRange()
+        {
+            var sheet = GetActiveSheet();
+            var range = sheet.Range["A1:C10"];
         }
         public static dynamic Get(GetOptions opt)
         {
