@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Office.Tools.Ribbon;
-using Microsoft.Office.Interop.Excel;
-using Excel = Microsoft.Office.Interop.Excel;
+using Interop = Microsoft.Office.Interop.Excel;
+//using Interop = Microsoft.Office.Excel;
+using Microsoft.Office.Tools.Excel;
 
 namespace HelloWorld
 {
@@ -23,24 +24,30 @@ namespace HelloWorld
         //=========================================================GET=========================================
         private static Workbook GetActiveWorkbook()
         {
-            return Globals.ThisAddIn.Application.ActiveWorkbook;
+            throw new NotImplementedException();
         }
-        private static Range GetSelectionCell()
+        private static NamedRange GetSelectionCell()
         {
-            return Globals.ThisAddIn.Application.Selection;
+            return (NamedRange)Globals.ThisAddIn.Application.Selection;
         }
         private static dynamic GetSelectionValue()
         {
             return GetSelectionCell().Value;
         }
         private static Worksheet GetActiveSheet()
-        {
-            return Globals.ThisAddIn.GetActiveWorksheet();
+        {            
+            return (Worksheet)GetActiveWorkbook().ActiveSheet;
         }
-        private static Range GetSheetRange(Worksheet sheet, string rangeString)
+        private static NamedRange GetSheetRange(Worksheet sheet, string rangeString)
         {
-            return sheet.Range[rangeString];
+            var parser = new StringParser(rangeString);
+            int rowNumber = parser.firstRowNumber;
+            int columnNumber = parser.firstColumnNumber;
+            int rowNumber2 = parser.secondRowNumber;
+            int columnNumber2 = parser.secondColumnNumber;
+            return sheet.Range[sheet.Cells[rowNumber, columnNumber], sheet.Cells[rowNumber2, columnNumber2]];
         }
+
         public static dynamic Get(GetOptions opt)
         {
             if (opt == GetOptions.ActiveSheet)
@@ -69,5 +76,27 @@ namespace HelloWorld
             if (newValue != null)
                 GetSelectionCell().Value = newValue;
         }
+        
+        public static void SetFormulas(string cellRange, string formula)
+        {
+            //cellRange of form: "A1:C10"
+
+            var parser = new StringParser(cellRange);
+            cellRange = parser.ConvertRangeA1_R1C1(cellRange);
+            int rows = parser.GetNumberOfRows();
+            int cols = parser.GetNumberOfColumns();
+            string[,] formulaArray = new string[rows, cols];
+            for(int i = 0; i < rows; i++)
+            {
+                for(int j = 0; j < cols; j++)
+                {
+                    formulaArray[i, j] = formula;
+                }
+            }
+            GetSheetRange(GetActiveSheet(), cellRange).Formula = formulaArray;  //.FormulaArray(formulaArray);
+        }
+        
+
+
     }
 }

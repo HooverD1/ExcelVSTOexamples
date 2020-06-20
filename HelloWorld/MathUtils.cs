@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 using Microsoft.Office.Tools.Ribbon;
-using Microsoft.Office.Interop.Excel;
-using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools.Excel;
 
 namespace HelloWorld
 {
@@ -63,8 +62,8 @@ namespace HelloWorld
             factorList.Sort();
             return string.Join(",", factorList);
         }
-        public delegate string MyDelegate(Range range);
-        public static string Ones(Range range)
+        public delegate string MyDelegate(NamedRange range);
+        public static string Ones(NamedRange range)
         {
             return "=1";
         }

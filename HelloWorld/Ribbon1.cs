@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
-using Microsoft.Office.Interop.Excel;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace HelloWorld
 {
@@ -20,13 +18,13 @@ namespace HelloWorld
             ObjModel.SetSelection("Hello World");
         }
 
-        private void btnConvert_Click(object sender, RibbonControlEventArgs e)
-        {
-            var converter = new StringParser();
-            var cellValue = ObjModel.Get(GetOptions.SelectionValue);
-            ObjModel.SetSelection(converter.ConvertToNumber(cellValue));
-            //only convert cells containing text
-        }
+        //private void btnConvert_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    var converter = new StringParser();
+        //    var cellValue = ObjModel.Get(GetOptions.SelectionValue);
+        //    ObjModel.SetSelection(converter.ConvertToNumber(cellValue));
+        //    //only convert cells containing text
+        //}
 
         private void btnPrimeFactors_Click(object sender, RibbonControlEventArgs e)
         {
@@ -37,6 +35,11 @@ namespace HelloWorld
         private void btnOnes_Click(object sender, RibbonControlEventArgs e)
         {
             MathUtils.AddFormula("=1");
+        }
+
+        private void btnAddFormulas_Click(object sender, RibbonControlEventArgs e)
+        {
+            ObjModel.SetFormulas("A1:B2", "=5+5");
         }
     }
 }
