@@ -17,8 +17,10 @@ namespace HelloWorld
         public int firstRowNumber { get; set; }
         public string secondRow { get; set; }
         public int secondRowNumber { get; set; }
+        public string A1_Range { get; set; }
+        public string R1C1_Range { get; set; }
 
-        public RefParser(string reference)       //constructor
+        public RefParser(string reference, RefType refType)       //constructor
         {
             this.reference = reference;
             firstColumn = GetFirstColumn();
@@ -29,6 +31,18 @@ namespace HelloWorld
             firstRowNumber = Convert.ToInt32(firstRow);
             secondRow = GetSecondRow();
             secondRowNumber = Convert.ToInt32(secondRow);
+            if (refType == RefType.A1)
+            {
+                this.A1_Range = reference;
+                this.R1C1_Range = this.ConvertRangeA1_R1C1(reference);
+            }
+            else if (refType == RefType.R1C1)
+            {
+                this.A1_Range = this.ConvertRangeR1C1_A1(reference);
+                this.R1C1_Range = reference;
+            }
+            else
+                throw new KeyNotFoundException();
         }
 
         private string GetFirstColumn()     //A1

@@ -38,7 +38,6 @@
             this.groupHello = this.Factory.CreateRibbonGroup();
             this.menu1 = this.Factory.CreateRibbonMenu();
             this.btnHello = this.Factory.CreateRibbonButton();
-            this.btnOnes = this.Factory.CreateRibbonButton();
             this.groupMathUtils = this.Factory.CreateRibbonGroup();
             this.btnPrimeFactors = this.Factory.CreateRibbonButton();
             this.btnAddFormulas = this.Factory.CreateRibbonButton();
@@ -57,8 +56,6 @@
             // groupHello
             // 
             this.groupHello.Items.Add(this.menu1);
-            this.groupHello.Items.Add(this.btnOnes);
-            this.groupHello.Items.Add(this.btnAddFormulas);
             this.groupHello.Label = "Hello";
             this.groupHello.Name = "groupHello";
             // 
@@ -75,15 +72,10 @@
             this.btnHello.ShowImage = true;
             this.btnHello.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnHello_Click);
             // 
-            // btnOnes
-            // 
-            this.btnOnes.Label = "Ones!!";
-            this.btnOnes.Name = "btnOnes";
-            this.btnOnes.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnOnes_Click);
-            // 
             // groupMathUtils
             // 
             this.groupMathUtils.Items.Add(this.btnPrimeFactors);
+            this.groupMathUtils.Items.Add(this.btnAddFormulas);
             this.groupMathUtils.Label = "Math Utilities";
             this.groupMathUtils.Name = "groupMathUtils";
             // 
@@ -123,7 +115,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPrimeFactors;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupMathUtils;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnOnes;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAddFormulas;
     }
 

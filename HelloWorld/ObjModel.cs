@@ -16,6 +16,11 @@ namespace HelloWorld
         SelectionValue,
         SheetRange
     }
+    public enum RefType
+    {
+        A1,
+        R1C1
+    }
 
     public static class ObjModel
     {
@@ -23,9 +28,10 @@ namespace HelloWorld
         private static Excel.Range GetSelectionCell() => (Excel.Range)Globals.ThisAddIn.Application.Selection;
         private static dynamic GetSelectionValue() => GetSelectionCell().Value;
         private static Worksheet GetActiveSheet() => Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
-        private static Excel.Range GetSheetRange(Worksheet sheet, string rangeString)
+        private static Excel.Range GetSheetRange(Worksheet sheet, string rangeString) => GetSheetRange(sheet, rangeString, RefType.A1);
+        private static Excel.Range GetSheetRange(Worksheet sheet, string rangeString, RefType refType)
         {
-            var parser = new RefParser(rangeString);
+            var parser = new RefParser(rangeString, refType);
             int rowNumber = parser.firstRowNumber;
             int columnNumber = parser.firstColumnNumber;
             int rowNumber2 = parser.secondRowNumber;
@@ -45,10 +51,10 @@ namespace HelloWorld
             else
                 throw new KeyNotFoundException();
         }
-        public static dynamic Get(GetOptions opt, Worksheet sheet, string rangeString)
+        public static dynamic Get(GetOptions opt, Worksheet sheet, string rangeString, RefType refType)
         {
             if (opt == GetOptions.SheetRange)
-                return GetSheetRange(sheet, rangeString);
+                return GetSheetRange(sheet, rangeString, refType);
             else
                 throw new KeyNotFoundException();
         }
@@ -58,54 +64,26 @@ namespace HelloWorld
             if (newValue != null)
                 GetSelectionCell().Value = newValue;
         }
-        public enum RefType
-        {
-            A1,
-            R1C1
-        }
+
 
         public static void SetFormulas(string cellRange, string formula, RefType refType)
         {
-            var parser = new RefParser(cellRange);
+            var sheet = GetActiveSheet();
+            var parser = new RefParser(cellRange, refType);
             if (refType == RefType.R1C1)
             {
                 //Need to convert back to A1
                 cellRange = parser.ConvertRangeA1_R1C1(cellRange);
             }
-            int rows = parser.GetNumberOfRows();
-            int cols = parser.GetNumberOfColumns();
-            string[,] formulaArray = new string[rows, cols];
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    formulaArray[i, j] = $"{formula}+{i}+{j}";       
-                    //using the array causes it to not calculate for some reason.. places them but they don't act as formulas
-                }
-            }
-            var sheet = GetActiveSheet();
-            var setRange = GetSheetRange(sheet, cellRange);
-            setRange.Formula = formulaArray;
-            sheet.Cells[1, 1].Calculate();       //this doesn't seem to work...
+            Excel.Range setRange = GetSheetRange(sheet, cellRange, refType);
+            setRange.Formula = formula;
+            sheet.Cells[1, 1].Calculate();       //this doesn't seem to do much..
         }
 
         public static void SetFormulas(string cellRange, string formula)
         {
             SetFormulas(cellRange, formula, RefType.A1);
         }
-
-        //private static void AddNamedRange()
-        //{
-        //    Microsoft.Office.Tools.Excel.NamedRange textInCell;
-
-        //    Worksheet worksheet = Globals.Factory.GetVstoObject(
-        //        Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
-            
-        //    Excel.Range cell = worksheet.Range["A1"];
-        //    textInCell = worksheet.Controls.AddNamedRange(cell, "MyNamedRange");
-        //    textInCell.Formula = "=5+5";
-        //    textInCell.Calculate();
-        //}
 
     }
 }

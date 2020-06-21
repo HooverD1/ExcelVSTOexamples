@@ -32,11 +32,6 @@ namespace HelloWorld
             ObjModel.SetSelection(MathUtils.GetPrimeFactorization(cellValue));
         }
 
-        private void btnOnes_Click(object sender, RibbonControlEventArgs e)
-        {
-            MathUtils.AddFormula("=1");
-        }
-
         private void btnAddFormulas_Click(object sender, RibbonControlEventArgs e)
         {
             ObjModel.SetFormulas("A1:B2", "=5+5");
