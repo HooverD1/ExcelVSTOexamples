@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-    public class StringParser
+    public class RefParser
     {
         private string reference { get; set; }
         public string firstColumn { get; set; }
@@ -18,7 +18,7 @@ namespace HelloWorld
         public string secondRow { get; set; }
         public int secondRowNumber { get; set; }
 
-        public StringParser(string reference)       //constructor
+        public RefParser(string reference)       //constructor
         {
             this.reference = reference;
             firstColumn = GetFirstColumn();
@@ -31,26 +31,6 @@ namespace HelloWorld
             secondRowNumber = Convert.ToInt32(secondRow);
         }
 
-        public dynamic ConvertToNumber(dynamic cellValue)
-        {
-            if (cellValue != null)
-            {
-                if (cellValue is string)
-                {
-                    var returnString = new StringBuilder();
-                    foreach (char c in cellValue)
-                    {
-                        int num = (int)c;
-                        returnString.Append(num.ToString());
-                    }
-                    return returnString.ToString();
-                }
-                else
-                    return cellValue;
-            }
-            else
-                return null;
-        }
         private string GetFirstColumn()     //A1
         {
             //Form: A1:B10
@@ -129,7 +109,7 @@ namespace HelloWorld
         }
 
         //==============================================================UTILITIES================================================
-        public string ConvertReferenceA1_R1C1(string A1)
+        private string ConvertReferenceA1_R1C1(string A1)
         {
             StringBuilder col = new StringBuilder();
             StringBuilder row = new StringBuilder();
@@ -150,15 +130,37 @@ namespace HelloWorld
         {
             return $"{ConvertReferenceA1_R1C1(A1.Split(':')[0])}:{ConvertReferenceA1_R1C1(A1.Split(':')[1])}";
         }
+        private string ConvertReferenceR1C1_A1(string R1C1)
+        {
+            var splitString = R1C1.Split('C');
+            splitString[0].TrimStart('R');
+            string columnLetter = NumberToText(Convert.ToInt32(splitString[1]));
+            return $"{columnLetter}{splitString[0]}";
+        }
+        public string ConvertRangeR1C1_A1(string R1C1)
+        {
+            return $"{ConvertReferenceR1C1_A1(R1C1.Split(':')[0])}:{ConvertReferenceR1C1_A1(R1C1.Split(':')[1])}";
+        }
+        private string NumberToText(int colIndex)
+        {
+            int div = colIndex;
+            string colLetter = String.Empty;
+            int mod = 0;
+
+            while (div > 0)
+            {
+                mod = (div - 1) % 26;
+                colLetter = (char)(65 + mod) + colLetter;
+                div = (int)((div - mod) / 26);
+            }
+            return colLetter;
+        }
         private int TextToNumber(string text)
         {
             return text
                 .Select(c => c - 'A' + 1)
                 .Aggregate((sum, next) => sum * 26 + next);
         }
-        private string ConvertR1C1toA1(string R1C1)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

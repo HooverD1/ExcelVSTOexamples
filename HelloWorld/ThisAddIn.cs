@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace HelloWorld
 {
@@ -12,16 +13,18 @@ namespace HelloWorld
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }
 
-        public Worksheet GetActiveWorksheet()
-        {
-            return (Worksheet)Application.ActiveSheet;
-        }
+        //public Worksheet GetActiveWorksheet()
+        //{
+        //    return (Worksheet)Application.ActiveSheet;
+        //}
+
 
         #region VSTO generated code
 
