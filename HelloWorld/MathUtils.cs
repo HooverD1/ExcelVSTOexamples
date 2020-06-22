@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using Microsoft.Office.Tools.Ribbon;
+using Microsoft.Office.Tools.Excel;
 
 namespace HelloWorld
 {
@@ -59,6 +61,31 @@ namespace HelloWorld
             }
             factorList.Sort();
             return string.Join(",", factorList);
+        }
+        public delegate string MyDelegate(NamedRange range);
+        public static string Ones(NamedRange range)
+        {
+            return "=1";
+        }
+        public static void AddFormula(string formula)
+        {
+            //Range myrange = ObjModel.Get(GetOptions.SheetRange, ObjModel.Get(GetOptions.ActiveSheet), "A1");
+            //MyDelegate mydel = Ones;
+            //myrange.Formula(mydel(myrange));
+            var sheet = ObjModel.Get(GetOptions.ActiveSheet);
+            sheet.Cells[1, 1].Formula = formula;
+        }
+
+        private static double MyFunction(double x, double y)
+        {
+            return x * y;
+        }
+
+        public static double GetGradient()
+        {
+            Func<double, double, double> f = MyFunction;
+            //double firstDeriv = Math.Fir
+            return 0;
         }
     }
 }
