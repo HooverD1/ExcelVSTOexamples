@@ -41,6 +41,8 @@
             this.groupMathUtils = this.Factory.CreateRibbonGroup();
             this.btnPrimeFactors = this.Factory.CreateRibbonButton();
             this.btnAddFormulas = this.Factory.CreateRibbonButton();
+            this.btnWorksheetFunction = this.Factory.CreateRibbonButton();
+            this.btnCopyFormats = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.groupHello.SuspendLayout();
             this.groupMathUtils.SuspendLayout();
@@ -56,6 +58,7 @@
             // groupHello
             // 
             this.groupHello.Items.Add(this.menu1);
+            this.groupHello.Items.Add(this.btnCopyFormats);
             this.groupHello.Label = "Hello";
             this.groupHello.Name = "groupHello";
             // 
@@ -76,6 +79,7 @@
             // 
             this.groupMathUtils.Items.Add(this.btnPrimeFactors);
             this.groupMathUtils.Items.Add(this.btnAddFormulas);
+            this.groupMathUtils.Items.Add(this.btnWorksheetFunction);
             this.groupMathUtils.Label = "Math Utilities";
             this.groupMathUtils.Name = "groupMathUtils";
             // 
@@ -90,6 +94,18 @@
             this.btnAddFormulas.Label = "Add Formulas";
             this.btnAddFormulas.Name = "btnAddFormulas";
             this.btnAddFormulas.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAddFormulas_Click);
+            // 
+            // btnWorksheetFunction
+            // 
+            this.btnWorksheetFunction.Label = "Use WorksheetFunction";
+            this.btnWorksheetFunction.Name = "btnWorksheetFunction";
+            this.btnWorksheetFunction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnWorksheetFunction_Click);
+            // 
+            // btnCopyFormats
+            // 
+            this.btnCopyFormats.Label = "Copy Format";
+            this.btnCopyFormats.Name = "btnCopyFormats";
+            this.btnCopyFormats.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCopyFormats_Click);
             // 
             // Ribbon1
             // 
@@ -116,6 +132,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPrimeFactors;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupMathUtils;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAddFormulas;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnWorksheetFunction;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCopyFormats;
     }
 
     partial class ThisRibbonCollection

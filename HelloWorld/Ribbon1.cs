@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace HelloWorld
 {
@@ -34,7 +35,18 @@ namespace HelloWorld
 
         private void btnAddFormulas_Click(object sender, RibbonControlEventArgs e)
         {
-            ObjModel.SetFormulas("A1:B2", "=5+5");
+            ObjModel.SetFormulas("A1:B2", "=C3");
+            ObjModel.SetFormulas("A4:B5", "=$C$3");
+        }
+
+        private void btnWorksheetFunction_Click(object sender, RibbonControlEventArgs e)
+        {
+            ObjModel.Get(GetOptions.SelectionRange).Value = Utilities.wsFunction.Norm_Inv(.3, 0, 1);
+        }
+
+        private void btnCopyFormats_Click(object sender, RibbonControlEventArgs e)
+        {
+            Utilities.CopyFormats();
         }
     }
 }

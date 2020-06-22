@@ -24,6 +24,7 @@ namespace HelloWorld
 
     public static class ObjModel
     {
+
         //=========================================================GET=========================================
         private static Excel.Range GetSelectionCell() => (Excel.Range)Globals.ThisAddIn.Application.Selection;
         private static dynamic GetSelectionValue() => GetSelectionCell().Value;
@@ -64,8 +65,7 @@ namespace HelloWorld
             if (newValue != null)
                 GetSelectionCell().Value = newValue;
         }
-
-
+        
         public static void SetFormulas(string cellRange, string formula, RefType refType)
         {
             var sheet = GetActiveSheet();
