@@ -38,11 +38,10 @@
             this.groupHello = this.Factory.CreateRibbonGroup();
             this.menu1 = this.Factory.CreateRibbonMenu();
             this.btnHello = this.Factory.CreateRibbonButton();
+            this.btnCopyFormats = this.Factory.CreateRibbonButton();
             this.groupMathUtils = this.Factory.CreateRibbonGroup();
-            this.btnPrimeFactors = this.Factory.CreateRibbonButton();
             this.btnAddFormulas = this.Factory.CreateRibbonButton();
             this.btnWorksheetFunction = this.Factory.CreateRibbonButton();
-            this.btnCopyFormats = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.groupHello.SuspendLayout();
             this.groupMathUtils.SuspendLayout();
@@ -75,19 +74,18 @@
             this.btnHello.ShowImage = true;
             this.btnHello.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnHello_Click);
             // 
+            // btnCopyFormats
+            // 
+            this.btnCopyFormats.Label = "Copy Format";
+            this.btnCopyFormats.Name = "btnCopyFormats";
+            this.btnCopyFormats.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCopyFormats_Click);
+            // 
             // groupMathUtils
             // 
-            this.groupMathUtils.Items.Add(this.btnPrimeFactors);
             this.groupMathUtils.Items.Add(this.btnAddFormulas);
             this.groupMathUtils.Items.Add(this.btnWorksheetFunction);
             this.groupMathUtils.Label = "Math Utilities";
             this.groupMathUtils.Name = "groupMathUtils";
-            // 
-            // btnPrimeFactors
-            // 
-            this.btnPrimeFactors.Label = "Get Prime Factors";
-            this.btnPrimeFactors.Name = "btnPrimeFactors";
-            this.btnPrimeFactors.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPrimeFactors_Click);
             // 
             // btnAddFormulas
             // 
@@ -100,12 +98,6 @@
             this.btnWorksheetFunction.Label = "Use WorksheetFunction";
             this.btnWorksheetFunction.Name = "btnWorksheetFunction";
             this.btnWorksheetFunction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnWorksheetFunction_Click);
-            // 
-            // btnCopyFormats
-            // 
-            this.btnCopyFormats.Label = "Copy Format";
-            this.btnCopyFormats.Name = "btnCopyFormats";
-            this.btnCopyFormats.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCopyFormats_Click);
             // 
             // Ribbon1
             // 
@@ -129,7 +121,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupHello;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnHello;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPrimeFactors;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupMathUtils;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAddFormulas;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnWorksheetFunction;

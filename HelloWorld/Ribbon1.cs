@@ -16,7 +16,7 @@ namespace HelloWorld
 
         private void btnHello_Click(object sender, RibbonControlEventArgs e)
         {
-            ObjModel.SetSelection("Hello World");
+            Utilities.MsgBox("Hello World!");
         }
 
         //private void btnConvert_Click(object sender, RibbonControlEventArgs e)
