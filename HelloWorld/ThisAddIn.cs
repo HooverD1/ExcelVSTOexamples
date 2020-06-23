@@ -14,7 +14,7 @@ namespace HelloWorld
         public static Excel.Application MyApp { get; set; }     //handle on the Excel application
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            MyApp = Globals.ThisAddIn.Application;
+            MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

@@ -19,20 +19,6 @@ namespace HelloWorld
             Utilities.MsgBox("Hello World!");
         }
 
-        //private void btnConvert_Click(object sender, RibbonControlEventArgs e)
-        //{
-        //    var converter = new StringParser();
-        //    var cellValue = ObjModel.Get(GetOptions.SelectionValue);
-        //    ObjModel.SetSelection(converter.ConvertToNumber(cellValue));
-        //    //only convert cells containing text
-        //}
-
-        private void btnPrimeFactors_Click(object sender, RibbonControlEventArgs e)
-        {
-            var cellValue = ObjModel.Get(GetOptions.SelectionValue);
-            ObjModel.SetSelection(MathUtils.GetPrimeFactorization(cellValue));
-        }
-
         private void btnAddFormulas_Click(object sender, RibbonControlEventArgs e)
         {
             ObjModel.SetFormulas("A1:B2", "=C3");
@@ -41,7 +27,7 @@ namespace HelloWorld
 
         private void btnWorksheetFunction_Click(object sender, RibbonControlEventArgs e)
         {
-            ObjModel.Get(GetOptions.SelectionRange).Value = Utilities.wsFunction.Norm_Inv(.3, 0, 1);
+            ObjModel.GetSelection().Value = Utilities.wsFunction.Norm_Inv(.3, 0, 1);
         }
 
         private void btnCopyFormats_Click(object sender, RibbonControlEventArgs e)

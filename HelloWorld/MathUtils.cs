@@ -69,10 +69,7 @@ namespace HelloWorld
         }
         public static void AddFormula(string formula)
         {
-            //Range myrange = ObjModel.Get(GetOptions.SheetRange, ObjModel.Get(GetOptions.ActiveSheet), "A1");
-            //MyDelegate mydel = Ones;
-            //myrange.Formula(mydel(myrange));
-            var sheet = ObjModel.Get(GetOptions.ActiveSheet);
+            var sheet = ObjModel.GetActiveSheet();
             sheet.Cells[1, 1].Formula = formula;
         }
 
