@@ -11,9 +11,10 @@ namespace HelloWorld
 {
     public partial class ThisAddIn
     {
+        public static Excel.Application MyApp { get; set; }     //handle on the Excel application
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            
+            MyApp = Globals.ThisAddIn.Application;
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

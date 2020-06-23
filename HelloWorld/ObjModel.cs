@@ -24,11 +24,12 @@ namespace HelloWorld
 
     public static class ObjModel
     {
-
         //=========================================================GET=========================================
         private static Excel.Range GetSelectionCell() => (Excel.Range)Globals.ThisAddIn.Application.Selection;
         private static dynamic GetSelectionValue() => GetSelectionCell().Value;
-        private static Worksheet GetActiveSheet() => Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
+        //private static Worksheet GetActiveSheet() => Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
+        private static Worksheet GetActiveSheet() => Globals.Factory.GetVstoObject(ThisAddIn.MyApp.ActiveSheet);
+        //private static Excel.Application GetMyApp() => Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application);
         private static Excel.Range GetSheetRange(Worksheet sheet, string rangeString) => GetSheetRange(sheet, rangeString, RefType.A1);
         private static Excel.Range GetSheetRange(Worksheet sheet, string rangeString, RefType refType)
         {
