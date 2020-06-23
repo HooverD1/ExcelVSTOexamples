@@ -25,7 +25,7 @@ namespace HelloWorld
             ObjModel.SetFormulas("A4:B5", "=$C$3");     //absolute references
 
             ObjModel.SetCell(5, "A6");
-            ObjModel.SetFormulas("A7:A1000", "=A5+RandBetween(5,100)"); //add a formula to the sheet
+            ObjModel.SetFormulas("A7:A1000", "=A5+RandBetween(5,100)+Norm.Inv(.3,0,1)"); //add a formula to the sheet
         }
 
         private void btnWorksheetFunction_Click(object sender, RibbonControlEventArgs e)
