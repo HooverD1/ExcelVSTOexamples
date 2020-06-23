@@ -15,6 +15,8 @@ namespace HelloWorld
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
+            Utilities.LoadKeybinds();
+
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

@@ -39,6 +39,14 @@ namespace HelloWorld
             if (newValue != null)
                 GetSelection().Value = newValue;
         }
+
+        public static void SetCell(dynamic newValue, string cellRange)
+        {
+            Worksheet sheet = GetActiveSheet();
+            Excel.Range cell = sheet.Range[cellRange];
+            if (newValue != null)
+                cell.Value = newValue;
+        }
         
         public static void SetFormulas(string cellRange, string formula, RefType refType)
         {

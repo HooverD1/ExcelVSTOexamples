@@ -13,19 +13,14 @@ namespace HelloWorld
     {
         //=======WORKSHEET FUNCTIONS==========
         public static Excel.WorksheetFunction wsFunction { get; } = ThisAddIn.MyApp.WorksheetFunction;
-        //====================================
         
-        public static void LoadKeybind()
+        //============= KEYBINDS =============
+        public static void LoadKeybinds()
         {
-            string message = "Hey there";
-            ThisAddIn.MyApp.OnKey("^{Tab}", $"MsgBox(\"{message}\")");
-        }
-        //=========Message Box================
-        public static void MsgBox(string message)
-        {
-            MessageBox.Show(message);
-        }
+            ThisAddIn.MyApp.OnKey("^{Tab}", "VBA_SUB"); //this attaches your keybind to a VBA sub
+        }        
 
+        //=============== FORMATTING =========
         public static void CopyFormats()
         {
             Worksheet localSheet = ObjModel.GetActiveSheet();
