@@ -181,12 +181,28 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ExcelReference.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExcelReference.Designer.cs">
+      <DependentUpon>ExcelReference.cs</DependentUpon>
+    </Compile>
     <Compile Include="MathUtils.cs" />
     <Compile Include="ObjModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RefEdit.cs" />
+    <Compile Include="TestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestForm.Designer.cs">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
+    <EmbeddedResource Include="ExcelReference.resx">
+      <DependentUpon>ExcelReference.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -198,6 +214,9 @@
     </Compile>
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestForm.resx">
+      <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="format_test.xlsx" />
     <None Include="HelloWorld_1_TemporaryKey.pfx" />

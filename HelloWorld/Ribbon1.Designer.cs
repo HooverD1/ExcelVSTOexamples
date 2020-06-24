@@ -42,6 +42,8 @@
             this.groupMathUtils = this.Factory.CreateRibbonGroup();
             this.btnAddFormulas = this.Factory.CreateRibbonButton();
             this.btnWorksheetFunction = this.Factory.CreateRibbonButton();
+            this.btnTest = this.Factory.CreateRibbonButton();
+            this.button1 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.groupHello.SuspendLayout();
             this.groupMathUtils.SuspendLayout();
@@ -58,6 +60,7 @@
             // 
             this.groupHello.Items.Add(this.menu1);
             this.groupHello.Items.Add(this.btnCopyFormats);
+            this.groupHello.Items.Add(this.button1);
             this.groupHello.Label = "Hello";
             this.groupHello.Name = "groupHello";
             // 
@@ -84,6 +87,7 @@
             // 
             this.groupMathUtils.Items.Add(this.btnAddFormulas);
             this.groupMathUtils.Items.Add(this.btnWorksheetFunction);
+            this.groupMathUtils.Items.Add(this.btnTest);
             this.groupMathUtils.Label = "Math Utilities";
             this.groupMathUtils.Name = "groupMathUtils";
             // 
@@ -98,6 +102,18 @@
             this.btnWorksheetFunction.Label = "Use WorksheetFunction";
             this.btnWorksheetFunction.Name = "btnWorksheetFunction";
             this.btnWorksheetFunction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnWorksheetFunction_Click);
+            // 
+            // btnTest
+            // 
+            this.btnTest.Label = "newbutton";
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnTest_Click);
+            // 
+            // button1
+            // 
+            this.button1.Label = "button1";
+            this.button1.Name = "button1";
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // Ribbon1
             // 
@@ -125,6 +141,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAddFormulas;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnWorksheetFunction;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCopyFormats;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnTest;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
     }
 
     partial class ThisRibbonCollection

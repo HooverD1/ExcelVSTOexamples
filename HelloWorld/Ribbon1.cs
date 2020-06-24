@@ -38,5 +38,16 @@ namespace HelloWorld
         {
             Utilities.CopyFormats();
         }
+
+        private void btnTest_Click(object sender, RibbonControlEventArgs e)
+        {
+            //do stuff
+        }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            TestForm tf = new TestForm();
+            tf.Show();
+        }
     }
 }
