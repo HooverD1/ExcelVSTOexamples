@@ -20,7 +20,6 @@ namespace HelloWorld
         }
         public double INFL(int year1, int year2, int mode, int category, int agency)
         {
-            MessageBox.Show("Run converted code to calculate inflation multiplier.");
             return InflationCalculator.Calculate(year1, year2, mode, category, agency);
         }
 
