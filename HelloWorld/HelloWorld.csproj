@@ -224,6 +224,7 @@
     <None Include="format_test.xlsx" />
     <None Include="HelloWorld_1_TemporaryKey.pfx" />
     <None Include="HelloWorld_TemporaryKey.pfx" />
+    <None Include="InflationTables.xlsx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

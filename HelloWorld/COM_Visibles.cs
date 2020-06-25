@@ -19,7 +19,7 @@ namespace HelloWorld
             MessageBox.Show("Run converted code to follow the link.");
         }
         public double INFL(int year1, int year2, int mode, int category, int agency)
-        {
+        {            
             return InflationCalculator.Calculate(year1, year2, mode, category, agency);
         }
 
