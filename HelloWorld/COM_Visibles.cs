@@ -18,11 +18,10 @@ namespace HelloWorld
         {
             MessageBox.Show("Run converted code to follow the link.");
         }
-        public int INFL(int year1, int year2, int mode, int category, int agency)
+        public double INFL(int year1, int year2, int mode, int category, int agency)
         {
-            
             MessageBox.Show("Run converted code to calculate inflation multiplier.");
-            return 0;
+            return InflationCalculator.Calculate(year1, year2, mode, category, agency);
         }
 
     }

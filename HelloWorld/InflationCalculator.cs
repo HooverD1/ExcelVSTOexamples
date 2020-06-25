@@ -69,19 +69,19 @@ namespace HelloWorld
         }
         private static double Calculate_BY_to_BY(int year1, int year2, int category, int agency)
         {
-            throw new NotImplementedException();
+            return 0.1;
         }
         private static double Calculate_BY_to_TY(int year1, int year2, int category, int agency)
         {
-            throw new NotImplementedException();
+            return 0.2;
         }
         private static double Calculate_TY_to_BY(int year1, int year2, int category, int agency)
         {
-            throw new NotImplementedException();
+            return 0.3;
         }
         private static double Calculate_TY_to_TY(int year1, int year2, int category, int agency)
         {
-            throw new NotImplementedException();
+            return 0.4;
         }
     }
 }
