@@ -193,6 +193,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RefEdit.cs" />
+    <Compile Include="Linking.cs" />
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
     </Compile>

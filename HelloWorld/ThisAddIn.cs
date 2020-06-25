@@ -22,11 +22,13 @@ namespace HelloWorld
         {
         }
 
-        //public Worksheet GetActiveWorksheet()
-        //{
-        //    return (Worksheet)Application.ActiveSheet;
-        //}
-
+        private Linking utilities;
+        protected override object RequestComAddInAutomationService()
+        {
+            if (utilities == null)
+                utilities = new Linking();
+            return utilities;
+        }
 
         #region VSTO generated code
 

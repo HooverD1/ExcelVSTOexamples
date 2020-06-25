@@ -58,13 +58,12 @@
             this.txtRangeSelect.Name = "txtRangeSelect";
             this.txtRangeSelect.Size = new System.Drawing.Size(368, 22);
             this.txtRangeSelect.TabIndex = 2;
-            this.txtRangeSelect.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 203);
+            this.ClientSize = new System.Drawing.Size(442, 106);
             this.Controls.Add(this.txtRangeSelect);
             this.Controls.Add(this.btnSelectRange);
             this.Controls.Add(this.lblTestLabel);
@@ -79,6 +78,6 @@
 
         private System.Windows.Forms.Label lblTestLabel;
         private System.Windows.Forms.Button btnSelectRange;
-        private System.Windows.Forms.TextBox txtRangeSelect;
+        public System.Windows.Forms.TextBox txtRangeSelect;
     }
 }

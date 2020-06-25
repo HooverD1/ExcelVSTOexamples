@@ -17,7 +17,7 @@ namespace HelloWorld
         //============= KEYBINDS =============
         public static void LoadKeybinds()
         {
-            ThisAddIn.MyApp.OnKey("^{Tab}", "VBA_SUB"); //this attaches your keybind to a VBA sub
+            ThisAddIn.MyApp.OnKey("^{Tab}", "Keybinds.FollowCtrlTab"); //this attaches your keybind to a VBA sub
         }        
 
         //=============== FORMATTING =========

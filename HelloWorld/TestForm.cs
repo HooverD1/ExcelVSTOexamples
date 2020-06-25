@@ -30,9 +30,6 @@ namespace HelloWorld
             refEdit.OnClick();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
 
-        }
     }
 }

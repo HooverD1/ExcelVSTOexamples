@@ -64,8 +64,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtRange;
         private System.Windows.Forms.Button btnGotRange;
+        public System.Windows.Forms.TextBox txtRange;
     }
 }

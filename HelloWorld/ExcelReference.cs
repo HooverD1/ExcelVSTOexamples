@@ -36,8 +36,7 @@ namespace HelloWorld
             //have the reference. need to xfer it back through...
             var newTestForm = new TestForm();
             
-            newTestForm.Text = this.Text;
-            newTestForm.Enabled = false;
+            newTestForm.txtRangeSelect.Text = this.txtRange.Text;
             newTestForm.Show();
             this.Close();
         }
