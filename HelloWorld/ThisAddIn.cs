@@ -22,11 +22,11 @@ namespace HelloWorld
         {
         }
 
-        private Linking utilities;
+        private COM_Visibles utilities;
         protected override object RequestComAddInAutomationService()
         {
             if (utilities == null)
-                utilities = new Linking();
+                utilities = new COM_Visibles();
             return utilities;
         }
 

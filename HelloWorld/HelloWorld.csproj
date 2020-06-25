@@ -187,13 +187,15 @@
     <Compile Include="ExcelReference.Designer.cs">
       <DependentUpon>ExcelReference.cs</DependentUpon>
     </Compile>
+    <Compile Include="InflationCalculator.cs" />
+    <Compile Include="InflationTable.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="ObjModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RefEdit.cs" />
-    <Compile Include="Linking.cs" />
+    <Compile Include="COM_Visibles.cs" />
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
     </Compile>

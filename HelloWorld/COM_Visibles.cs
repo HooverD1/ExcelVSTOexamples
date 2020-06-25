@@ -12,12 +12,18 @@ namespace HelloWorld
 {
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
-    public class Linking
+    public class COM_Visibles
     {
         public void FollowLink()
         {
-            MessageBox.Show("Run converted code to follow the link");
+            MessageBox.Show("Run converted code to follow the link.");
         }
-        
+        public int INFL(int year1, int year2, int mode, int category, int agency)
+        {
+            
+            MessageBox.Show("Run converted code to calculate inflation multiplier.");
+            return 0;
+        }
+
     }
 }
