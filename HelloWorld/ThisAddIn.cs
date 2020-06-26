@@ -12,16 +12,18 @@ namespace HelloWorld
     public partial class ThisAddIn
     {
         public static Excel.Application MyApp { get; set; }     //handle on the Excel application
+        public static List<Excel.Application> TempAppList { get; set; }
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
+            TempAppList = new List<Excel.Application>();
             Utilities.LoadKeybinds();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
-            //need to look for any background Excels that I started and terminate them... 
-            //maybe keep a global stack of them for reference as they're created?
+            foreach (Excel.Application app in TempAppList)      //Kill any helper Applications
+                app.Quit();
         }
 
         private COM_Visibles utilities;
@@ -32,12 +34,16 @@ namespace HelloWorld
             return utilities;
         }
         
-        public static dynamic OpenWorkbook(string path, Excel.Application tempApp = null)
+        public static dynamic OpenWorkbook(string path, bool RunInNewApp = false)
         {
-            if (tempApp == null)
+            if (RunInNewApp == false)
                 return MyApp.Workbooks.Open(path);
-            else if (tempApp is Excel.Application)
+            else if (RunInNewApp == true)
+            {
+                Excel.Application tempApp = new Excel.Application();
+                TempAppList.Add(tempApp);
                 return tempApp.Workbooks.Open(path);
+            }
             else
                 throw new Exception();
         }

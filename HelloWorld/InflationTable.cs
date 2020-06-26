@@ -54,8 +54,7 @@ namespace HelloWorld
 
             if (!File.Exists(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx"))
                 throw new FileNotFoundException();
-            Excel.Application tempApp = new Excel.Application();
-            Excel.Workbook inflBook = ThisAddIn.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx", tempApp);
+            Excel.Workbook inflBook = ThisAddIn.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx", true);
             var sheetsCount = inflBook.Worksheets.Count;
             Excel.Worksheet sheet = inflBook.Worksheets[agencyNumberToName[agencyNumber]];
             object[,] table = (object[,])sheet.UsedRange.Value2;
@@ -72,7 +71,6 @@ namespace HelloWorld
                 }
             }
             inflBook.Close();
-            tempApp.Quit();
         }
         private DataTable MakeTableFromRange(Excel.Range range)     //converting to a Datatable is an alternative way to store the table
         {
