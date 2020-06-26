@@ -24,7 +24,8 @@ namespace HelloWorld
         public static void CopyFormats()
         {
             Worksheet localSheet = ObjModel.GetActiveSheet();
-            Excel.Workbook formatBook = ThisAddIn.MyApp.Workbooks.Open(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
+            //Excel.Workbook formatBook = ThisAddIn.MyApp.Workbooks.Open(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
+            Excel.Workbook formatBook = ThisAddIn.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
             Excel.Worksheet formatSheet = formatBook.Worksheets["Sheet1"];
             Excel.Range formatRange = formatSheet.Range["A1:C2"];
             //range.Copy;
@@ -33,5 +34,6 @@ namespace HelloWorld
             localRange.PasteSpecial(Excel.XlPasteType.xlPasteAll);
             formatBook.Close();
         }
+
     }
 }

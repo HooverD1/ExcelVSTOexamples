@@ -20,6 +20,8 @@ namespace HelloWorld
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            //need to look for any background Excels that I started and terminate them... 
+            //maybe keep a global stack of them for reference as they're created?
         }
 
         private COM_Visibles utilities;
@@ -28,6 +30,16 @@ namespace HelloWorld
             if (utilities == null)
                 utilities = new COM_Visibles();
             return utilities;
+        }
+        
+        public static dynamic OpenWorkbook(string path, Excel.Application tempApp = null)
+        {
+            if (tempApp == null)
+                return MyApp.Workbooks.Open(path);
+            else if (tempApp is Excel.Application)
+                return tempApp.Workbooks.Open(path);
+            else
+                throw new Exception();
         }
 
         #region VSTO generated code

@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using HelloWorld;
-
+using System.IO;
 
 namespace Tests
 {
@@ -10,15 +10,16 @@ namespace Tests
         public void Setup()
         {
         }
-        
-        //[Test]
-        //public void RefParser_ConvertToNumber6()
-        //{
-        //    var sp = new RefParser("A1:B1");
-        //    var result = sp.ConvertToNumber(null);
 
-        //    Assert.AreEqual(result, null);
-        //}
+        [Test]
+        public void OpenBookTest()
+        {
+            InflationTable table = new InflationTable(4);
+            //table.DoNothing();
+            table.UpdateTable();
+
+            Assert.AreEqual(1,1);
+        }
 
         //[Test]
         //public void ObjModel_SetSelection()

@@ -49,5 +49,12 @@ namespace HelloWorld
             TestForm tf = new TestForm();
             tf.Show();
         }
+
+        private void button2_Click(object sender, RibbonControlEventArgs e)
+        {
+            //test
+            InflationTable testTable = new InflationTable(4);
+            testTable.UpdateTable();
+        }
     }
 }

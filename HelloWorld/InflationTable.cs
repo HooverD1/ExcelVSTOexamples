@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,25 +43,36 @@ namespace HelloWorld
         {
             this.agencyNumber = agencyNumber;
         }
+        public void DoNothing()
+        {
+            
+        }
         public void UpdateTable()
         {
             //Grab table from the excel
             this.entries = new List<Entry>();
-            var inflBook = ThisAddIn.MyApp.Workbooks.Open(@"C:\Users\grins\Documents\VSTO Research\InflationTables.xlsx");
+
+            if (!File.Exists(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx"))
+                throw new FileNotFoundException();
+            Excel.Application tempApp = new Excel.Application();
+            Excel.Workbook inflBook = ThisAddIn.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx", tempApp);
+            var sheetsCount = inflBook.Worksheets.Count;
             Excel.Worksheet sheet = inflBook.Worksheets[agencyNumberToName[agencyNumber]];
-            Excel.Range table = sheet.UsedRange;
-            int categories = (table.Columns.Count - 1)/2;
-            foreach(Excel.Range cell in table.Columns[0])      //Iterate the cells in the first column
+            object[,] table = (object[,])sheet.UsedRange.Value2;
+            //object[,] values = (object[,])range.Value2;
+            int categories = (table.GetLength(1) - 1) / 2;
+            int rows = table.GetLength(0);
+            for(int j=3;j<=rows;j++)      //Iterate the range via indexes instead
             {
-                if (cell.Row < 3)
-                    continue;
-                for(int i = 1; i <= categories; i++)
+                for (int i = 1; i <= categories; i++)
                 {
                     //create an Entry for each category and year
-                    entries.Add(new Entry { Year = cell.Value, Category = i, ValueType = InflValue.Raw, Value = table.Cells[cell.Row, i * 2] });
-                    entries.Add(new Entry { Year = cell.Value, Category = i, ValueType = InflValue.Weighted, Value = table.Cells[cell.Row, i * 2 + 1] });
+                    entries.Add(new Entry { Year = Convert.ToInt32(table[j,1]), Category = i, ValueType = InflValue.Raw, Value = Convert.ToDouble(table[j, i * 2]) });
+                    entries.Add(new Entry { Year = Convert.ToInt32(table[j, 1]), Category = i, ValueType = InflValue.Weighted, Value = Convert.ToDouble(table[j, i * 2+1]) });
                 }
             }
+            inflBook.Close();
+            tempApp.Quit();
         }
         private DataTable MakeTableFromRange(Excel.Range range)     //converting to a Datatable is an alternative way to store the table
         {
