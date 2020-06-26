@@ -54,7 +54,7 @@ namespace HelloWorld
 
             if (!File.Exists(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx"))
                 throw new FileNotFoundException();
-            Excel.Workbook inflBook = ThisAddIn.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx", true);
+            Excel.Workbook inflBook = Utilities.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\inflation_table.xlsx", true);
             var sheetsCount = inflBook.Worksheets.Count;
             Excel.Worksheet sheet = inflBook.Worksheets[agencyNumberToName[agencyNumber]];
             object[,] table = (object[,])sheet.UsedRange.Value2;

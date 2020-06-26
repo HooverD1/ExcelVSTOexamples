@@ -25,7 +25,7 @@ namespace HelloWorld
         {
             Worksheet localSheet = ObjModel.GetActiveSheet();
             //Excel.Workbook formatBook = ThisAddIn.MyApp.Workbooks.Open(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
-            Excel.Workbook formatBook = ThisAddIn.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
+            Excel.Workbook formatBook = Utilities.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
             Excel.Worksheet formatSheet = formatBook.Worksheets["Sheet1"];
             Excel.Range formatRange = formatSheet.Range["A1:C2"];
             //range.Copy;
@@ -34,6 +34,23 @@ namespace HelloWorld
             localRange.PasteSpecial(Excel.XlPasteType.xlPasteAll);
             formatBook.Close();
         }
-
+        public static Excel.Application CreateTempApplication()
+        {
+            Excel.Application tempApp = new Excel.Application();
+            ThisAddIn.TempAppList.Add(tempApp);
+            return tempApp;
+        }
+        public static Excel.Workbook OpenWorkbook(string path, bool RunInNewApp = false)
+        {
+            if (RunInNewApp == false)
+                return ThisAddIn.MyApp.Workbooks.Open(path);
+            else if (RunInNewApp == true)
+            {
+                Excel.Application tempApp = Utilities.CreateTempApplication();
+                return tempApp.Workbooks.Open(path);
+            }
+            else
+                throw new Exception();
+        }
     }
 }

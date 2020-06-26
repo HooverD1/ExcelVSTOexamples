@@ -34,19 +34,7 @@ namespace HelloWorld
             return utilities;
         }
         
-        public static dynamic OpenWorkbook(string path, bool RunInNewApp = false)
-        {
-            if (RunInNewApp == false)
-                return MyApp.Workbooks.Open(path);
-            else if (RunInNewApp == true)
-            {
-                Excel.Application tempApp = new Excel.Application();
-                TempAppList.Add(tempApp);
-                return tempApp.Workbooks.Open(path);
-            }
-            else
-                throw new Exception();
-        }
+
 
         #region VSTO generated code
 
