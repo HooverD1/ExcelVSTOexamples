@@ -196,6 +196,7 @@
     </Compile>
     <Compile Include="RefEdit.cs" />
     <Compile Include="COM_Visibles.cs" />
+    <Compile Include="RightClick.cs" />
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
     </Compile>

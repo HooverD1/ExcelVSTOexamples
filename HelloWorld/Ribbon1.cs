@@ -44,7 +44,7 @@ namespace HelloWorld
             //do stuff
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void btnRefEdit_Click(object sender, RibbonControlEventArgs e)
         {
             TestForm tf = new TestForm();
             tf.Show();
@@ -55,6 +55,10 @@ namespace HelloWorld
             //test
             InflationTable testTable = new InflationTable(4);
             testTable.UpdateTable();
+        }
+        private void btnExperiment_Click(object sender, RibbonControlEventArgs e)
+        {
+            MessageBox.Show("This works");
         }
     }
 }

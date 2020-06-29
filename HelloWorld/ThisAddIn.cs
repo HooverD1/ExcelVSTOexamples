@@ -6,18 +6,39 @@ using System.Xml.Linq;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Core;
+using System.Reflection;
 
 namespace HelloWorld
 {
     public partial class ThisAddIn
     {
         public static Excel.Application MyApp { get; set; }     //handle on the Excel application
+        public static Ribbon1 MyRibbon { get; set; }
         public static List<Excel.Application> TempAppList { get; set; }
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
+            MyRibbon = Globals.Ribbons.Ribbon1;         //Grab the ribbon at startup
+
+            CommandBar rightClick = this.Application.CommandBars["Cell"];
+            CommandBarButton experimentButton = (CommandBarButton)rightClick.FindControl(MsoControlType.msoControlButton, 0, "Experiment");
+            if (experimentButton == null)
+            {
+                // add the button
+                experimentButton = (CommandBarButton)rightClick.Controls.Add(MsoControlType.msoControlButton, Missing.Value, Missing.Value, rightClick.Controls.Count, true);
+                experimentButton.Caption = "Do Stuff";
+                experimentButton.BeginGroup = true;
+                experimentButton.Tag = "Experiment";
+                experimentButton.Click += new _CommandBarButtonEvents_ClickEventHandler(btnExperiment_Click);
+            }
             TempAppList = new List<Excel.Application>();
             Utilities.LoadKeybinds();
+        }
+
+        private void btnExperiment_Click(CommandBarButton cmdBarbutton, ref bool cancel)
+        {
+            System.Windows.Forms.MessageBox.Show("MyButton was Clicked", "MyCOMAddin");
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -33,7 +54,6 @@ namespace HelloWorld
                 utilities = new COM_Visibles();
             return utilities;
         }
-        
 
 
         #region VSTO generated code
