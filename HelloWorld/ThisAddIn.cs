@@ -22,6 +22,7 @@ namespace HelloWorld
             MyRibbon = Globals.Ribbons.Ribbon1;         //Grab the ribbon at startup
 
             CommandBar rightClick = this.Application.CommandBars["Cell"];
+            
             CommandBarButton experimentButton = (CommandBarButton)rightClick.FindControl(MsoControlType.msoControlButton, 0, "Experiment");
             if (experimentButton == null)
             {
@@ -38,7 +39,7 @@ namespace HelloWorld
 
         private void btnExperiment_Click(CommandBarButton cmdBarbutton, ref bool cancel)
         {
-            System.Windows.Forms.MessageBox.Show("MyButton was Clicked", "MyCOMAddin");
+            System.Windows.Forms.MessageBox.Show("Run Code", "Right Click Menu Example");
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
