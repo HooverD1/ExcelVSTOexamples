@@ -152,7 +152,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnTest;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnRefEdit;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupExperimental;
-        
     }
 
     partial class ThisRibbonCollection

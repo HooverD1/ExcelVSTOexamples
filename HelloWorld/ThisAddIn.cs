@@ -56,6 +56,11 @@ namespace HelloWorld
             return utilities;
         }
 
+        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
+        {
+            return new MyRibbon();
+        }
+
 
         #region VSTO generated code
 

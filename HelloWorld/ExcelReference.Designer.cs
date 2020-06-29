@@ -58,6 +58,7 @@
             this.Controls.Add(this.txtRange);
             this.Name = "ExcelReference";
             this.Text = "ExcelReference";
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

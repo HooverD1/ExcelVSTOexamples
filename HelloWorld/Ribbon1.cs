@@ -50,15 +50,11 @@ namespace HelloWorld
             tf.Show();
         }
 
-        private void button2_Click(object sender, RibbonControlEventArgs e)
+        private void btnInflation_Click(object sender, RibbonControlEventArgs e)
         {
             //test
             InflationTable testTable = new InflationTable(4);
             testTable.UpdateTable();
-        }
-        private void btnExperiment_Click(object sender, RibbonControlEventArgs e)
-        {
-            MessageBox.Show("This works");
         }
     }
 }

@@ -31,6 +31,7 @@
             this.lblTestLabel = new System.Windows.Forms.Label();
             this.btnSelectRange = new System.Windows.Forms.Button();
             this.txtRangeSelect = new System.Windows.Forms.TextBox();
+            this.btnOkay = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblTestLabel
@@ -59,16 +60,28 @@
             this.txtRangeSelect.Size = new System.Drawing.Size(368, 22);
             this.txtRangeSelect.TabIndex = 2;
             // 
+            // btnOkay
+            // 
+            this.btnOkay.Location = new System.Drawing.Point(279, 82);
+            this.btnOkay.Name = "btnOkay";
+            this.btnOkay.Size = new System.Drawing.Size(104, 55);
+            this.btnOkay.TabIndex = 3;
+            this.btnOkay.Text = "Okay";
+            this.btnOkay.UseVisualStyleBackColor = true;
+            this.btnOkay.Click += new System.EventHandler(this.btnOkay_Click);
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 106);
+            this.ClientSize = new System.Drawing.Size(442, 149);
+            this.Controls.Add(this.btnOkay);
             this.Controls.Add(this.txtRangeSelect);
             this.Controls.Add(this.btnSelectRange);
             this.Controls.Add(this.lblTestLabel);
             this.Name = "TestForm";
             this.Text = "TestForm";
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -79,5 +92,6 @@
         private System.Windows.Forms.Label lblTestLabel;
         private System.Windows.Forms.Button btnSelectRange;
         public System.Windows.Forms.TextBox txtRangeSelect;
+        private System.Windows.Forms.Button btnOkay;
     }
 }

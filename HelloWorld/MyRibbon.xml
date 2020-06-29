@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabAddIns" label="Experimental">
+        <group id="Experimental"
+               label="Experimental">
+          <button label="MsgBox" id="btnHello" onAction="btnHello_Click" />
+          <button label="Add Formulas" id="btnAddFormulas" onAction="btnAddFormulas_Click" />
+          <button label="WS Function" id="btnWorksheetFunction" onAction="btnWorksheetFunction_Click" />
+          <button label="Copy Formats" id="btnCopyFormats" onAction="btnCopyFormats_Click" />
+          <button label="Ref Edit" id="btnRefEdit" onAction="btnRefEdit_Click" />
+          <button label="Experiment" id="btnExperiment" onAction="btnExperiment_Click" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

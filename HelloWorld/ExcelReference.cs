@@ -37,8 +37,8 @@ namespace HelloWorld
             var newTestForm = new TestForm();
             
             newTestForm.txtRangeSelect.Text = this.txtRange.Text;
-            newTestForm.Show();
             this.Close();
+            newTestForm.ShowDialog();            
         }
     }
 }

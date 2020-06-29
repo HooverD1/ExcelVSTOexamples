@@ -30,6 +30,9 @@ namespace HelloWorld
             refEdit.OnClick();
         }
 
-
+        private void btnOkay_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
