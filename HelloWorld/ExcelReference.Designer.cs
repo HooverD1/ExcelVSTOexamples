@@ -53,7 +53,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 46);
+            this.ClientSize = new System.Drawing.Size(459, 59);
             this.Controls.Add(this.btnGotRange);
             this.Controls.Add(this.txtRange);
             this.Name = "ExcelReference";
