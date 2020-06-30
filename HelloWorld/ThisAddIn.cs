@@ -14,12 +14,10 @@ namespace HelloWorld
     public partial class ThisAddIn
     {
         public static Excel.Application MyApp { get; set; }     //handle on the Excel application
-        public static Ribbon1 MyRibbon { get; set; }
         public static List<Excel.Application> TempAppList { get; set; }
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
-            MyRibbon = Globals.Ribbons.Ribbon1;         //Grab the ribbon at startup
 
             CommandBar rightClick = this.Application.CommandBars["Cell"];
             
