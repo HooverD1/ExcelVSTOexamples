@@ -68,6 +68,8 @@ namespace HelloWorld
 
             ObjModel.SetCell(5, "A6");
             ObjModel.SetFormulas("A7:A1000", "=A5+RandBetween(5,100)+Norm.Inv(.3,0,1)"); //add a formula to the sheet
+            ObjModel.SetFormulas("E1:H1", "=Column()+2000");
+            ObjModel.SetFormulas("E2:H2", "{=INFL(E1:H1, 2000,1,1,4)}");
         }
 
         public void btnWorksheetFunction_Click(IRibbonControl e)

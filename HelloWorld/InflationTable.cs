@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
 using System.Data;
+using System.Windows.Forms;
 
 namespace HelloWorld
 {
@@ -43,12 +44,10 @@ namespace HelloWorld
         {
             this.agencyNumber = agencyNumber;
         }
-        public void DoNothing()
-        {
-            
-        }
+
         public void UpdateTable()
         {
+            MessageBox.Show("Loading table");
             //Grab table from the excel
             this.entries = new List<Entry>();
 
