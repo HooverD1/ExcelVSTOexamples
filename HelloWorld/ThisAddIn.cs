@@ -19,26 +19,26 @@ namespace HelloWorld
         {
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
 
-            CommandBar rightClick = this.Application.CommandBars["Cell"];
+            //CommandBar rightClick = this.Application.CommandBars["Cell"];
             
-            CommandBarButton experimentButton = (CommandBarButton)rightClick.FindControl(MsoControlType.msoControlButton, 0, "Experiment");
-            if (experimentButton == null)
-            {
-                // add the button
-                experimentButton = (CommandBarButton)rightClick.Controls.Add(MsoControlType.msoControlButton, Missing.Value, Missing.Value, rightClick.Controls.Count, true);
-                experimentButton.Caption = "Do Stuff";
-                experimentButton.BeginGroup = true;
-                experimentButton.Tag = "Experiment";
-                experimentButton.Click += new _CommandBarButtonEvents_ClickEventHandler(btnExperiment_Click);
-            }
+            //CommandBarButton experimentButton = (CommandBarButton)rightClick.FindControl(MsoControlType.msoControlButton, 0, "Experiment");
+            //if (experimentButton == null)
+            //{
+            //    // add the button
+            //    experimentButton = (CommandBarButton)rightClick.Controls.Add(MsoControlType.msoControlButton, Missing.Value, Missing.Value, rightClick.Controls.Count, true);
+            //    experimentButton.Caption = "Do Stuff";
+            //    experimentButton.BeginGroup = true;
+            //    experimentButton.Tag = "Experiment";
+            //    experimentButton.Click += new _CommandBarButtonEvents_ClickEventHandler(btnExperiment_Click);
+            //}
             TempAppList = new List<Excel.Application>();
             Utilities.LoadKeybinds();
         }
 
-        private void btnExperiment_Click(CommandBarButton cmdBarbutton, ref bool cancel)
-        {
-            System.Windows.Forms.MessageBox.Show("Run Code", "Right Click Menu Example");
-        }
+        //private void btnExperiment_Click(CommandBarButton cmdBarbutton, ref bool cancel)
+        //{
+        //    System.Windows.Forms.MessageBox.Show("Run Code", "Right Click Menu Example");
+        //}
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
@@ -47,7 +47,7 @@ namespace HelloWorld
         }
 
         private COM_Visibles utilities;
-        protected override object RequestComAddInAutomationService()
+        protected override object RequestComAddInAutomationService()        //What is this doing?
         {
             if (utilities == null)
                 utilities = new COM_Visibles();

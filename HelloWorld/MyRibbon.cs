@@ -89,6 +89,10 @@ namespace HelloWorld
         {
             MessageBox.Show("Not implemented");
         }
+        public void RightClickTest_Click(IRibbonControl e)
+        {
+            MessageBox.Show("Run example right click command code");
+        }
 
         #endregion
 

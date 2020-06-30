@@ -15,5 +15,11 @@
       </tab>
     </tabs>
   </ribbon>
+
+  <contextMenus>
+    <contextMenu idMso ="ContextMenuCell">
+      <button id="MyButton" label="My Button" onAction="RightClickTest_Click"/>
+    </contextMenu>
+  </contextMenus>
 </customUI>
 
