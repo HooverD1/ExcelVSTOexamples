@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
+using Excel = Microsoft.Office.Interop.Excel;
 
 // TODO:  Follow these steps to enable the Ribbon (XML) item:
 
@@ -89,9 +90,10 @@ namespace HelloWorld
         {
             MessageBox.Show("Not implemented");
         }
-        public void RightClickTest_Click(IRibbonControl e)
+        public void RightClickTest_Click(IRibbonControl e)      //how to feed in the cell reference?
         {
-            MessageBox.Show("Run example right click command code");
+            string selectionReference = ObjModel.GetSelection().Address;
+            MessageBox.Show(selectionReference);
         }
 
         #endregion
