@@ -67,9 +67,9 @@ namespace HelloWorld
             ObjModel.SetFormulas("A4:B5", "=$C$3");     //absolute references
 
             ObjModel.SetCell(5, "A6");
-            ObjModel.SetFormulas("A7:A1000", "=A5+RandBetween(5,100)+Norm.Inv(.3,0,1)"); //add a formula to the sheet
+            ObjModel.SetFormulas("A7:A10", "=A5+RandBetween(5,100)+Norm.Inv(.3,0,1)"); //add a formula to the sheet
             ObjModel.SetFormulas("E1:H1", "=Column()+2000");
-            ObjModel.SetFormulas("E2:H2", "{=INFL(E1:H1, 2000,1,1,4)}");
+            ObjModel.SetArrayFormulas("E2:H2", "=INFL(2002, 2000,1,1,4)*E1:H1");
         }
 
         public void btnWorksheetFunction_Click(IRibbonControl e)

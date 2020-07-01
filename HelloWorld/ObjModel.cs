@@ -48,7 +48,7 @@ namespace HelloWorld
                 cell.Value = newValue;
         }
         
-        public static void SetFormulas(string cellRange, string formula, RefType refType)
+        public static void SetFormulas(string cellRange, string formula, RefType refType = RefType.A1)
         {
             var sheet = GetActiveSheet();
             var parser = new RefParser(cellRange, refType);
@@ -61,10 +61,18 @@ namespace HelloWorld
             setRange.Formula = formula;
             sheet.Cells[1, 1].Calculate();       //this doesn't seem to do much..
         }
-
-        public static void SetFormulas(string cellRange, string formula)
+        public static void SetArrayFormulas(string cellRange, string formula, RefType refType = RefType.A1)
         {
-            SetFormulas(cellRange, formula, RefType.A1);
+            var sheet = GetActiveSheet();
+            var parser = new RefParser(cellRange, refType);
+            if (refType == RefType.R1C1)
+            {
+                //Need to convert back to A1
+                cellRange = parser.ConvertRangeA1_R1C1(cellRange);
+            }
+            Excel.Range setRange = GetSheetRange(sheet, cellRange, refType);
+            setRange.FormulaArray = formula;
+            sheet.Cells[1, 1].Calculate();       //this doesn't seem to do much..
         }
 
     }
