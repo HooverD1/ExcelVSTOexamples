@@ -92,7 +92,8 @@ namespace HelloWorld
         }
         public void btnExperimental_Click(IRibbonControl e)
         {
-            MessageBox.Show("Not implemented");
+            ChartBuilder cb = new ChartBuilder();
+            cb.ExportToChart();
         }
         public void RightClickTest_Click(IRibbonControl e)      //how to feed in the cell reference?
         {

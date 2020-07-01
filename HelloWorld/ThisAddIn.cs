@@ -14,31 +14,17 @@ namespace HelloWorld
     public partial class ThisAddIn
     {
         public static Excel.Application MyApp { get; set; }     //handle on the Excel application
+        public static Excel.AddIn HelperVBA { get; set; }
         public static List<Excel.Application> TempAppList { get; set; }
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
-
-            //CommandBar rightClick = this.Application.CommandBars["Cell"];
-            
-            //CommandBarButton experimentButton = (CommandBarButton)rightClick.FindControl(MsoControlType.msoControlButton, 0, "Experiment");
-            //if (experimentButton == null)
-            //{
-            //    // add the button
-            //    experimentButton = (CommandBarButton)rightClick.Controls.Add(MsoControlType.msoControlButton, Missing.Value, Missing.Value, rightClick.Controls.Count, true);
-            //    experimentButton.Caption = "Do Stuff";
-            //    experimentButton.BeginGroup = true;
-            //    experimentButton.Tag = "Experiment";
-            //    experimentButton.Click += new _CommandBarButtonEvents_ClickEventHandler(btnExperiment_Click);
-            //}
             TempAppList = new List<Excel.Application>();
             Utilities.LoadKeybinds();
-        }
+            //this.test();
+            HelperVBA = MyApp.AddIns["Experimental"];
 
-        //private void btnExperiment_Click(CommandBarButton cmdBarbutton, ref bool cancel)
-        //{
-        //    System.Windows.Forms.MessageBox.Show("Run Code", "Right Click Menu Example");
-        //}
+        }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
@@ -59,6 +45,7 @@ namespace HelloWorld
             return new MyRibbon();
         }
 
+        
 
         #region VSTO generated code
 
