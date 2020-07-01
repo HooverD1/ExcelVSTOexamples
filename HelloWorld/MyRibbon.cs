@@ -35,6 +35,7 @@ namespace HelloWorld
     public class MyRibbon : Office.IRibbonExtensibility
     {
         private Office.IRibbonUI ribbon;
+        //private string GetContent { get; set; }
 
         public MyRibbon()
         {
@@ -55,6 +56,7 @@ namespace HelloWorld
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)
         {
             this.ribbon = ribbonUI;
+            
         }
         public void btnHello_Click(IRibbonControl e)
         {
@@ -96,6 +98,11 @@ namespace HelloWorld
         {
             string selectionReference = ObjModel.GetSelection().Address;
             MessageBox.Show(selectionReference);
+        }
+        public string GetMenuContent(IRibbonControl e)      //Need to determine which section the user is in here and return the right menu
+        {
+            MenuBuilder mb = new MenuBuilder();
+            return mb.Build();
         }
 
         #endregion

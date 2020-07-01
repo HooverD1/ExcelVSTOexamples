@@ -191,6 +191,7 @@
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="InflationTable.cs" />
     <Compile Include="MathUtils.cs" />
+    <Compile Include="MenuBuilder.cs" />
     <Compile Include="MyRibbon.cs" />
     <Compile Include="ObjModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -20,7 +20,7 @@ namespace HelloWorld
         public string A1_Range { get; set; }
         public string R1C1_Range { get; set; }
 
-        public RefParser(string reference, RefType refType)       //constructor
+        public RefParser(string reference, RefType refType = RefType.A1)       //constructor
         {
             this.reference = reference;
             firstColumn = GetFirstColumn();
@@ -51,7 +51,9 @@ namespace HelloWorld
             StringBuilder sb = new StringBuilder();
             foreach(char c in this.reference)
             {
-                if (Char.IsLetter(c))
+                if (c == '$')
+                    continue;
+                else if (Char.IsLetter(c))
                     sb.Append(c);
                 else
                     return sb.ToString();
@@ -60,6 +62,8 @@ namespace HelloWorld
         }
         private string GetSecondColumn()
         {
+            if (!reference.Contains(":"))
+                return "";
             StringBuilder sb = new StringBuilder();
             string secondText = reference.Split(':')[1];
             foreach(char c in secondText)
@@ -85,6 +89,8 @@ namespace HelloWorld
         }
         private string GetSecondRow()
         {
+            if (!reference.Contains(":"))
+                return "-1";
             StringBuilder sb = new StringBuilder();
             string secondText = reference.Split(':')[1];
             foreach (char c in secondText)
@@ -129,7 +135,9 @@ namespace HelloWorld
             StringBuilder row = new StringBuilder();
             foreach (char c in A1)
             {
-                if (char.IsLetter(c))
+                if (c == '$')
+                    continue;
+                else if (char.IsLetter(c))
                     col.Append(c);
                 else if (char.IsNumber(c))
                     row.Append(c);
@@ -142,7 +150,10 @@ namespace HelloWorld
         }
         public string ConvertRangeA1_R1C1(string A1)
         {
-            return $"{ConvertReferenceA1_R1C1(A1.Split(':')[0])}:{ConvertReferenceA1_R1C1(A1.Split(':')[1])}";
+            if (A1.Contains(":"))
+                return $"{ConvertReferenceA1_R1C1(A1.Split(':')[0])}:{ConvertReferenceA1_R1C1(A1.Split(':')[1])}";
+            else
+                return ConvertReferenceA1_R1C1(A1);
         }
         private string ConvertReferenceR1C1_A1(string R1C1)
         {
@@ -171,6 +182,8 @@ namespace HelloWorld
         }
         private int TextToNumber(string text)
         {
+            if (text == "")
+                return -1;
             return text
                 .Select(c => c - 'A' + 1)
                 .Aggregate((sum, next) => sum * 26 + next);

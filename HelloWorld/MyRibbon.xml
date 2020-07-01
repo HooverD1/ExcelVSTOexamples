@@ -18,8 +18,10 @@
 
   <contextMenus>
     <contextMenu idMso ="ContextMenuCell">
-      <button id="MyButton" label="My Button" onAction="RightClickTest_Click"/>
+      <dynamicMenu id="myDynamicMenu" label="Dynamic Menu" getContent="GetMenuContent" />
     </contextMenu>
   </contextMenus>
+  
+  
 </customUI>
 
