@@ -12,6 +12,10 @@
           <button label="Ref Edit" id="btnRefEdit" onAction="btnRefEdit_Click" />
           <button label="Experiment" id="btnExperiment" onAction="btnExperimental_Click" />
         </group>
+        <group id="Group2"
+               label="Group2">
+          <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" />
+        </group>
       </tab>
     </tabs>
   </ribbon>

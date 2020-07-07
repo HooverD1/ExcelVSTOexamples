@@ -28,6 +28,7 @@ namespace HelloWorld
                 InflationTables.Add(agencyNumber, new InflationTable(agencyNumber));
                 InflationTables[agencyNumber].UpdateTable();
             }
+            
         }
         public static void Calculate(int year1, int year2, InflationMode mode, int category, int agency)
         {

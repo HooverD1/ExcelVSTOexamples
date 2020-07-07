@@ -111,6 +111,18 @@ namespace HelloWorld
             cb.AddChart(worksheet, cells, ChartBuilder.Template.Chart1);
         }
 
+        public  void btnCopySheet_Click(IRibbonControl e)
+        {
+            //open template sheet
+            Excel.Workbook book = Utilities.OpenWorkbook(@"C:\Users\grins\Documents\Custom Office Templates\TestTemplate.xlsx");
+            Excel.Worksheet sheet = book.Worksheets["ABC"];
+            Excel.Worksheet copyTo = book.Worksheets["DEF"];
+            Excel.Worksheet copyTwo = ThisAddIn.MyApp.Worksheets["Sheet1"];
+            sheet.Copy(copyTwo);
+            book.Save();
+            book.Close();
+        }
+
         #endregion
 
         #region Helpers

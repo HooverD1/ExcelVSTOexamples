@@ -8,9 +8,12 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
 using System.Data;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+
 
 namespace HelloWorld
 {
+    [Serializable]
     public class InflationTable
     {
         private static Dictionary<int, string> agencyNumberToName = new Dictionary<int, string>()
@@ -88,6 +91,11 @@ namespace HelloWorld
                               where e.Category == category && e.Year == year && e.ValueType == InflValue.Weighted
                               select e;
             return returnValue.First().Value;
+        }
+
+        public void SerializeTable()
+        {
+            Serializer.SerializeObject<InflationTable>(this, @"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
         }
     }
 }
