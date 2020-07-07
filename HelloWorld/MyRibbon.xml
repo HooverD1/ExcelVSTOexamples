@@ -10,7 +10,7 @@
           <button label="WS Function" id="btnWorksheetFunction" onAction="btnWorksheetFunction_Click" />
           <button label="Copy Formats" id="btnCopyFormats" onAction="btnCopyFormats_Click" />
           <button label="Ref Edit" id="btnRefEdit" onAction="btnRefEdit_Click" />
-          <button label="Experiment" id="btnExperiment" onAction="btnExperiment_Click" />
+          <button label="Experiment" id="btnExperiment" onAction="btnExperimental_Click" />
         </group>
       </tab>
     </tabs>

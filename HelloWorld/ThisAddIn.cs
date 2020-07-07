@@ -23,7 +23,6 @@ namespace HelloWorld
             Utilities.LoadKeybinds();
             //this.test();
             HelperVBA = MyApp.AddIns["Experimental"];
-
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

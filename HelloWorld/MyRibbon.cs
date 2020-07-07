@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 using Excel = Microsoft.Office.Interop.Excel;
+using Tools = Microsoft.Office.Tools.Excel;
 
 // TODO:  Follow these steps to enable the Ribbon (XML) item:
 
@@ -90,11 +91,7 @@ namespace HelloWorld
             TestForm tf = new TestForm();
             tf.ShowDialog();
         }
-        public void btnExperimental_Click(IRibbonControl e)
-        {
-            ChartBuilder cb = new ChartBuilder();
-            cb.ExportToChart();
-        }
+
         public void RightClickTest_Click(IRibbonControl e)      //how to feed in the cell reference?
         {
             string selectionReference = ObjModel.GetSelection().Address;
@@ -104,6 +101,14 @@ namespace HelloWorld
         {
             MenuBuilder mb = new MenuBuilder();
             return mb.Build();
+        }
+
+        public void btnExperimental_Click(IRibbonControl e)
+        {
+            ChartBuilder cb = new ChartBuilder();
+            Tools.Worksheet worksheet = ObjModel.GetActiveSheet();
+            Excel.Range cells = worksheet.Range["A1", "J20"];
+            cb.AddChart(worksheet, cells, ChartBuilder.Template.Chart1);
         }
 
         #endregion
