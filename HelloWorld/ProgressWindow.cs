@@ -40,7 +40,6 @@ namespace HelloWorld
             }
             else
                 progressBar1.Value = e.ProgressPercentage;
-
         }
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
