@@ -79,7 +79,7 @@ namespace HelloWorld
         {
             throw new NotImplementedException();
         }
-        public double GetRawValue(int category, int year)
+        public double GetRawValue(int category, int year)       //these can probably be built into dictionaries for more lookup speed
         {
             var returnValue = from Entry e in this.entries
                               where e.Category == category && e.Year == year && e.ValueType == InflValue.Raw
