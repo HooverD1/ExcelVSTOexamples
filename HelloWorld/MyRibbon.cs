@@ -125,8 +125,14 @@ namespace HelloWorld
 
         public void btnSerialize_Click(IRibbonControl e)
         {
-            InflationCalculator.SerializeTables();
-            var table = Serializer.ReadXML<InflationTable>(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
+            //InflationCalculator.SerializeTables();
+            //var table = Serializer.ReadXML<InflationTable>(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
+        }
+
+        public void btnProgressBar_Click(IRibbonControl e)
+        {
+            ProgressWindow progWin = new ProgressWindow();
+            progWin.Show();
         }
 
         #endregion

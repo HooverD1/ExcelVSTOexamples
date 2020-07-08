@@ -29,7 +29,7 @@ namespace HelloWorld
                 InflationTable newTable = new InflationTable();
                 InflationTables.Add(agencyNumber, newTable);
                 newTable.SetAgency(agencyNumber);
-                if(!File.Exists(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml"))    //if xml file does not exist, use updateTable
+                if(!File.Exists($@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml"))    //if xml file does not exist, use updateTable
                     InflationTables[agencyNumber].UpdateTable();
                 else
                 {

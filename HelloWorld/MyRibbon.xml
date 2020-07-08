@@ -16,6 +16,7 @@
                label="Group2">
           <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" />
           <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" />
+          <button label="Progress Bar" id="btnProgressBar" onAction="btnProgressBar_Click" />
         </group>
       </tab>
     </tabs>

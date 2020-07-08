@@ -96,11 +96,11 @@ namespace HelloWorld
 
         public void SerializeTable()
         {
-            Serializer.SerializeObject<InflationTable>(this, @"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
+            Serializer.SerializeObject<InflationTable>(this, $@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml");
         }
         public InflationTable DeserializeTable()
         {
-            return Serializer.ReadXML<InflationTable>(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
+            return Serializer.ReadXML<InflationTable>($@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml");
         }
     }
 }
