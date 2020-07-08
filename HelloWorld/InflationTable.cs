@@ -26,29 +26,29 @@ namespace HelloWorld
             {6, "US Navy"},
             {7, "Previous MDA 2019"}
         };
-        private enum InflValue
+        public enum InflValue
         {
             Weighted,
             Raw
         }
-        private struct Entry
+        public struct Entry
         {
             public int Year;
             public int Category;
             public InflValue ValueType;
             public double Value;
         }
-        private List<Entry> entries { get; set; }
+        public List<Entry> entries { get; set; }
         public int agencyNumber { get; set; }
         public int category { get; set; }
-        private Dictionary<int, double> rawTable { get; set; }      //<year, inflation raw weight>
-        private Dictionary<int, double> weightTable { get; set; }   //<year, inflation weighted weight>
-        public InflationTable(int agencyNumber)
+        //protected Dictionary<int, double> rawTable { get; set; }      //<year, inflation raw weight>
+        //protected Dictionary<int, double> weightTable { get; set; }   //<year, inflation weighted weight>
+        
+        public void SetAgency(int agencyNumber)
         {
             this.agencyNumber = agencyNumber;
         }
-
-        public void UpdateTable()
+        public void UpdateTable()       //pulls the table in from the Excel, sets up the table object, and pushes it to xml
         {
             MessageBox.Show("Loading table");
             //Grab table from the excel
@@ -73,6 +73,7 @@ namespace HelloWorld
                 }
             }
             inflBook.Close();
+            this.SerializeTable();      
         }
         private DataTable MakeTableFromRange(Excel.Range range)     //converting to a Datatable is an alternative way to store the table
         {
@@ -96,6 +97,10 @@ namespace HelloWorld
         public void SerializeTable()
         {
             Serializer.SerializeObject<InflationTable>(this, @"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
+        }
+        public InflationTable DeserializeTable()
+        {
+            return Serializer.ReadXML<InflationTable>(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
         }
     }
 }

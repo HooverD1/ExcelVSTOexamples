@@ -111,7 +111,7 @@ namespace HelloWorld
             cb.AddChart(worksheet, cells, ChartBuilder.Template.Chart1);
         }
 
-        public  void btnCopySheet_Click(IRibbonControl e)
+        public void btnCopySheet_Click(IRibbonControl e)
         {
             //open template sheet
             Excel.Workbook book = Utilities.OpenWorkbook(@"C:\Users\grins\Documents\Custom Office Templates\TestTemplate.xlsx");
@@ -121,6 +121,12 @@ namespace HelloWorld
             sheet.Copy(copyTwo);
             book.Save();
             book.Close();
+        }
+
+        public void btnSerialize_Click(IRibbonControl e)
+        {
+            InflationCalculator.SerializeTables();
+            var table = Serializer.ReadXML<InflationTable>(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml");
         }
 
         #endregion

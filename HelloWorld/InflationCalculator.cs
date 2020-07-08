@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace HelloWorld
 {
@@ -25,10 +26,21 @@ namespace HelloWorld
         {
             if (!InflationTables.ContainsKey(agencyNumber))                                          //if the table is not yet in the dictionary, retrieve it
             {
-                InflationTables.Add(agencyNumber, new InflationTable(agencyNumber));
-                InflationTables[agencyNumber].UpdateTable();
+                InflationTable newTable = new InflationTable();
+                InflationTables.Add(agencyNumber, newTable);
+                newTable.SetAgency(agencyNumber);
+                if(!File.Exists(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\test_xml.xml"))    //if xml file does not exist, use updateTable
+                    InflationTables[agencyNumber].UpdateTable();
+                else
+                {
+                    InflationTables[agencyNumber] = newTable.DeserializeTable(); //if xml file does exist, use it instead
+                }
             }
             
+        }
+        public static void SerializeTables()
+        {
+            InflationTables[4].SerializeTable();
         }
         public static void Calculate(int year1, int year2, InflationMode mode, int category, int agency)
         {

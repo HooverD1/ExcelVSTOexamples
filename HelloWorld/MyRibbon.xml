@@ -15,6 +15,7 @@
         <group id="Group2"
                label="Group2">
           <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" />
+          <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" />
         </group>
       </tab>
     </tabs>
