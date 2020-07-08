@@ -34,9 +34,6 @@ namespace HelloWorld
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            // Change the value of the ProgressBar to the BackgroundWorker progress.
-            //progressBar1.Value = e.ProgressPercentage;
-
             if (progressBar1.InvokeRequired)
             {
                 progressBar1.Invoke(new MethodInvoker(delegate { progressBar1.Value = e.ProgressPercentage; }));
@@ -45,7 +42,18 @@ namespace HelloWorld
                 progressBar1.Value = e.ProgressPercentage;
 
         }
-    
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate { this.Close(); }));
+            }
+            else
+                this.Close();
+        }
+
+
         private void btnRun_Click(object sender, EventArgs e)
         {
             progressBar1.Maximum = 100;
