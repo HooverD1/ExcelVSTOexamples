@@ -20,16 +20,11 @@ namespace HelloWorld
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int j = 0; j < 100; j++)
+            for (int j = 1; j <= 100; j++)
             {
                 Thread.Sleep(100);
                 backgroundWorker.ReportProgress(j);
             }
-        }
-
-        private void Calculate(int i)
-        {
-            double pow = Math.Pow(i, i);
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
