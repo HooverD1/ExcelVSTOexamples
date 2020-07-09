@@ -12,11 +12,13 @@
           <button label="Ref Edit" id="btnRefEdit" onAction="btnRefEdit_Click" />
           <button label="Experiment" id="btnExperiment" onAction="btnExperimental_Click" />
         </group>
-        <group id="Group2"
-               label="Group2">
-          <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" />
-          <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" />
-          <button label="Progress Bar" id="btnProgressBar" onAction="btnProgressBar_Click" />
+        <group id="Group2" label="Group2">
+          
+          <menu id="MyMenu" getImage="imageHideous_GetImage" size="large">
+            <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" />
+            <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" />
+            <button label="Progress Bar" getImage="imageHideous_GetImage" id="btnProgressBar" onAction="btnProgressBar_Click" />
+          </menu>
         </group>
       </tab>
     </tabs>

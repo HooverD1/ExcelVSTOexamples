@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 using Excel = Microsoft.Office.Interop.Excel;
 using Tools = Microsoft.Office.Tools.Excel;
+using System.Drawing;
+using HelloWorld.Properties;
 
 // TODO:  Follow these steps to enable the Ribbon (XML) item:
 
@@ -133,6 +135,11 @@ namespace HelloWorld
         {
             ProgressWindow progWin = new ProgressWindow();
             progWin.Show();
+        }
+
+        public Bitmap imageHideous_GetImage(IRibbonControl control)
+        {
+            return Resources.HideousIcon;
         }
 
         #endregion

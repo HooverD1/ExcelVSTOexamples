@@ -19,10 +19,10 @@ namespace HelloWorld
         {
             ThisAddIn.MyApp.OnKey("^{Tab}", "Keybinds.FollowCtrlTab"); //this attaches your keybind to a VBA sub
         }        
-
+        
         //=============== FORMATTING =========
         public static void CopyFormats()
-        {
+        {            
             Worksheet localSheet = ObjModel.GetActiveSheet();
             //Excel.Workbook formatBook = ThisAddIn.MyApp.Workbooks.Open(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
             Excel.Workbook formatBook = Utilities.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
