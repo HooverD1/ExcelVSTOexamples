@@ -137,9 +137,20 @@ namespace HelloWorld
             progWin.Show();
         }
 
-        public Bitmap imageHideous_GetImage(IRibbonControl control)
+        public Bitmap GetImage(IRibbonControl control)
         {
-            return Resources.HideousIcon;
+            switch(control.Id)
+            {
+                case "btnSerialize":
+                    return Resources.bitmap;
+                case "btnCopySheet":
+                    return Resources.bitmap;
+                case "MyMenu":
+                    return Resources.bitmap;
+                default:
+                    return Resources.HideousIcon;
+            }
+            
         }
 
         #endregion

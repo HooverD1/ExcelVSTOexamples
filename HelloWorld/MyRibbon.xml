@@ -5,19 +5,19 @@
       <tab idMso="TabAddIns" label="Experimental">
         <group id="Experimental"
                label="Experimental">
-          <button label="MsgBox" id="btnHello" onAction="btnHello_Click" />
-          <button label="Add Formulas" id="btnAddFormulas" onAction="btnAddFormulas_Click" />
-          <button label="WS Function" id="btnWorksheetFunction" onAction="btnWorksheetFunction_Click" />
-          <button label="Copy Formats" id="btnCopyFormats" onAction="btnCopyFormats_Click" />
-          <button label="Ref Edit" id="btnRefEdit" onAction="btnRefEdit_Click" />
-          <button label="Experiment" id="btnExperiment" onAction="btnExperimental_Click" />
+          <button label="MsgBox" id="btnHello" onAction="btnHello_Click" getImage="GetImage"/>
+          <button label="Add Formulas" id="btnAddFormulas" onAction="btnAddFormulas_Click" getImage="GetImage"/>
+          <button label="WS Function" id="btnWorksheetFunction" onAction="btnWorksheetFunction_Click" getImage="GetImage" />
+          <button label="Copy Formats" id="btnCopyFormats" onAction="btnCopyFormats_Click" getImage="GetImage" />
+          <button label="Ref Edit" id="btnRefEdit" onAction="btnRefEdit_Click" getImage="GetImage"/>
+          <button label="Experiment" id="btnExperiment" onAction="btnExperimental_Click" getImage="GetImage"/>
         </group>
         <group id="Group2" label="Group2">
           
-          <menu id="MyMenu" getImage="imageHideous_GetImage" size="large">
-            <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" />
-            <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" />
-            <button label="Progress Bar" getImage="imageHideous_GetImage" id="btnProgressBar" onAction="btnProgressBar_Click" />
+          <menu id="MyMenu" getImage="GetImage" size="large">
+            <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" getImage="GetImage" />
+            <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" getImage="GetImage" />
+            <button label="Progress Bar" id="btnProgressBar" onAction="btnProgressBar_Click" getImage="GetImage" />
           </menu>
         </group>
       </tab>
@@ -26,7 +26,7 @@
 
   <contextMenus>
     <contextMenu idMso ="ContextMenuCell">
-      <dynamicMenu id="myDynamicMenu" label="Dynamic Menu" getContent="GetMenuContent" />
+      <dynamicMenu id="myDynamicMenu" label="Dynamic Menu" getContent="GetMenuContent" getImage="GetImage" />
     </contextMenu>
   </contextMenus>
   

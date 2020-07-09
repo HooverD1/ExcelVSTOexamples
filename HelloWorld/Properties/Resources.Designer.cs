@@ -63,6 +63,16 @@ namespace HelloWorld.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bitmap {
+            get {
+                object obj = ResourceManager.GetObject("bitmap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap HideousIcon {
             get {
                 object obj = ResourceManager.GetObject("HideousIcon", resourceCulture);

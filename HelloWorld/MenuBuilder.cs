@@ -43,7 +43,7 @@ namespace HelloWorld
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<menu xmlns=\"http://schemas.microsoft.com/office/2006/01/customui\">");
-                sb.Append("<button id =\"button1\" label=\"Estimate\"/>");
+                sb.Append("<button id =\"button1\" getImage=\"GetImage\" label=\"Estimate\"/>");
                 sb.Append("</menu>");
                 return sb.ToString();
             }
@@ -51,7 +51,7 @@ namespace HelloWorld
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<menu xmlns=\"http://schemas.microsoft.com/office/2006/01/customui\">");
-                sb.Append("<button id =\"button1\" label=\"WBS\"/>");
+                sb.Append("<button id =\"button1\" getImage=\"GetImage\" label=\"WBS\"/>");
                 sb.Append("</menu>");
                 return sb.ToString();
             }
@@ -59,7 +59,7 @@ namespace HelloWorld
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<menu xmlns=\"http://schemas.microsoft.com/office/2006/01/customui\">");
-                sb.Append("<button id =\"button1\" label=\"Other\"/>");
+                sb.Append("<button id =\"button1\" getImage=\"GetImage\" label=\"Other\"/>");
                 sb.Append("</menu>");
                 return sb.ToString();
             }
