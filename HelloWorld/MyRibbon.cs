@@ -75,6 +75,8 @@ namespace HelloWorld
             ObjModel.SetFormulas("A7:A10", "=A5+RandBetween(5,100)+Norm.Inv(.3,0,1)"); //add a formula to the sheet
             ObjModel.SetFormulas("E1:H1", "=Column()+2000");
             ObjModel.SetArrayFormulas("E2:H2", "=INFL(2002, 2000,1,1,4)*E1:H1");
+
+            
         }
 
         public void btnWorksheetFunction_Click(IRibbonControl e)
@@ -134,7 +136,7 @@ namespace HelloWorld
         public void btnProgressBar_Click(IRibbonControl e)
         {
             ProgressWindow progWin = new ProgressWindow();
-            progWin.Show();
+            progWin.ShowDialog();
         }
 
         public Bitmap GetImage(IRibbonControl control)

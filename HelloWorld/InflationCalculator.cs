@@ -44,6 +44,7 @@ namespace HelloWorld
         }
         public static void Calculate(int year1, int year2, InflationMode mode, int category, int agency)
         {
+            
             int modeInteger;
             switch (mode)
             {
@@ -66,6 +67,7 @@ namespace HelloWorld
         }   //Allow enums for inputs
         public static double Calculate(int year1, int year2, int mode, int category, int agency)
         {
+            DiagnosticsMenu.StartStopwatch();
             GetTable(agency, category);       //loads the table if it hasn't been loaded yet
             switch (mode)
             {
@@ -79,23 +81,31 @@ namespace HelloWorld
                     return Calculate_TY_to_TY(year1, year2, category, agency);
                 default:
                     throw new KeyNotFoundException();
-            }
+            }            
         }
         private static double Calculate_BY_to_BY(int year1, int year2, int category, int agency)
         {
-            return InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
+            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
+            return DiagnosticsMenu.StopStopwatch();
+            return returnVal;
         }
         private static double Calculate_BY_to_TY(int year1, int year2, int category, int agency)
         {
-            return InflationTables[agency].GetRawValue(category, year1);
+            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
+            return DiagnosticsMenu.StopStopwatch();
+            return returnVal;
         }
         private static double Calculate_TY_to_BY(int year1, int year2, int category, int agency)
         {
-            return InflationTables[agency].GetRawValue(category, year1);
+            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
+            return DiagnosticsMenu.StopStopwatch();
+            return returnVal;
         }
         private static double Calculate_TY_to_TY(int year1, int year2, int category, int agency)
         {
-            return InflationTables[agency].GetRawValue(category, year1);
+            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
+            return DiagnosticsMenu.StopStopwatch();
+            return returnVal;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace HelloWorld
         {
             for (int j = 1; j <= 100; j++)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(300);
                 backgroundWorker.ReportProgress(j);
             }
         }
@@ -56,7 +56,9 @@ namespace HelloWorld
             backgroundWorker.RunWorkerAsync();
         }
 
-
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Hello world");
+        }
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
+using Tools = Microsoft.Office.Tools.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Core;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace HelloWorld
 {
@@ -18,11 +19,15 @@ namespace HelloWorld
         public static List<Excel.Application> TempAppList { get; set; }
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            
+            DiagnosticsMenu.PrimeDiagnostics();     //initializes any diagnostic objects early so that they don't affect the results
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
+
             TempAppList = new List<Excel.Application>();
             Utilities.LoadKeybinds();
             //this.test();
             HelperVBA = MyApp.AddIns["Experimental"];
+            //TestMe();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -44,6 +49,26 @@ namespace HelloWorld
             return new MyRibbon();
         }
 
+        public void TestMe()
+        {
+            var path = HelperVBA.Path;
+            var bookin = Utilities.OpenWorkbook(path, true);
+            
+            //Excel._Workbook aa = Globals.Factory.GetVstoObject(HelperVBA);
+            
+
+            /*Is it possible...
+                To disable experimental
+                Run a command from here to change its file extension to .zip
+                Extract the xml
+                Replace "addin" with "sheet" in its xml file
+                Replace the xml
+                Change file extension to xlsm
+                Clone the sheets out into separate objects
+                Change the file extension back to xlam
+                Enable Experimental...?
+            */
+        }
         
 
         #region VSTO generated code

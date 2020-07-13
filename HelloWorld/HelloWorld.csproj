@@ -183,6 +183,7 @@
   -->
   <ItemGroup>
     <Compile Include="ChartBuilder.cs" />
+    <Compile Include="DiagnosticsMenu.cs" />
     <Compile Include="ExcelReference.cs">
       <SubType>Form</SubType>
     </Compile>
