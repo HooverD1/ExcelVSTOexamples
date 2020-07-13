@@ -139,6 +139,19 @@ namespace HelloWorld
             progWin.ShowDialog();
         }
 
+        public void btnFormatCorrel_Click(IRibbonControl e)
+        {
+            Excel.Range template = ThisAddIn.MyApp.Worksheets["Template"].range["C3"];
+            Excel.Range target = ThisAddIn.MyApp.Worksheets["format me"].range["B2"];
+            Formatter former = new Formatter(template, target, ThisAddIn.MyApp.Worksheets["format me"]);
+            former.FormatRange();
+        }
+
+        public void btnClear_Click(IRibbonControl e)
+        {
+            Formatter.ResetSheet();
+        }
+
         public Bitmap GetImage(IRibbonControl control)
         {
             switch(control.Id)
@@ -152,7 +165,6 @@ namespace HelloWorld
                 default:
                     return Resources.HideousIcon;
             }
-            
         }
 
         #endregion

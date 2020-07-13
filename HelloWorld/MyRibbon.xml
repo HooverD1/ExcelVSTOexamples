@@ -13,12 +13,15 @@
           <button label="Experiment" id="btnExperiment" onAction="btnExperimental_Click" getImage="GetImage"/>
         </group>
         <group id="Group2" label="Group2">
-          
           <menu id="MyMenu" getImage="GetImage" size="large">
             <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" getImage="GetImage" />
             <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" getImage="GetImage" />
             <button label="Progress Bar" id="btnProgressBar" onAction="btnProgressBar_Click" getImage="GetImage" />
+            <button label="Format Correl" id="btnFormatCorrel" onAction="btnFormatCorrel_Click" imageMso="Piggy" />
           </menu>
+        </group>
+        <group id="Clear" label="Clear">
+          <button label="Clear Sheet" id="btnClear" onAction="btnClear_Click" imageMso="Clear" />
         </group>
       </tab>
     </tabs>

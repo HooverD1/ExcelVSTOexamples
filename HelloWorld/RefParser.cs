@@ -129,7 +129,7 @@ namespace HelloWorld
         }
 
         //==============================================================UTILITIES================================================
-        private string ConvertReferenceA1_R1C1(string A1)
+        public string ConvertReferenceA1_R1C1(string A1)
         {
             StringBuilder col = new StringBuilder();
             StringBuilder row = new StringBuilder();
@@ -155,7 +155,7 @@ namespace HelloWorld
             else
                 return ConvertReferenceA1_R1C1(A1);
         }
-        private string ConvertReferenceR1C1_A1(string R1C1)
+        public string ConvertReferenceR1C1_A1(string R1C1)
         {
             var splitString = R1C1.Split('C');
             splitString[0].TrimStart('R');

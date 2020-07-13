@@ -20,11 +20,12 @@ namespace HelloWorld
             stopwatch.Reset();
             stopwatch.Start();
         }
-        public static double StopStopwatch()
+        public static double StopStopwatch(bool msgbox = false)
         {
             stopwatch.Stop();
-            //MessageBox.Show(stopwatch.ElapsedTicks.ToString());
-            return (double)stopwatch.ElapsedTicks;
+            if(msgbox == true)
+                MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
+            return (double)stopwatch.ElapsedMilliseconds;
         }
 
     }
