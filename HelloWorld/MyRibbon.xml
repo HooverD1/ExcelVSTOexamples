@@ -18,6 +18,7 @@
             <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" getImage="GetImage" />
             <button label="Progress Bar" id="btnProgressBar" onAction="btnProgressBar_Click" getImage="GetImage" />
             <button label="Format Correl" id="btnFormatCorrel" onAction="btnFormatCorrel_Click" imageMso="Piggy" />
+            <button label="Beta Array" id="btnBetaArray" onAction="btnBetaArray_Click" getImage="GetImage"/>
           </menu>
         </group>
         <group id="Clear" label="Clear">

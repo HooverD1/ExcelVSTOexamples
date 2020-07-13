@@ -182,6 +182,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="BetaDistribution.cs" />
     <Compile Include="ChartBuilder.cs" />
     <Compile Include="DiagnosticsMenu.cs" />
     <Compile Include="ExcelReference.cs">

@@ -152,6 +152,16 @@ namespace HelloWorld
             Formatter.ResetSheet();
         }
 
+        public void btnBetaArray_Click(IRibbonControl e)
+        {
+            this.btnClear_Click(e);
+            ObjModel.SetCell(10, "A1");
+            ObjModel.SetCell(2, "B1");
+            ObjModel.SetCell(3, "C1");
+            ObjModel.SetCell(15, "D1");
+            ObjModel.SetArrayFormulas("A2:D2", "=Beta2M(A1,B1,C1,D1)");
+        }
+
         public Bitmap GetImage(IRibbonControl control)
         {
             switch(control.Id)
