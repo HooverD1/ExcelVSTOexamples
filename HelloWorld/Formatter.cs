@@ -53,6 +53,7 @@ namespace HelloWorld
             int rowCount = targetRange.Rows.Count;
             int shift = colNum_start;
             Excel.Range formatRange;
+            ThisAddIn.MyApp.ScreenUpdating = false;
             for (int i = rowNum_start;i<=rowNum_end;i++)
             {       
                 Excel.Range row = targetSheet.Range[$"A{i}"].EntireRow;
@@ -79,6 +80,7 @@ namespace HelloWorld
             }
             ThisAddIn.MyApp.DisplayAlerts = true;
             DiagnosticsMenu.StopStopwatch(true);
+            ThisAddIn.MyApp.ScreenUpdating = true;
         }
 
         public static void ResetSheet()
