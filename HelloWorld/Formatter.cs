@@ -16,6 +16,7 @@ namespace HelloWorld
         private Excel.Range targetRange { get; set; }
         private Excel.Worksheet targetSheet { get; set; }
         private Excel.Range targetCell { get; set; }
+
         public Formatter(Excel.Range templateRange, Excel.Range targetCell, Excel.Worksheet targetSheet)
         {
             this.targetCell = targetCell;
@@ -43,13 +44,14 @@ namespace HelloWorld
             DiagnosticsMenu.StartStopwatch();
             Excel.Range newTargetRange = targetCell.Offset[0,1];
             Excel.Range newMergeRange = targetCell;
+            Excel.Range newHeaderRange = targetCell;
             RefParser targetParser = new RefParser(targetRange.Address);
             int rowNum_start = targetParser.firstRowNumber;
             int colNum_start = targetParser.firstColumnNumber;
             int rowNum_end = targetParser.secondRowNumber;
             int colNum_end = targetRange.End[Excel.XlDirection.xlToRight].Column;
             //int colNum_end = targetParser.secondColumnNumber;   //this is bugged
-            string r1c1_end_ref = $"R{rowNum_end}C{colNum_end}";
+            //string r1c1_end_ref = $"R{rowNum_end}C{colNum_end}";
             int rowCount = targetRange.Rows.Count;
             int shift = colNum_start;
             Excel.Range formatRange;
@@ -64,23 +66,29 @@ namespace HelloWorld
                 Excel.Range mergeRange = targetSheet.Range[row.Cells[1, colNum_start], row.Cells[1, shift]];
                 newTargetRange = ThisAddIn.MyApp.Union(newTargetRange, formatRange);
                 newMergeRange = ThisAddIn.MyApp.Union(newMergeRange, mergeRange);
+                Excel.Range headerRange = targetSheet.Range[row.Cells[1, shift], row.Cells[1, shift]];
+                newHeaderRange = ThisAddIn.MyApp.Union(newHeaderRange, headerRange);
                 mergeRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
                 shift++;
             }
+            newMergeRange.Clear();
             templateRange.Copy();
             newTargetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
             ThisAddIn.MyApp.DisplayAlerts = false;
-
             DiagnosticsMenu.StopStopwatch(true);
             DiagnosticsMenu.StartStopwatch();
+            foreach (Excel.Range cell in newHeaderRange)
+            {
+                cell.Formula = targetSheet.Range[$"A{cell.Row}"].Formula;
+            }
             foreach (Excel.Range row in newMergeRange.Rows)
             {
                 row.Merge();
-                row.Value = "Hello";
             }
             ThisAddIn.MyApp.DisplayAlerts = true;
-            DiagnosticsMenu.StopStopwatch(true);
             ThisAddIn.MyApp.ScreenUpdating = true;
+            DiagnosticsMenu.StopStopwatch(true);
+            
         }
 
         public static void ResetSheet()

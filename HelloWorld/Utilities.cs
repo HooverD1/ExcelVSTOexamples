@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
+using System.Data.Linq;         //for LINQ-to-SQL
 
 namespace HelloWorld
 {
     public static class Utilities
     {
+        
         //=======WORKSHEET FUNCTIONS==========
         public static Excel.WorksheetFunction wsFunction { get; } = ThisAddIn.MyApp.WorksheetFunction;
         
@@ -29,10 +31,15 @@ namespace HelloWorld
             Excel.Worksheet formatSheet = formatBook.Worksheets["Sheet1"];
             Excel.Range formatRange = formatSheet.Range["A1:C2"];
             //range.Copy;
+            foreach(dynamic win in formatBook.Windows)
+            {
+                win.Visible = false;
+            }
+            //formatBook.Windows[1].Visible = false;
             Excel.Range localRange = ObjModel.GetSheetRange(localSheet, "A1:C2");
             formatRange.Copy();
             localRange.PasteSpecial(Excel.XlPasteType.xlPasteAll);
-            formatBook.Close();
+            //formatBook.Close();
         }
         public static Excel.Application CreateTempApplication()
         {
@@ -48,9 +55,11 @@ namespace HelloWorld
             {
                 Excel.Application tempApp = Utilities.CreateTempApplication();
                 return tempApp.Workbooks.Open(path);
+
             }
             else
                 throw new Exception();
         }
+        
     }
 }

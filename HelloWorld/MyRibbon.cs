@@ -142,7 +142,7 @@ namespace HelloWorld
         public void btnFormatCorrel_Click(IRibbonControl e)
         {
             Excel.Range template = ThisAddIn.MyApp.Worksheets["Template"].range["C3"];
-            Excel.Range target = ThisAddIn.MyApp.Worksheets["format me"].range["B2"];
+            Excel.Range target = ThisAddIn.MyApp.Worksheets["format me"].range["C2"];
             Formatter former = new Formatter(template, target, ThisAddIn.MyApp.Worksheets["format me"]);
             former.FormatRange();
         }
