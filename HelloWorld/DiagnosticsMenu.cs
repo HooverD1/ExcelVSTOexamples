@@ -23,9 +23,11 @@ namespace HelloWorld
         public static double StopStopwatch(bool msgbox = false)
         {
             stopwatch.Stop();
-            if(msgbox == true)
-                MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
-            return (double)stopwatch.ElapsedMilliseconds;
+            if (msgbox == true)
+            {
+                MessageBox.Show($"{stopwatch.ElapsedMilliseconds / 1000}");
+            }
+            return (double)stopwatch.ElapsedMilliseconds / 1000;
         }
 
     }
