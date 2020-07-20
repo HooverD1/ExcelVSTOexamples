@@ -50,9 +50,6 @@ namespace HelloWorld
             int colNum_start = targetParser.firstColumnNumber;
             int rowNum_end = targetParser.secondRowNumber;
             int colNum_end = targetRange.End[Excel.XlDirection.xlToRight].Column;
-            //int colNum_end = targetParser.secondColumnNumber;   //this is bugged
-            //string r1c1_end_ref = $"R{rowNum_end}C{colNum_end}";
-            int rowCount = targetRange.Rows.Count;
             int shift = colNum_start;
             Excel.Range formatRange;
             ThisAddIn.MyApp.ScreenUpdating = false;
@@ -75,15 +72,9 @@ namespace HelloWorld
             templateRange.Copy();
             newTargetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
             ThisAddIn.MyApp.DisplayAlerts = false;
-            DiagnosticsMenu.StopStopwatch(true);
-            DiagnosticsMenu.StartStopwatch();
             foreach (Excel.Range cell in newHeaderRange)
             {
                 cell.Formula = targetSheet.Range[$"A{cell.Row}"].Formula;
-            }
-            foreach (Excel.Range row in newMergeRange.Rows)
-            {
-                row.Merge();
             }
             ThisAddIn.MyApp.DisplayAlerts = true;
             ThisAddIn.MyApp.ScreenUpdating = true;

@@ -24,8 +24,8 @@ namespace HelloWorld
         {
             stopwatch.Stop();
             if(msgbox == true)
-                MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
-            return (double)stopwatch.ElapsedMilliseconds;
+                MessageBox.Show($"{stopwatch.ElapsedMilliseconds/1000}");
+            return (double)stopwatch.ElapsedMilliseconds/1000;
         }
 
     }
