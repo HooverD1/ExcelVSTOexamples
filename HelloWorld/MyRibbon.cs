@@ -162,6 +162,17 @@ namespace HelloWorld
             ObjModel.SetArrayFormulas("A2:D2", "=Beta2M(A1,B1,C1,D1)");
         }
 
+        public void btnGetEigenvalues_Click(IRibbonControl e)
+        {
+            Excel.Range myRange = ThisAddIn.MyApp.Worksheets["eigenvalues"].range["A1"];
+            ThisAddIn.MyApp.Worksheets["eigenvalues"].range["A:A"].Clear();
+            foreach (double value in Utilities.GetEigenvalues())
+            {
+                myRange.Value = value;
+                myRange = myRange.Offset[1, 0];
+            }
+        }
+
         public Bitmap GetImage(IRibbonControl control)
         {
             switch(control.Id)

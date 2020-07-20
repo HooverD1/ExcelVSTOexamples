@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
 using System.Data.Linq;         //for LINQ-to-SQL
+using Accord.Math.Decompositions;
 
 namespace HelloWorld
 {
@@ -59,6 +60,25 @@ namespace HelloWorld
             }
             else
                 throw new Exception();
+        }
+        public static double[] GetEigenvalues()
+        {
+            DiagnosticsMenu.StartStopwatch();
+            Excel.Worksheet correlSheet = ThisAddIn.MyApp.Worksheets["Correl Matrix"];
+            Excel.Range correlRange = correlSheet.Range["B2:BXY2001"];
+            //double[,] resultArray = Array.ConvertAll<object, double>(correlRange.Value, x => (double)x);
+            object[,] objArray = correlRange.Value;
+            double[,] correlArray = new double[objArray.GetLength(0),objArray.GetLength(1)];
+            for(int i = 1; i <= objArray.GetLength(0); i++)
+            {
+                for(int j = 1; j <= objArray.GetLength(1); j++)
+                {
+                    correlArray[i-1, j-1] = (double)objArray[i, j];
+                }
+            }
+            EigenvalueDecomposition evd = new EigenvalueDecomposition(correlArray, true, true);
+            DiagnosticsMenu.StopStopwatch(true);
+            return evd.RealEigenvalues;
         }
         
     }
