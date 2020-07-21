@@ -211,6 +211,7 @@
     <Compile Include="ExcelReference.Designer.cs">
       <DependentUpon>ExcelReference.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExperimentContext.cs" />
     <Compile Include="Formatter.cs" />
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="InflationTable.cs" />
