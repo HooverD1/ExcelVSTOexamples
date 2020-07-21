@@ -42,6 +42,8 @@ namespace HelloWorld
              Paste formats in the target range
              */
             DiagnosticsMenu.StartStopwatch();
+            ThisAddIn.MyApp.DisplayAlerts = false;
+            ThisAddIn.MyApp.ScreenUpdating = false;
             Excel.Range newTargetRange = targetCell.Offset[0,1];
             Excel.Range newMergeRange = targetCell;
             Excel.Range newHeaderRange = targetCell;
@@ -72,25 +74,27 @@ namespace HelloWorld
                 {
                     ExecuteFormat(newTargetRange, newMergeRange, newHeaderRange, templateRange);
                     rangeCount = 0;
+                    newTargetRange = targetCell.Offset[0, 1];
+                    newMergeRange = targetCell;
+                    newHeaderRange = targetCell;
                 }
                 shift++;
             }
             ExecuteFormat(newTargetRange, newMergeRange, newHeaderRange, templateRange);    //execute the final batch
+            ThisAddIn.MyApp.DisplayAlerts = true;
             ThisAddIn.MyApp.ScreenUpdating = true;
             DiagnosticsMenu.StopStopwatch(true);
         }
 
         private void ExecuteFormat(Excel.Range newTargetRange, Excel.Range newMergeRange, Excel.Range newHeaderRange, Excel.Range templateRange)
         {
-            ThisAddIn.MyApp.DisplayAlerts = false;
-            ThisAddIn.MyApp.ScreenUpdating = false;
+
             newMergeRange.Clear();
             templateRange.Copy();
             newTargetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
             foreach (Excel.Range cell in newHeaderRange)
                 cell.Formula = targetSheet.Range[$"A{cell.Row}"].Formula;
-            ThisAddIn.MyApp.DisplayAlerts = true;
-            ThisAddIn.MyApp.ScreenUpdating = true;
+
         }
 
         public static void ResetSheet()
