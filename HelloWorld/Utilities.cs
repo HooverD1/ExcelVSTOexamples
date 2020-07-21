@@ -82,18 +82,18 @@ namespace HelloWorld
         public static double[,] AdjustMatrixToPSD(double[,] startMatrix, double[] eigenvalues)
         {
             int iNum = startMatrix.GetLength(0);
-            double min = eigenvalues.Min();
-            if(min < 0)
+            double minEigen = eigenvalues.Min();
+            if(minEigen < 0)
             {
                 for(int i=0; i < iNum; i++)
                 {
-                    startMatrix[i, i] = startMatrix[i, i] - min * 1.000000001;
+                    startMatrix[i, i] = startMatrix[i, i] - minEigen * 1.000000001;
                 }
                 for(int i=0; i < iNum; i++)
                 {
                     for(int j=0;j < iNum; j++)
                     {
-                        startMatrix[i, j] = startMatrix[i, j] / (1 - min * 1.000000001);
+                        startMatrix[i, j] = startMatrix[i, j] / (1 - minEigen * 1.000000001);
                     }
                 }
             }
