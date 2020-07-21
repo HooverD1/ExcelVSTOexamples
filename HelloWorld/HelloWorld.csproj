@@ -210,7 +210,10 @@
   <ItemGroup>
     <Compile Include="BetaDistribution.cs" />
     <Compile Include="ChartBuilder.cs" />
+    <Compile Include="Correlation.cs" />
     <Compile Include="DiagnosticsMenu.cs" />
+    <Compile Include="Estimate.cs" />
+    <Compile Include="EstimateInput.cs" />
     <Compile Include="ExcelReference.cs">
       <SubType>Form</SubType>
     </Compile>
