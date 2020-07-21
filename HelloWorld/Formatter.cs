@@ -42,6 +42,8 @@ namespace HelloWorld
              Paste formats in the target range
              */
             DiagnosticsMenu.StartStopwatch();
+            ThisAddIn.MyApp.DisplayAlerts = false;
+            ThisAddIn.MyApp.ScreenUpdating = false;
             Excel.Range newTargetRange = targetCell.Offset[0,1];
             Excel.Range newMergeRange = targetCell;
             Excel.Range newHeaderRange = targetCell;
@@ -53,8 +55,9 @@ namespace HelloWorld
             int shift = colNum_start;
             Excel.Range formatRange;
             ThisAddIn.MyApp.ScreenUpdating = false;
+            int rangeCount = 0;
             for (int i = rowNum_start;i<=rowNum_end;i++)
-            {       
+            {
                 Excel.Range row = targetSheet.Range[$"A{i}"].EntireRow;
                 if (shift + 1 <= colNum_end)
                     formatRange = targetSheet.Range[row.Cells[1, shift + 1], row.Cells[1, colNum_end]];
@@ -66,20 +69,32 @@ namespace HelloWorld
                 Excel.Range headerRange = targetSheet.Range[row.Cells[1, shift], row.Cells[1, shift]];
                 newHeaderRange = ThisAddIn.MyApp.Union(newHeaderRange, headerRange);
                 mergeRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+                rangeCount += 3;
+                if (rangeCount > 240)
+                {
+                    ExecuteFormat(newTargetRange, newMergeRange, newHeaderRange, templateRange);
+                    rangeCount = 0;
+                    newTargetRange = targetCell.Offset[0, 1];
+                    newMergeRange = targetCell;
+                    newHeaderRange = targetCell;
+                }
                 shift++;
             }
-            newMergeRange.Clear();
-            templateRange.Copy();
-            newTargetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
-            ThisAddIn.MyApp.DisplayAlerts = false;
-            foreach (Excel.Range cell in newHeaderRange)
-            {
-                cell.Formula = targetSheet.Range[$"A{cell.Row}"].Formula;
-            }
+            ExecuteFormat(newTargetRange, newMergeRange, newHeaderRange, templateRange);    //execute the final batch
             ThisAddIn.MyApp.DisplayAlerts = true;
             ThisAddIn.MyApp.ScreenUpdating = true;
             DiagnosticsMenu.StopStopwatch(true);
-            
+        }
+
+        private void ExecuteFormat(Excel.Range newTargetRange, Excel.Range newMergeRange, Excel.Range newHeaderRange, Excel.Range templateRange)
+        {
+
+            newMergeRange.Clear();
+            templateRange.Copy();
+            newTargetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
+            foreach (Excel.Range cell in newHeaderRange)
+                cell.Formula = targetSheet.Range[$"A{cell.Row}"].Formula;
+
         }
 
         public static void ResetSheet()
