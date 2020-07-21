@@ -74,7 +74,7 @@ namespace HelloWorld
                 {
                     ExecuteFormat(newTargetRange, newMergeRange, newHeaderRange, templateRange);
                     rangeCount = 0;
-                    newTargetRange = targetCell.Offset[0, 1];
+                    newTargetRange = targetCell.Offset[0, 1];       //resets the union ranges back to their defaults
                     newMergeRange = targetCell;
                     newHeaderRange = targetCell;
                 }
@@ -88,13 +88,11 @@ namespace HelloWorld
 
         private void ExecuteFormat(Excel.Range newTargetRange, Excel.Range newMergeRange, Excel.Range newHeaderRange, Excel.Range templateRange)
         {
-
             newMergeRange.Clear();
             templateRange.Copy();
             newTargetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
             foreach (Excel.Range cell in newHeaderRange)
                 cell.Formula = targetSheet.Range[$"A{cell.Row}"].Formula;
-
         }
 
         public static void ResetSheet()

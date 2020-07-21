@@ -164,12 +164,28 @@ namespace HelloWorld
 
         public void btnGetEigenvalues_Click(IRibbonControl e)
         {
-            Excel.Range myRange = ThisAddIn.MyApp.Worksheets["Correl Matrix"].range["A2"];
-            ThisAddIn.MyApp.Worksheets["Correl Matrix"].range["A:A"].Clear();
-            foreach (double value in Utilities.GetEigenvalues())
+            Excel.Worksheet correlSheet = ThisAddIn.MyApp.Worksheets["Correl Matrix"];
+            Excel.Worksheet templateSheet = ThisAddIn.MyApp.Worksheets["Backup Matrix"];
+            correlSheet.Cells.Clear();
+            templateSheet.Cells.Copy(correlSheet.Range["A1"]);
+            Excel.Range printRange = correlSheet.Range["A2"];
+            Excel.Range correlRange = correlSheet.Range["D2:BYA2001"];
+            DiagnosticsMenu.StartStopwatch();
+            double[,] matrix = Utilities.ConvertObjectArrayToDouble(correlRange.Value);
+            double[] eigenvalues = Utilities.GetEigenvalues(matrix);
+            PrintEigens(eigenvalues, printRange);
+            matrix = Utilities.AdjustMatrixToPSD(matrix, eigenvalues);        //adjust the matrix
+            correlRange.Value = matrix;
+            eigenvalues = Utilities.GetEigenvalues(matrix);
+            PrintEigens(eigenvalues, printRange.Offset[0, 1]);
+            DiagnosticsMenu.StopStopwatch(true);
+        }
+        private void PrintEigens(double[] eigenvalues, Excel.Range printRange)
+        {
+            foreach (double value in eigenvalues) //print the eigenvalues
             {
-                myRange.Value = value;
-                myRange = myRange.Offset[1, 0];
+                printRange.Value = value;
+                printRange = printRange.Offset[1, 0];
             }
         }
 

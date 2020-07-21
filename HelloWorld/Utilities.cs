@@ -61,24 +61,43 @@ namespace HelloWorld
             else
                 throw new Exception();
         }
-        public static double[] GetEigenvalues()
+        public static double[,] ConvertObjectArrayToDouble(object[,] objArray)
         {
-            DiagnosticsMenu.StartStopwatch();
-            Excel.Worksheet correlSheet = ThisAddIn.MyApp.Worksheets["Correl Matrix"];
-            Excel.Range correlRange = correlSheet.Range["C2:BXZ2001"];
-            //double[,] resultArray = Array.ConvertAll<object, double>(correlRange.Value, x => (double)x);
-            object[,] objArray = correlRange.Value;
-            double[,] correlArray = new double[objArray.GetLength(0),objArray.GetLength(1)];
-            for(int i = 1; i <= objArray.GetLength(0); i++)
+            double[,] correlArray = new double[objArray.GetLength(0), objArray.GetLength(1)];
+            for (int i = 1; i <= objArray.GetLength(0); i++)
             {
-                for(int j = 1; j <= objArray.GetLength(1); j++)
+                for (int j = 1; j <= objArray.GetLength(1); j++)
                 {
                     correlArray[i-1, j-1] = (double)objArray[i, j];
                 }
             }
-            EigenvalueDecomposition evd = new EigenvalueDecomposition(correlArray, true, true);
-            DiagnosticsMenu.StopStopwatch(true);
-            return evd.RealEigenvalues;
+            return correlArray;
+        }
+
+        public static double[] GetEigenvalues(double[,] correlArray)
+        {
+            return new EigenvalueDecomposition(correlArray, false, true).RealEigenvalues;
+        }
+
+        public static double[,] AdjustMatrixToPSD(double[,] startMatrix, double[] eigenvalues)
+        {
+            int iNum = startMatrix.GetLength(0);
+            double min = eigenvalues.Min();
+            if(min < 0)
+            {
+                for(int i=0; i < iNum; i++)
+                {
+                    startMatrix[i, i] = startMatrix[i, i] - min * 1.000000001;
+                }
+                for(int i=0; i < iNum; i++)
+                {
+                    for(int j=0;j < iNum; j++)
+                    {
+                        startMatrix[i, j] = startMatrix[i, j] / (1 - min * 1.000000001);
+                    }
+                }
+            }
+            return startMatrix;
         }
         
     }
