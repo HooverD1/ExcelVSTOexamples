@@ -164,8 +164,8 @@ namespace HelloWorld
 
         public void btnGetEigenvalues_Click(IRibbonControl e)
         {
-            Excel.Range myRange = ThisAddIn.MyApp.Worksheets["eigenvalues"].range["A1"];
-            ThisAddIn.MyApp.Worksheets["eigenvalues"].range["A:A"].Clear();
+            Excel.Range myRange = ThisAddIn.MyApp.Worksheets["Correl Matrix"].range["A2"];
+            ThisAddIn.MyApp.Worksheets["Correl Matrix"].range["A:A"].Clear();
             foreach (double value in Utilities.GetEigenvalues())
             {
                 myRange.Value = value;

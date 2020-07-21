@@ -65,7 +65,7 @@ namespace HelloWorld
         {
             DiagnosticsMenu.StartStopwatch();
             Excel.Worksheet correlSheet = ThisAddIn.MyApp.Worksheets["Correl Matrix"];
-            Excel.Range correlRange = correlSheet.Range["B2:BXY2001"];
+            Excel.Range correlRange = correlSheet.Range["C2:BXZ2001"];
             //double[,] resultArray = Array.ConvertAll<object, double>(correlRange.Value, x => (double)x);
             object[,] objArray = correlRange.Value;
             double[,] correlArray = new double[objArray.GetLength(0),objArray.GetLength(1)];
