@@ -162,29 +162,37 @@ namespace HelloWorld
             ObjModel.SetArrayFormulas("A2:D2", "=Beta2M(A1,B1,C1,D1)");
         }
 
-        public void btnGetEigenvalues_Click(IRibbonControl e)
-        {
-            Excel.Worksheet correlSheet = ThisAddIn.MyApp.Worksheets["Correl Matrix"];
-            Excel.Worksheet templateSheet = ThisAddIn.MyApp.Worksheets["Backup Matrix"];
-            correlSheet.Cells.Clear();
-            templateSheet.Cells.Copy(correlSheet.Range["A1"]);
-            Excel.Range printRange = correlSheet.Range["A2"];
-            //Excel.Range correlRange = correlSheet.Range["D2:CY101"];    //100 x 100
-            Excel.Range correlRange = correlSheet.Range["D2:SI501"];    //500 x 500
-            //Excel.Range correlRange = correlSheet.Range["D2:ALO1001"];  //1000 x 1000
-            //Excel.Range correlRange = correlSheet.Range["D2:BEU1501"];  //1500 x 1500
-            //Excel.Range correlRange = correlSheet.Range["D2:BYA2001"];  //2000 x 2000
-            DiagnosticsMenu.StartStopwatch();
-            double[,] matrix = Utilities.ConvertObjectArrayToDouble(correlRange.Value);
-            double[] eigenvalues = Utilities.GetEigenvalues(matrix);
-            PrintEigens(eigenvalues, printRange);
-            matrix = Utilities.AdjustMatrixToPSD(matrix, eigenvalues);        //adjust the matrix
-            correlRange.Value = matrix;
-            DiagnosticsMenu.StopStopwatch(true);
-            eigenvalues = Utilities.GetEigenvalues(matrix);
-            PrintEigens(eigenvalues, printRange.Offset[0, 1]);
+        //public void btnGetEigenvalues_Click(IRibbonControl e)
+        //{
+        //    Excel.Worksheet correlSheet = ThisAddIn.MyApp.Worksheets["Correl Matrix"];
+        //    Excel.Worksheet templateSheet = ThisAddIn.MyApp.Worksheets["Backup Matrix"];
+        //    correlSheet.Cells.Clear();
+        //    templateSheet.Cells.Copy(correlSheet.Range["A1"]);
+        //    Excel.Range printRange = correlSheet.Range["A2"];
+        //    //Excel.Range correlRange = correlSheet.Range["D2:CY101"];    //100 x 100
+        //    Excel.Range correlRange = correlSheet.Range["D2:SI501"];    //500 x 500
+        //    //Excel.Range correlRange = correlSheet.Range["D2:ALO1001"];  //1000 x 1000
+        //    //Excel.Range correlRange = correlSheet.Range["D2:BEU1501"];  //1500 x 1500
+        //    //Excel.Range correlRange = correlSheet.Range["D2:BYA2001"];  //2000 x 2000
+        //    DiagnosticsMenu.StartStopwatch();
+        //    double[,] matrix = Utilities.ConvertObjectArrayToDouble(correlRange.Value);
+        //    double[] eigenvalues = Utilities.GetEigenvalues(matrix);
+        //    PrintEigens(eigenvalues, printRange);
+        //    matrix = Utilities.AdjustMatrixToPSD(matrix, eigenvalues);        //adjust the matrix
+        //    correlRange.Value = matrix;
+        //    DiagnosticsMenu.StopStopwatch(true);
+        //    eigenvalues = Utilities.GetEigenvalues(matrix);
+        //    PrintEigens(eigenvalues, printRange.Offset[0, 1]);
 
+        //}
+
+        public void btnBuildEstimate_Click(IRibbonControl e)
+        {
+            ThisAddIn.MyApp.ActiveSheet.Cells.Clear();
+            var estimate = new Estimate(50);     //example estimate with 4 inputs
+            estimate.CorrelMatrix.PrintCorrelationMatrix();
         }
+
         private void PrintEigens(double[] eigenvalues, Excel.Range printRange)
         {
             foreach (double value in eigenvalues) //print the eigenvalues

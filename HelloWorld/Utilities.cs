@@ -74,31 +74,9 @@ namespace HelloWorld
             return correlArray;
         }
 
-        public static double[] GetEigenvalues(double[,] correlArray)
-        {
-            return new EigenvalueDecomposition(correlArray, false, true).RealEigenvalues;
-        }
 
-        public static double[,] AdjustMatrixToPSD(double[,] startMatrix, double[] eigenvalues)
-        {
-            int iNum = startMatrix.GetLength(0);
-            double minEigen = eigenvalues.Min();
-            if(minEigen < 0)
-            {
-                for(int i=0; i < iNum; i++)
-                {
-                    startMatrix[i, i] = startMatrix[i, i] - minEigen * 1.000000001;
-                }
-                for(int i=0; i < iNum; i++)
-                {
-                    for(int j=0;j < iNum; j++)
-                    {
-                        startMatrix[i, j] = startMatrix[i, j] / (1 - minEigen * 1.000000001);
-                    }
-                }
-            }
-            return startMatrix;
-        }
+
+        
         
     }
 }

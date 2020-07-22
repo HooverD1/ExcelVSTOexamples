@@ -19,6 +19,17 @@ namespace HelloWorld
         {
             this.input1 = input1;
             this.input2 = input2;
+            this.Coefficient = CalculateCoefficient();
+            this.CoefMin = CalculateMin();
+            this.CoefMax = CalculateMax();
+        }
+        public Correlation(EstimateInput input1, EstimateInput input2, double coef) //allows for building these after mass-calculating a correl coef matrix
+        {
+            this.input1 = input1;
+            this.input2 = input2;
+            this.Coefficient = coef;
+            this.CoefMin = CalculateMin();
+            this.CoefMax = CalculateMax();
         }
         
         public double CalculateMin()
@@ -35,7 +46,7 @@ namespace HelloWorld
             double min_sum = 0;
             for(int i = 0; i < input1.Data_Simulated.Length; i++)
             {
-                min_sum += input1.Data_Simulated[i] * input2.Data_Simulated[i];
+                min_sum += data1[i] * data2[i];
             }
             return min_sum / input1.Data_Simulated.Length;
         }
@@ -52,14 +63,14 @@ namespace HelloWorld
             double max_sum = 0;
             for (int i = 0; i < input1.Data_Simulated.Length; i++)
             {
-                max_sum += input1.Data_Simulated[i] * input2.Data_Simulated[i];
+                max_sum += data1[i] * data2[i];
             }
             return max_sum / input1.Data_Simulated.Length;
         }
-        public double CalculateCoefficient()        //should be able to do this all at once with the full dataset in CorrelationMatrix instead and then pull it in here
+        public double CalculateCoefficient()     //you can calculate just this correlation here
         {
-            //double[][] combined = { input1.Data_Simulated, input2.Data_Simulated };
-            return ThisAddIn.MyApp.WorksheetFunction.Correl(input1.Data_Simulated, input2.Data_Simulated);  //this needs replaced with mathnet.numerics
+            //this needs replaced with mathnet.numerics
+            return ThisAddIn.MyApp.WorksheetFunction.Correl(input1.Data_Simulated, input2.Data_Simulated);  
         }
         public void Calculate()
         {

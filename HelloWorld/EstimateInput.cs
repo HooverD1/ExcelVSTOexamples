@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Statistics.Distributions;
 
 namespace HelloWorld
 {
@@ -10,15 +11,22 @@ namespace HelloWorld
     {
         public int InputID { get; set; }
         public double[] Data_Simulated { get; set; }
+        public ISampleableDistribution<double> Distribution { get; set; }
+        const long datapoints = 50000;
 
-        public EstimateInput(double[] input_data)
+        public EstimateInput(ISampleableDistribution<double> Distribution)
         {
-            this.Data_Simulated = input_data;
+            this.Distribution = Distribution;
+            this.Data_Simulated = GenerateData();
         }
         public double[] GenerateData()
         {
-            throw new NotImplementedException();
+            double[] data = new double[datapoints];
+            for(int i = 0; i < datapoints; i++)
+            {
+                data[i] = Distribution.Generate();
+            }
+            return data;
         }
-
     }
 }
