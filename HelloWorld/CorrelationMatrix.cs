@@ -22,11 +22,11 @@ namespace HelloWorld
             this.Parent = Parent;
             Correlations = GetCorrelationMatrix();
             eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
-            //if (eigenvalues.Min() < 0)
-            //{
-            //    AdjustToPositiveSemiDefinite();
-            //    new_eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
-            //}
+            if (eigenvalues.Min() < 0)
+            {
+                AdjustToPositiveSemiDefinite();
+                new_eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
+            }
         }
         public double[,] GetCoefficientsMatrix()
         {
@@ -86,14 +86,12 @@ namespace HelloWorld
                 }
             }
             double[,] correlCoefs;
-            /*  OPTIONS   */
-            correlCoefs = Measures.Correlation(correlData,means, stdevs);
-            //correlCoefs = Measures.Correlation(correlData);
-            //correlCoefs = BuildCoefs(correlData);
 
-            DiagnosticsMenu.StopStopwatch(true, "Setup and Measures.Correlation time");
-            DiagnosticsMenu.StartStopwatch();
-            //double[,] correlCoefs = Measures.Correlation(correlData, means, stdevs);
+            /*  OPTIONS   */
+            correlCoefs = Measures.Correlation(correlData, means, stdevs);      //uses known mean and stdev
+            //correlCoefs = Measures.Correlation(correlData);                   //computes mean and stdev
+            //correlCoefs = BuildCoefs(correlData);                             //uses mean=0 and stdev=1
+
             Correlation[,] CorrelationMatrix = new Correlation[correlCoefs.GetLength(0),correlCoefs.GetLength(1)];
             for (int i = 0; i < inputs.Count; i++)
             {
@@ -102,15 +100,16 @@ namespace HelloWorld
                     CorrelationMatrix[i, j] = new Correlation(inputs[i], inputs[j], correlCoefs[i, j]);
                 }
             }
-            DiagnosticsMenu.StopStopwatch(true, "Time to crete Correlation objects - Min/Max, Eigens & PSD Adjust");
+            DiagnosticsMenu.StopStopwatch(true, "Full post-MC build & adjustment of correlation matrix");
             return CorrelationMatrix;
         }
         public void PrintCorrelationMatrix()
         {
             ThisAddIn.MyApp.ScreenUpdating = false;
-            Excel.Range printCell = ThisAddIn.MyApp.ActiveWorkbook.ActiveSheet.range["D1"];
+            Excel.Range printCell = ThisAddIn.MyApp.ActiveWorkbook.ActiveSheet.range["E1"];
             for(int i=0;i<Correlations.GetLength(0); i++)
             {
+                printCell.Offset[i, -4].Value = Parent.Inputs[i].InputName;
                 printCell.Offset[i, -3].Value = eigenvalues[i];
                 if(new_eigenvalues != null)
                     printCell.Offset[i, -2].Value = new_eigenvalues[i];
@@ -119,7 +118,15 @@ namespace HelloWorld
                     printCell.Offset[i, j].Value = Correlations[i, j].Coefficient;
                 }
             }
+            FormatMatrix(printCell);
             ThisAddIn.MyApp.ScreenUpdating = true;
+        }
+        private void FormatMatrix(Excel.Range printCell)
+        {
+            Excel.Range template = ThisAddIn.MyApp.Worksheets["Template"].range["C3"];
+            Excel.Range target = printCell;
+            Formatter fmter = new Formatter(template, target, (Excel.Worksheet)target.Parent);
+            fmter.FormatRange();
         }
         private double[,] BuildCoefs(double[,] data)        //for mean = 0, stdev = 1
         {

@@ -10,12 +10,14 @@ namespace HelloWorld
     public class EstimateInput
     {
         public int InputID { get; set; }
+        public string InputName { get; set; }
         public double[] Data_Simulated { get; set; }
         public ISampleableDistribution<double> Distribution { get; set; }
         const long datapoints = 50000;
 
-        public EstimateInput(ISampleableDistribution<double> Distribution)
+        public EstimateInput(string InputName, ISampleableDistribution<double> Distribution)
         {
+            this.InputName = InputName;
             this.Distribution = Distribution;
             this.Data_Simulated = GenerateData();
         }

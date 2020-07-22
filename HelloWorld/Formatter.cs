@@ -41,7 +41,6 @@ namespace HelloWorld
              Loop the rows to build the target range and clear range with Union
              Paste formats in the target range
              */
-            DiagnosticsMenu.StartStopwatch();
             ThisAddIn.MyApp.DisplayAlerts = false;
             ThisAddIn.MyApp.ScreenUpdating = false;
             Excel.Range newTargetRange = targetCell.Offset[0,1];
@@ -83,7 +82,6 @@ namespace HelloWorld
             ExecuteFormat(newTargetRange, newMergeRange, newHeaderRange, templateRange);    //execute the final batch
             ThisAddIn.MyApp.DisplayAlerts = true;
             ThisAddIn.MyApp.ScreenUpdating = true;
-            DiagnosticsMenu.StopStopwatch(true);
         }
 
         private void ExecuteFormat(Excel.Range newTargetRange, Excel.Range newMergeRange, Excel.Range newHeaderRange, Excel.Range templateRange)

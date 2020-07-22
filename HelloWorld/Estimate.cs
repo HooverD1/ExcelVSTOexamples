@@ -22,7 +22,7 @@ namespace HelloWorld
             List<EstimateInput> returnInputs = new List<EstimateInput>();
             for(int i = 0; i < input_count; i++)
             {
-                returnInputs.Add(new EstimateInput(new NormalDistribution()));            
+                returnInputs.Add(new EstimateInput($"Input{i}", new NormalDistribution()));            
             }
             return returnInputs;
         }
