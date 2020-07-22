@@ -25,7 +25,13 @@ namespace HelloWorld
             this.ThisSheet = ThisSheet;
         }
 
-        public virtual void Format() { }        //virtuals can be overwritten. Abstracts have to be.
+        public void ClearSheet()
+        {
+            this.ThisSheet.Cells.Clear();
+        }
+
+        public virtual void WriteSheet() { }        //Print the stored objects to the sheet
+        public virtual void Format() { }        //virtuals can be overwritten (or not). Abstracts have to be overwritten.
         private RangeType GetRangeType()    //Get the RangeType of some cell
         {
             throw new NotImplementedException();

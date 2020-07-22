@@ -7,7 +7,7 @@ using Accord.Statistics.Distributions;
 
 namespace HelloWorld
 {
-    public class EstimateInput: ICorrelatable
+    public class EstimateInput
     {
         public int InputID { get; set; }
         public string Name { get; set; }

@@ -15,11 +15,11 @@ namespace HelloWorld
     public class CorrelationMatrix
     {
         public Correlation[,] Correlations { get; set; }
-        public IHasCorrelations Parent {get;set;}
+        public Estimate Parent {get;set;}
         private double[] eigenvalues { get; set; }
         private double[] new_eigenvalues { get; set; }
 
-        public CorrelationMatrix(IHasCorrelations Parent)
+        public CorrelationMatrix(Estimate Parent)
         {
             this.Parent = Parent;
             Correlations = GetCorrelationMatrix();
@@ -90,8 +90,8 @@ namespace HelloWorld
             double[,] correlCoefs;
 
             /*  OPTIONS   */
-            correlCoefs = Measures.Correlation(correlData, means, stdevs);      //uses known mean and stdev
-            //correlCoefs = Measures.Correlation(correlData);                   //computes mean and stdev
+            //correlCoefs = Measures.Correlation(correlData, means, stdevs);      //uses known mean and stdev
+            correlCoefs = Measures.Correlation(correlData);                   //computes mean and stdev
             //correlCoefs = BuildCoefs(correlData);                             //uses mean=0 and stdev=1
 
             Correlation[,] CorrelationMatrix = new Correlation[correlCoefs.GetLength(0),correlCoefs.GetLength(1)];
@@ -108,7 +108,7 @@ namespace HelloWorld
         public void PrintCorrelationMatrix()
         {
             ThisAddIn.MyApp.ScreenUpdating = false;
-            Excel.Range printCell = ThisAddIn.MyApp.ActiveWorkbook.ActiveSheet.range["E1"];
+            Excel.Range printCell = Parent.CorrelParent.ThisSheet.Range["E1"];  //estimate.sheet_obj.worksheet.range
             for(int i=0;i<Correlations.GetLength(0); i++)
             {
                 printCell.Offset[i, -4].Value = Parent.Inputs[i].Name;

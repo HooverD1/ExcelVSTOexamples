@@ -7,13 +7,17 @@ using Accord.Statistics.Distributions.Univariate;
 
 namespace HelloWorld
 {
-    public class Estimate: IHasCorrelations, ICorrelatable
+    public class Estimate
     {
+        public EstimateSheet SheetParent { get; set; }
+        public CorrelationSheet CorrelParent { get; set; }
         public List<EstimateInput> Inputs { get; set; }
         public CorrelationMatrix CorrelMatrix { get; set; }
 
-        public Estimate(int input_count)
+        public Estimate(EstimateSheet SheetParent, CorrelationSheet CorrelParent, int input_count)
         {
+            this.SheetParent = SheetParent;
+            this.CorrelParent = CorrelParent;
             Inputs = GetFakeEstimateInputs(input_count);
             CorrelMatrix = new CorrelationMatrix(this);
         }

@@ -9,10 +9,10 @@ namespace HelloWorld
 {
     public class CorrelationSheet: Sheet
     {
-        public List<ICorrelatable> Correlates { get; set; }     //things that are correlated - estimates and inputs
+        public Estimate Correlates { get; set; }     //things that are correlated - estimates and inputs
         public CorrelationSheet(Excel.Worksheet ThisSheet) : base(ThisSheet)
         {
-            this.Correlates = new List<ICorrelatable>();
+            
         }
         
         public override void Format()

@@ -235,8 +235,6 @@
     <Compile Include="ExperimentContext.cs" />
     <Compile Include="FileSheet.cs" />
     <Compile Include="Formatter.cs" />
-    <Compile Include="ICorrelatable.cs" />
-    <Compile Include="IHasCorrelations.cs" />
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="InflationTable.cs" />
     <Compile Include="MathUtils.cs" />
