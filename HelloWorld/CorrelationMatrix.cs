@@ -22,11 +22,11 @@ namespace HelloWorld
             this.Parent = Parent;
             Correlations = GetCorrelationMatrix();
             eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
-            if (eigenvalues.Min() < 0)
-            {
-                AdjustToPositiveSemiDefinite();
-                new_eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
-            }
+            //if (eigenvalues.Min() < 0)
+            //{
+            //    AdjustToPositiveSemiDefinite();
+            //    new_eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
+            //}
         }
         public double[,] GetCoefficientsMatrix()
         {
@@ -79,16 +79,18 @@ namespace HelloWorld
             for(int i = 0; i < inputs.Count; i++)
             {
                 means[i] = 0;
-                stdevs[i] = 0;
+                stdevs[i] = 1;
                 for(int j = 0; j < inputs[i].Data_Simulated.Length; j++)
                 {
                     correlData[j, i] = inputs[i].Data_Simulated[j];
                 }
             }
             double[,] correlCoefs;
-            correlCoefs = Measures.Correlation(correlData);
-            
-            
+            /*  OPTIONS   */
+            correlCoefs = Measures.Correlation(correlData,means, stdevs);
+            //correlCoefs = Measures.Correlation(correlData);
+            //correlCoefs = BuildCoefs(correlData);
+
             DiagnosticsMenu.StopStopwatch(true, "Setup and Measures.Correlation time");
             DiagnosticsMenu.StartStopwatch();
             //double[,] correlCoefs = Measures.Correlation(correlData, means, stdevs);
@@ -118,6 +120,23 @@ namespace HelloWorld
                 }
             }
             ThisAddIn.MyApp.ScreenUpdating = true;
+        }
+        private double[,] BuildCoefs(double[,] data)        //for mean = 0, stdev = 1
+        {
+            double[,] correlationMatrix = new double[data.GetLength(1), data.GetLength(1)];
+            for (int j = 0; j < data.GetLength(1); j++)         //input1
+            {
+                for (int j2 = 0; j2 < data.GetLength(1); j2++)   //input2
+                {
+                    double sum = 0;
+                    for (int i = 0; i < data.GetLength(0); i++) //row
+                    {
+                        sum += data[i, j] * data[i, j2];
+                    }
+                    correlationMatrix[j2, j] = sum / (data.GetLength(0)-1);
+                }
+            }
+            return correlationMatrix;
         }
     }
 }
