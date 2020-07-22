@@ -211,6 +211,7 @@
     <Compile Include="BetaDistribution.cs" />
     <Compile Include="ChartBuilder.cs" />
     <Compile Include="Correlation.cs" />
+    <Compile Include="CorrelationMatrix.cs" />
     <Compile Include="DiagnosticsMenu.cs" />
     <Compile Include="Estimate.cs" />
     <Compile Include="EstimateInput.cs" />
