@@ -222,6 +222,7 @@
     <Compile Include="DiagnosticsMenu.cs" />
     <Compile Include="Estimate.cs" />
     <Compile Include="EstimateInput.cs" />
+    <Compile Include="EstimateSheet.cs" />
     <Compile Include="ExcelReference.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -250,6 +251,7 @@
     <Compile Include="COM_Visibles.cs" />
     <Compile Include="RightClick.cs" />
     <Compile Include="Serializer.cs" />
+    <Compile Include="Sheet.cs" />
     <Compile Include="TemplateAddIn.cs" />
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
@@ -259,6 +261,7 @@
     </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="WBS.cs" />
+    <Compile Include="WBSsheet.cs" />
     <EmbeddedResource Include="ExcelReference.resx">
       <DependentUpon>ExcelReference.cs</DependentUpon>
     </EmbeddedResource>
