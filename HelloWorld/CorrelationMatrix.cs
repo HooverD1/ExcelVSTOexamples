@@ -7,6 +7,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Accord.Statistics.Distributions.Univariate;
 using Accord.Statistics;
 using Accord.Math.Decompositions;
+using MathNet.Numerics;
+using MStats = MathNet.Numerics.Statistics;
 
 namespace HelloWorld
 {

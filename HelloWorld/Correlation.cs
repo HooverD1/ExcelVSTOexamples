@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Accord.Statistics;
+using MStats = MathNet.Numerics.Statistics;
 
 namespace HelloWorld
 {
@@ -20,16 +21,16 @@ namespace HelloWorld
             this.input1 = input1;
             this.input2 = input2;
             this.Coefficient = CalculateCoefficient();
-            //this.CoefMin = CalculateMin();
-            //this.CoefMax = CalculateMax();
+            this.CoefMin = CalculateMin();
+            this.CoefMax = CalculateMax();
         }
         public Correlation(EstimateInput input1, EstimateInput input2, double coef) //allows for building these after mass-calculating a correl coef matrix
         {
             this.input1 = input1;
             this.input2 = input2;
             this.Coefficient = coef;
-            //this.CoefMin = CalculateMin();
-            //this.CoefMax = CalculateMax();
+            this.CoefMin = CalculateMin();
+            this.CoefMax = CalculateMax();
         }
         
         public double CalculateMin()
@@ -67,16 +68,9 @@ namespace HelloWorld
             }
             return max_sum / input1.Data_Simulated.Length;
         }
-        public double CalculateCoefficient()     //you can calculate just this correlation here
+        public double CalculateCoefficient()    //for two series at a time
         {
-            //this needs replaced with mathnet.numerics
-            return ThisAddIn.MyApp.WorksheetFunction.Correl(input1.Data_Simulated, input2.Data_Simulated);  
-        }
-        public void Calculate()
-        {
-            this.Coefficient = CalculateCoefficient();
-            this.CoefMin = CalculateMin();
-            this.CoefMax = CalculateMax();
+            return MStats.Correlation.Pearson(input1.Data_Simulated, input2.Data_Simulated);
         }
     }
 }
