@@ -7,19 +7,19 @@ using Accord.Statistics.Distributions;
 
 namespace HelloWorld
 {
-    public class EstimateInput
+    public class EstimateInput: ICorrelatable
     {
         public int InputID { get; set; }
-        public string InputName { get; set; }
-        public double[] Data_Simulated { get; set; }
+        public string Name { get; set; }
+        public double[] Data { get; set; }
         public ISampleableDistribution<double> Distribution { get; set; }
         const long datapoints = 50000;
 
-        public EstimateInput(string InputName, ISampleableDistribution<double> Distribution)
+        public EstimateInput(string Name, ISampleableDistribution<double> Distribution)
         {
-            this.InputName = InputName;
+            this.Name = Name;
             this.Distribution = Distribution;
-            this.Data_Simulated = GenerateData();
+            this.Data = GenerateData();
         }
         public double[] GenerateData()
         {

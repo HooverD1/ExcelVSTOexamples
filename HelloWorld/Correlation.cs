@@ -35,42 +35,42 @@ namespace HelloWorld
         
         public double CalculateMin()
         {
-            double[] data1 = new double[input1.Data_Simulated.Length];
-            input1.Data_Simulated.CopyTo(data1, 0);
-            double[] data2 = new double[input1.Data_Simulated.Length];
-            input2.Data_Simulated.CopyTo(data2, 0);
+            double[] data1 = new double[input1.Data.Length];
+            input1.Data.CopyTo(data1, 0);
+            double[] data2 = new double[input1.Data.Length];
+            input2.Data.CopyTo(data2, 0);
 
             Array.Sort(data1);
             Array.Sort(data2);
             Array.Reverse(data2);
 
             double min_sum = 0;
-            for(int i = 0; i < input1.Data_Simulated.Length; i++)
+            for(int i = 0; i < input1.Data.Length; i++)
             {
                 min_sum += data1[i] * data2[i];
             }
-            return min_sum / input1.Data_Simulated.Length;
+            return min_sum / input1.Data.Length;
         }
         public double CalculateMax()
         {
-            double[] data1 = new double[input1.Data_Simulated.Length];
-            input1.Data_Simulated.CopyTo(data1, 0);
-            double[] data2 = new double[input1.Data_Simulated.Length];
-            input2.Data_Simulated.CopyTo(data2, 0);
+            double[] data1 = new double[input1.Data.Length];
+            input1.Data.CopyTo(data1, 0);
+            double[] data2 = new double[input1.Data.Length];
+            input2.Data.CopyTo(data2, 0);
 
             Array.Sort(data1);
             Array.Sort(data2);
 
             double max_sum = 0;
-            for (int i = 0; i < input1.Data_Simulated.Length; i++)
+            for (int i = 0; i < input1.Data.Length; i++)
             {
                 max_sum += data1[i] * data2[i];
             }
-            return max_sum / input1.Data_Simulated.Length;
+            return max_sum / input1.Data.Length;
         }
         public double CalculateCoefficient()    //for two series at a time
         {
-            return MStats.Correlation.Pearson(input1.Data_Simulated, input2.Data_Simulated);
+            return MStats.Correlation.Pearson(input1.Data, input2.Data);
         }
     }
 }

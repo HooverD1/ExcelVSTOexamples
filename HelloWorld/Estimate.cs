@@ -7,7 +7,7 @@ using Accord.Statistics.Distributions.Univariate;
 
 namespace HelloWorld
 {
-    public class Estimate: IHasCorrelations
+    public class Estimate: IHasCorrelations, ICorrelatable
     {
         public List<EstimateInput> Inputs { get; set; }
         public CorrelationMatrix CorrelMatrix { get; set; }

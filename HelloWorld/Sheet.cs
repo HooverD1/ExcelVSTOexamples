@@ -16,9 +16,19 @@ namespace HelloWorld
             header,
             border
         }
-
+        
         private Dictionary<RangeType, Excel.Range> format_template { get; set; }       //<range context type, template range>
-        public virtual void Format() { }
+        public Excel.Worksheet ThisSheet { get; set; }
 
+        public Sheet(Excel.Worksheet ThisSheet)
+        {
+            this.ThisSheet = ThisSheet;
+        }
+
+        public virtual void Format() { }        //virtuals can be overwritten. Abstracts have to be.
+        private RangeType GetRangeType()    //Get the RangeType of some cell
+        {
+            throw new NotImplementedException();
+        }
     }
 }

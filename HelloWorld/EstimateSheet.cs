@@ -9,6 +9,8 @@ namespace HelloWorld
 {
     public class EstimateSheet: Sheet
     {
+        public EstimateSheet(Excel.Worksheet ThisSheet) : base(ThisSheet) { }
+
         public List<Estimate> Estimates { get; set; }
 
         public override void Format()

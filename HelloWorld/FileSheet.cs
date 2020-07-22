@@ -7,11 +7,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace HelloWorld
 {
-    public class WBSsheet: Sheet
+    public class FileSheet: Sheet
     {
-        public WBSsheet(Excel.Worksheet ThisSheet) : base(ThisSheet) { }
-        public List<WBS> WBSs { get; set; }
-
+        public FileSheet(Excel.Worksheet ThisSheet) : base(ThisSheet) { }
         public override void Format()
         {
             base.Format();

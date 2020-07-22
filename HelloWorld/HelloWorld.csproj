@@ -216,9 +216,12 @@
   -->
   <ItemGroup>
     <Compile Include="BetaDistribution.cs" />
+    <Compile Include="CASE_Model.cs" />
     <Compile Include="ChartBuilder.cs" />
     <Compile Include="Correlation.cs" />
     <Compile Include="CorrelationMatrix.cs" />
+    <Compile Include="CorrelationSheet.cs" />
+    <Compile Include="DataSheet.cs" />
     <Compile Include="DiagnosticsMenu.cs" />
     <Compile Include="Estimate.cs" />
     <Compile Include="EstimateInput.cs" />
@@ -230,7 +233,9 @@
       <DependentUpon>ExcelReference.cs</DependentUpon>
     </Compile>
     <Compile Include="ExperimentContext.cs" />
+    <Compile Include="FileSheet.cs" />
     <Compile Include="Formatter.cs" />
+    <Compile Include="ICorrelatable.cs" />
     <Compile Include="IHasCorrelations.cs" />
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="InflationTable.cs" />
@@ -259,6 +264,7 @@
     <Compile Include="TestForm.Designer.cs">
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TotalSheet.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="WBS.cs" />
     <Compile Include="WBSsheet.cs" />

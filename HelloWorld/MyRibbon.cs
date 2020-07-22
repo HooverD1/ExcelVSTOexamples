@@ -188,8 +188,11 @@ namespace HelloWorld
 
         public void btnBuildEstimate_Click(IRibbonControl e)
         {
-            ThisAddIn.MyApp.ActiveSheet.Cells.Clear();
+            //check if "Correlation" sheet exists & create if not. Otherwise just grab it.
+            Excel.Worksheet correlSheet = ThisAddIn.MyApp.Worksheets["Correlation"];
+            correlSheet.Cells.Clear();
             var estimate = new Estimate(50);     //example estimate with 4 inputs
+            
             estimate.CorrelMatrix.PrintCorrelationMatrix();
         }
 

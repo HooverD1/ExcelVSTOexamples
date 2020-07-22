@@ -75,16 +75,16 @@ namespace HelloWorld
             var inputs = this.Parent.Inputs;
             if (!inputs.Any())
                 return null;
-            double[,] correlData = new double[inputs[0].Data_Simulated.Length, inputs.Count];   //[datapoint, input]
+            double[,] correlData = new double[inputs[0].Data.Length, inputs.Count];   //[datapoint, input]
             double[] means = new double[inputs.Count];
             double[] stdevs = new double[inputs.Count];
             for(int i = 0; i < inputs.Count; i++)
             {
                 means[i] = 0;
                 stdevs[i] = 1;
-                for(int j = 0; j < inputs[i].Data_Simulated.Length; j++)
+                for(int j = 0; j < inputs[i].Data.Length; j++)
                 {
-                    correlData[j, i] = inputs[i].Data_Simulated[j];
+                    correlData[j, i] = inputs[i].Data[j];
                 }
             }
             double[,] correlCoefs;
@@ -111,7 +111,7 @@ namespace HelloWorld
             Excel.Range printCell = ThisAddIn.MyApp.ActiveWorkbook.ActiveSheet.range["E1"];
             for(int i=0;i<Correlations.GetLength(0); i++)
             {
-                printCell.Offset[i, -4].Value = Parent.Inputs[i].InputName;
+                printCell.Offset[i, -4].Value = Parent.Inputs[i].Name;
                 printCell.Offset[i, -3].Value = eigenvalues[i];
                 if(new_eigenvalues != null)
                     printCell.Offset[i, -2].Value = new_eigenvalues[i];
