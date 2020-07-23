@@ -15,7 +15,7 @@ namespace HelloWorld
 
         public override void Format()
         {
-            base.Format();
+            
         }
 
     }

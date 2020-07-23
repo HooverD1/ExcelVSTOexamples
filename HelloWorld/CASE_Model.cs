@@ -11,6 +11,7 @@ namespace HelloWorld
 {
     public class CASE_Model
     {
+        public Excel.Workbook TemplateBook { get; set; }
         private List<Sheet> sheets = new List<Sheet>();
         public FileSheet fileSheet { get; set; }
         public DataSheet dataSheet { get; set; }
@@ -19,7 +20,7 @@ namespace HelloWorld
         public List<EstimateSheet> EstimateSheets = new List<EstimateSheet>();
         public CorrelationSheet correlationSheet { get; set; }
 
-        public CASE_Model()
+        public void SetupModel()
         {
             //Create model from template
             List<string> sheetNames = new List<string>() { "Correlation", "EST_1", "WBS_1", "Total", "Data", "File" };
@@ -36,9 +37,7 @@ namespace HelloWorld
 
             //Create sheet objects
             fileSheet = new FileSheet();
-
             
-            //fileSheet.Format();
             dataSheet = new DataSheet();
             dataSheet.AttachSheet(ThisAddIn.MyApp.Worksheets["Data"]);
             totalSheet = new TotalSheet();
@@ -59,7 +58,7 @@ namespace HelloWorld
             sheets.AddRange(EstimateSheets);
             sheets.Add(correlationSheet);
 
-            
+            fileSheet.Format();
         }
 
         public void UpdateAllSheets()
@@ -68,6 +67,13 @@ namespace HelloWorld
             {
                 sheet.Format();
             }
+        }
+        public Excel.Workbook GetTemplateBook(string path)
+        {
+            if (TemplateBook == null)
+                return Utilities.OpenWorkbook(path, false, false);
+            else
+                return TemplateBook;
         }
     }
 }

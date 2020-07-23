@@ -81,7 +81,7 @@ namespace HelloWorld
 
         public void btnWorksheetFunction_Click(IRibbonControl e)
         {
-            ObjModel.GetSelection().Value = Utilities.wsFunction.Norm_Inv(.3, 0, 1);    //use a worksheetFunction
+            //ObjModel.GetSelection().Value = Utilities.wsFunction.Norm_Inv(.3, 0, 1);    //use a worksheetFunction
 
         }
 
@@ -165,6 +165,7 @@ namespace HelloWorld
         public void btnCreateNewModel_Click(IRibbonControl e)
         {
             ThisAddIn.Model = new CASE_Model();
+            ThisAddIn.Model.SetupModel();
         }
 
         public void btnBuildEstimate_Click(IRibbonControl e)
@@ -181,7 +182,7 @@ namespace HelloWorld
         public void btnSerializeFile_Click(IRibbonControl e)
         {
             //Serialize the FileSheet object to xml for the purpose of saving basic defaults
-            ThisAddIn.Model.fileSheet.Settings.SerializeSettings();
+            ThisAddIn.Model.fileSheet.Settings.SerializeSettings();     //export Settings object to xml
         }
 
         public Bitmap GetImage(IRibbonControl control)

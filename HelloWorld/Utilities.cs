@@ -13,10 +13,6 @@ namespace HelloWorld
 {
     public static class Utilities
     {
-        
-        //=======WORKSHEET FUNCTIONS==========
-        public static Excel.WorksheetFunction wsFunction { get; } = ThisAddIn.MyApp.WorksheetFunction;
-        
         //============= KEYBINDS =============
         public static void LoadKeybinds()
         {
@@ -48,10 +44,21 @@ namespace HelloWorld
             ThisAddIn.TempAppList.Add(tempApp);
             return tempApp;
         }
-        public static Excel.Workbook OpenWorkbook(string path, bool RunInNewApp = false)
+        public static Excel.Workbook OpenWorkbook(string path, bool RunInNewApp = false, bool Visible=true)
         {
             if (RunInNewApp == false)
-                return ThisAddIn.MyApp.Workbooks.Open(path);
+            {
+                Excel.Workbook newBook = ThisAddIn.MyApp.Workbooks.Open(path);
+                if (Visible == false)
+                {
+                    foreach (dynamic win in newBook.Windows)
+                    {
+                        win.Visible = false;
+                    }
+                }                
+                return newBook;
+            }
+                
             else if (RunInNewApp == true)
             {
                 Excel.Application tempApp = Utilities.CreateTempApplication();

@@ -33,7 +33,7 @@ namespace HelloWorld
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
             foreach (Excel.Application app in TempAppList)      //Kill any helper Applications
-                app.Quit();
+                app.Quit();            
         }
 
         private COM_Visibles utilities;

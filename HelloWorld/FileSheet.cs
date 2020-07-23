@@ -9,31 +9,48 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace HelloWorld
 {
-    [Serializable]
     public class FileSheet : Sheet
     {
         public FileSheetSettings Settings { get; set; }
-        public string TemplatePath{get;set;}
 
         public FileSheet() : base()
         {
             this.AttachSheet(ThisAddIn.MyApp.Worksheets["File"]);
-            if (File.Exists(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld"))
+            if (File.Exists(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\FileSheetSettings_xml.xml"))
+            {
                 this.Settings = FileSheetSettings.DeserializeSettings();       //if the xml exists, use it
+            }
             else
                 this.Settings = new FileSheetSettings();
-            this.TemplatePath = Settings.TemplatePath;
+            this.Write();
         }
         public override void Format()
         {
-            base.Format();
-            Excel.Workbook templateBook = Utilities.OpenWorkbook(TemplatePath);
+            Excel.Workbook templateBook = ThisAddIn.Model.GetTemplateBook(Settings.TemplatePath);
             Excel.Worksheet templateSheet = templateBook.Worksheets["File_Template"];
             this.ThisSheet.Cells.Clear();
             templateSheet.Cells.Copy();
-            ThisSheet.Cells.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
+            ThisSheet.Cells.PasteSpecial(Excel.XlPasteType.xlPasteAll);
+            ThisAddIn.MyApp.DisplayAlerts = false;
+            templateBook.Saved = true;
+            templateBook.Close();
+            ThisAddIn.MyApp.DisplayAlerts = true;
+            this.Write();            
+        }        
+        public void Write()
+        {
+            ThisSheet.Range["E4"].Value = Settings.TemplatePath;
+            ThisSheet.Range["E5"].Value = Settings.InflationDirectory;
         }
-
-
+        public void Read()
+        {
+            Settings.TemplatePath = ThisSheet.Range["E4"].Value;
+            Settings.InflationDirectory = ThisSheet.Range["E5"].Value;
+        }
+        public void ClearSheetSettings()
+        {
+            ThisSheet.Range["B4:B13"].Clear();
+            ThisSheet.Range["E4:E13"].Clear();
+        }
     }
 }

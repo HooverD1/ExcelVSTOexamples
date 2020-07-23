@@ -11,13 +11,8 @@ namespace HelloWorld
     public class FileSheetSettings
     {
         public string TemplatePath { get; set; }
-
-        public FileSheetSettings()
-        {
-            this.TemplatePath = @"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Template.xlsx"; //default location
-
-        }
-
+        public string InflationDirectory { get; set; }
+        
         public void SerializeSettings()
         {
             Serializer.SerializeObject<FileSheetSettings>(this, $@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\FileSheetSettings_xml.xml");
