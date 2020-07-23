@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.IO;
 
 namespace HelloWorld
 {
@@ -33,12 +35,22 @@ namespace HelloWorld
             }
 
             //Create sheet objects
-            fileSheet = new FileSheet(ThisAddIn.MyApp.Worksheets["File"]);
-            dataSheet = new DataSheet(ThisAddIn.MyApp.Worksheets["Data"]);
-            totalSheet = new TotalSheet(ThisAddIn.MyApp.Worksheets["Total"]);
-            WBSsheets.Add(new WBSsheet(ThisAddIn.MyApp.Worksheets["WBS_1"]));
-            EstimateSheets.Add(new EstimateSheet(ThisAddIn.MyApp.Worksheets["EST_1"]));
-            correlationSheet = new CorrelationSheet(ThisAddIn.MyApp.Worksheets["Correlation"]);
+            fileSheet = new FileSheet();
+
+            
+            //fileSheet.Format();
+            dataSheet = new DataSheet();
+            dataSheet.AttachSheet(ThisAddIn.MyApp.Worksheets["Data"]);
+            totalSheet = new TotalSheet();
+            totalSheet.AttachSheet(ThisAddIn.MyApp.Worksheets["Total"]);
+            WBSsheet newWBS = new WBSsheet();
+            WBSsheets.Add(newWBS);
+            newWBS.AttachSheet(ThisAddIn.MyApp.Worksheets["WBS_1"]);
+            EstimateSheet newEstimateSheet = new EstimateSheet();
+            EstimateSheets.Add(newEstimateSheet);
+            newEstimateSheet.AttachSheet(ThisAddIn.MyApp.Worksheets["EST_1"]);
+            correlationSheet = new CorrelationSheet();
+            correlationSheet.AttachSheet(ThisAddIn.MyApp.Worksheets["Correlation"]);
             //Add to sheets collection
             sheets.Add(fileSheet);
             sheets.Add(dataSheet);
@@ -46,6 +58,8 @@ namespace HelloWorld
             sheets.AddRange(WBSsheets);
             sheets.AddRange(EstimateSheets);
             sheets.Add(correlationSheet);
+
+            
         }
 
         public void UpdateAllSheets()

@@ -9,7 +9,7 @@ namespace HelloWorld
 {
     public class EstimateSheet: Sheet
     {
-        public EstimateSheet(Excel.Worksheet ThisSheet) : base(ThisSheet) { }
+        public EstimateSheet() : base() { }
 
         public List<Estimate> Estimates { get; set; }
 

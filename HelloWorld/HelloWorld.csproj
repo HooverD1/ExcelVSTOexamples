@@ -234,6 +234,7 @@
     </Compile>
     <Compile Include="ExperimentContext.cs" />
     <Compile Include="FileSheet.cs" />
+    <Compile Include="FileSheetSettings.cs" />
     <Compile Include="Formatter.cs" />
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="InflationTable.cs" />

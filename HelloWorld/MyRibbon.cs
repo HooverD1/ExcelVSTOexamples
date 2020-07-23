@@ -170,21 +170,18 @@ namespace HelloWorld
         public void btnBuildEstimate_Click(IRibbonControl e)
         {
             //check if "Correlation" sheet exists & create if not. Otherwise just grab it.
-            EstimateSheet estimateSheet = new EstimateSheet(ThisAddIn.MyApp.Worksheets["EST_1"]);
-            CorrelationSheet correlSheet = new CorrelationSheet(ThisAddIn.MyApp.Worksheets["Correlation"]);
+            EstimateSheet estimateSheet = ThisAddIn.Model.EstimateSheets[0];
+            CorrelationSheet correlSheet = ThisAddIn.Model.correlationSheet;
             correlSheet.ClearSheet();
             var estimate = new Estimate(estimateSheet, correlSheet, 50);     //example estimate with 50 inputs
             correlSheet.Correlates = estimate;
             correlSheet.Correlates.CorrelMatrix.PrintCorrelationMatrix();
         }
 
-        private void PrintEigens(double[] eigenvalues, Excel.Range printRange)
+        public void btnSerializeFile_Click(IRibbonControl e)
         {
-            foreach (double value in eigenvalues) //print the eigenvalues
-            {
-                printRange.Value = value;
-                printRange = printRange.Offset[1, 0];
-            }
+            //Serialize the FileSheet object to xml for the purpose of saving basic defaults
+            ThisAddIn.Model.fileSheet.Settings.SerializeSettings();
         }
 
         public Bitmap GetImage(IRibbonControl control)

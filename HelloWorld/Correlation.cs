@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Accord.Statistics;
 using MStats = MathNet.Numerics.Statistics;
+using System.Windows.Forms;
 
 namespace HelloWorld
 {
@@ -30,8 +31,8 @@ namespace HelloWorld
             this.input1 = input1;
             this.input2 = input2;
             this.Coefficient = coef;
-            //this.CoefMin = CalculateMin();
-            //this.CoefMax = CalculateMax();
+            this.CoefMin = CalculateMin();
+            this.CoefMax = CalculateMax();
         }
         
         public double CalculateMin()

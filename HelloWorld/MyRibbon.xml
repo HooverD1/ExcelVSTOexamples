@@ -28,6 +28,11 @@
         <group id="Clear" label="Clear">
           <button label="Clear Sheet" id="btnClear" onAction="btnClear_Click" imageMso="Clear" />
         </group>
+        <group id="Developer" label="Developer">
+          <menu id="DeveloperMenu" label="Developer Tools" size="large" imageMso="AccountSettings">
+            <button label="Serialize Filesheet" id="btnSerializeFile" onAction="btnSerializeFile_Click" imageMso="AutoSummarize"/>
+          </menu>
+        </group>
       </tab>
     </tabs>
   </ribbon>

@@ -13,7 +13,7 @@ namespace HelloWorld
         public string Name { get; set; }
         public double[] Data { get; set; }
         public ISampleableDistribution<double> Distribution { get; set; }
-        const long datapoints = 50000;
+        const long datapoints = 5000;
 
         public EstimateInput(string Name, ISampleableDistribution<double> Distribution)
         {

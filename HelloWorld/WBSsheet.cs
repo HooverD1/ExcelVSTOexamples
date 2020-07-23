@@ -9,7 +9,7 @@ namespace HelloWorld
 {
     public class WBSsheet: Sheet
     {
-        public WBSsheet(Excel.Worksheet ThisSheet) : base(ThisSheet) { }
+        public WBSsheet() : base() { }
         public List<WBS> WBSs { get; set; }
 
         public override void Format()

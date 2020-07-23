@@ -23,7 +23,9 @@ namespace HelloWorld
         {
             this.Parent = Parent;
             Correlations = GetCorrelationMatrix();
+            DiagnosticsMenu.StartStopwatch();
             eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
+            DiagnosticsMenu.StopStopwatch(true, "eigens");
             if (eigenvalues.Min() < 0)
             {
                 AdjustToPositiveSemiDefinite();
@@ -71,7 +73,7 @@ namespace HelloWorld
         }
         public Correlation[,] GetCorrelationMatrix()   //this should take the data from the Estimate Inputs
         {
-            DiagnosticsMenu.StartStopwatch();
+            
             var inputs = this.Parent.Inputs;
             if (!inputs.Any())
                 return null;
@@ -88,21 +90,22 @@ namespace HelloWorld
                 }
             }
             double[,] correlCoefs;
-
+            DiagnosticsMenu.StartStopwatch();
             /*  OPTIONS   */
             //correlCoefs = Measures.Correlation(correlData, means, stdevs);      //uses known mean and stdev
             correlCoefs = Measures.Correlation(correlData);                   //computes mean and stdev
             //correlCoefs = BuildCoefs(correlData);                             //uses mean=0 and stdev=1
-
+            DiagnosticsMenu.StopStopwatch(true, "correlation matrix generation");
+            DiagnosticsMenu.StartStopwatch();
             Correlation[,] CorrelationMatrix = new Correlation[correlCoefs.GetLength(0),correlCoefs.GetLength(1)];
             for (int i = 0; i < inputs.Count; i++)
             {
-                for (int j = 0; j < inputs.Count; j++)
+                for (int j = 0; j < inputs.Count; j++)      //use i+1?
                 {
                     CorrelationMatrix[i, j] = new Correlation(inputs[i], inputs[j], correlCoefs[i, j]);
                 }
             }
-            DiagnosticsMenu.StopStopwatch(true, "Full post-MC build & adjustment of correlation matrix");
+            DiagnosticsMenu.StopStopwatch(true, "Min/Max calculations");
             return CorrelationMatrix;
         }
         public void PrintCorrelationMatrix()
@@ -125,10 +128,12 @@ namespace HelloWorld
         }
         private void FormatMatrix(Excel.Range printCell)
         {
-            Excel.Range template = ThisAddIn.MyApp.Worksheets["Template"].range["C3"];
+            Excel.Workbook templateBook = Utilities.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Template.xlsx");
+            Excel.Range template = templateBook.Worksheets["template"].range["C3"];
             Excel.Range target = printCell;
             Formatter fmter = new Formatter(template, target, (Excel.Worksheet)target.Parent);
             fmter.FormatRange();
+            templateBook.Close();
         }
         private double[,] BuildCoefs(double[,] data)        //for mean = 0, stdev = 1
         {

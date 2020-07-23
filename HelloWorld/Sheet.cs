@@ -20,7 +20,7 @@ namespace HelloWorld
         private Dictionary<RangeType, Excel.Range> format_template { get; set; }       //<range context type, template range>
         public Excel.Worksheet ThisSheet { get; set; }
 
-        public Sheet(Excel.Worksheet ThisSheet)
+        public void AttachSheet(Excel.Worksheet ThisSheet)
         {
             this.ThisSheet = ThisSheet;
         }

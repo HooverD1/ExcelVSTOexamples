@@ -9,7 +9,7 @@ namespace HelloWorld
 {
     public class TotalSheet: Sheet
     {
-        public TotalSheet(Excel.Worksheet ThisSheet) : base(ThisSheet) { }
+        public TotalSheet() : base() { }
 
         public override void Format()
         {

@@ -9,7 +9,7 @@ namespace HelloWorld
 {
     public class DataSheet: Sheet
     {
-        public DataSheet(Excel.Worksheet ThisSheet): base(ThisSheet){ }
+        public DataSheet(): base(){ }
 
         public override void Format()
         {

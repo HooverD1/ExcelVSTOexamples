@@ -28,7 +28,6 @@ namespace HelloWorld
             //this.test();
             HelperVBA = MyApp.AddIns["Experimental"];
             //TestMe();
-            
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
