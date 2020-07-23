@@ -17,9 +17,9 @@ namespace HelloWorld
         public static Excel.Application MyApp { get; set; }     //handle on the Excel application
         public static Excel.AddIn HelperVBA { get; set; }
         public static List<Excel.Application> TempAppList { get; set; }
+        public static CASE_Model Model {get;set;}
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
-        {
-            
+        {            
             DiagnosticsMenu.PrimeDiagnostics();     //initializes any diagnostic objects early so that they don't affect the results
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
 
@@ -28,6 +28,7 @@ namespace HelloWorld
             //this.test();
             HelperVBA = MyApp.AddIns["Experimental"];
             //TestMe();
+            
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

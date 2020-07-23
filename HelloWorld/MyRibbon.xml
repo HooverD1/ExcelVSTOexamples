@@ -3,6 +3,9 @@
   <ribbon>
     <tabs>
       <tab idMso="TabAddIns" label="Experimental">
+        <group id="NewModel" label="New Model">
+          <button label="Create New Model" id="btnCreateNewModel" onAction="btnCreateNewModel_Click" size="large" imageMso="BibliographyAddNewSource"/>
+        </group>
         <group id="Experimental"
                label="Experimental">
           <button label="MsgBox" id="btnHello" onAction="btnHello_Click" getImage="GetImage"/>
@@ -13,7 +16,7 @@
           <button label="Experiment" id="btnExperiment" onAction="btnExperimental_Click" getImage="GetImage"/>
         </group>
         <group id="Group2" label="Group2">
-          <menu id="MyMenu" getImage="GetImage" size="large">
+          <menu id="MyMenu" imageMso="BlogCategories" label="Test Options" size="large">
             <button label="Copy Sheet" id="btnCopySheet" onAction="btnCopySheet_Click" getImage="GetImage" />
             <button label="Serialize Inflation" id="btnSerialize" onAction="btnSerialize_Click" getImage="GetImage" />
             <button label="Progress Bar" id="btnProgressBar" onAction="btnProgressBar_Click" getImage="GetImage" />
