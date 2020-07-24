@@ -32,24 +32,25 @@ namespace HelloWorld
         {
             stopwatch.Stop();
             double time=-1;
-            if (msgbox == true)
-            {
                 if (unit == TimeUnit.seconds)
                 {
                     time = (double)stopwatch.ElapsedMilliseconds / 1000;
-                    MessageBox.Show($"{time} {message}");
+                    if(msgbox)
+                        MessageBox.Show($"{time} {message}");
                 }
                 else if (unit == TimeUnit.milliseconds)
                 {
                     time = (double)stopwatch.ElapsedMilliseconds;
-                    MessageBox.Show($"{(double)stopwatch.ElapsedMilliseconds} {message}");
+                    if(msgbox)
+                        MessageBox.Show($"{(double)stopwatch.ElapsedMilliseconds} {message}");
                 }
                 else
                 {
                     time = (double)stopwatch.ElapsedTicks;
-                    MessageBox.Show($"{(double)stopwatch.ElapsedTicks} {message}");
+                    if(msgbox)
+                        MessageBox.Show($"{(double)stopwatch.ElapsedTicks} {message}");
                 }
-            }
+            
             return time;
         }
 

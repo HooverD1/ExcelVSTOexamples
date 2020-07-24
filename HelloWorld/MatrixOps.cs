@@ -51,6 +51,14 @@ namespace HelloWorld
             DiagnosticsMenu.StopStopwatch();
             return retVal;
         }
+        public static double[,] MatrixInverse(double[,] m1)
+        {
+            return Matrix.Inverse(m1);
+        }
+        public static double[,] Transpose(double[,] m1)
+        {
+            return Matrix.Transpose<double>(m1);
+        }
 
     }
 }

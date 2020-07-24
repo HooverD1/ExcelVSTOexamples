@@ -205,9 +205,71 @@ namespace HelloWorld
                 result2 = 0;
                 result3 = 0;
             }
-            MessageBox.Show($"{ticks1.Average().ToString()} manual");
-            MessageBox.Show($"{ticks2.Average().ToString()} accord");
+            MessageBox.Show($"{ticks1.Average().ToString()} Manual");
+            MessageBox.Show($"{ticks2.Average().ToString()} Accord");
             MessageBox.Show($"{ticks3.Average().ToString()} VBA");
+        }
+
+        public void btnTestInverse_Click(IRibbonControl e)
+        {
+            Random rando = new Random();
+            double[,] TwoArray = new double[1000, 1000];
+            for(int i=0; i<TwoArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < TwoArray.GetLength(1); j++)
+                {
+                    TwoArray[i,j] = rando.NextDouble();
+                }
+            }
+
+            List<double> ticks1 = new List<double>();
+            List<double> ticks2 = new List<double>();
+
+            for (int i = 0; i < 3; i++)
+            {
+                DiagnosticsMenu.StartStopwatch();
+                var result1 = MatrixOps.MatrixInverse(TwoArray);
+                ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.seconds));
+                DiagnosticsMenu.StartStopwatch();
+                var result2 = ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray);
+                ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.seconds));
+                result1 = null;
+                result2 = null;
+
+            }
+            MessageBox.Show($"{ticks1.Average().ToString()} Accord");
+            MessageBox.Show($"{ticks2.Average().ToString()} VBA");
+
+        }
+
+        public void btnTestTranspose_Click(IRibbonControl e)
+        {
+            Random rando = new Random();
+            double[,] TwoArray = new double[1000, 1000];
+            for (int i = 0; i < TwoArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < TwoArray.GetLength(1); j++)
+                {
+                    TwoArray[i, j] = rando.NextDouble();
+                }
+            }
+
+            List<double> ticks1 = new List<double>();
+            List<double> ticks2 = new List<double>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                DiagnosticsMenu.StartStopwatch();
+                var result1 = MatrixOps.Transpose(TwoArray);
+                ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
+                DiagnosticsMenu.StartStopwatch();
+                var result2 = ThisAddIn.MyApp.WorksheetFunction.Transpose(TwoArray);
+                ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
+                result1 = null;
+                result2 = null;
+            }
+            MessageBox.Show($"{ticks1.Average().ToString()} Accord");
+            MessageBox.Show($"{ticks2.Average().ToString()} VBA");
         }
 
         public void btnSerializeFile_Click(IRibbonControl e)
