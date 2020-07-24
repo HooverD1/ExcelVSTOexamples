@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Math;
 
 namespace HelloWorld
 {
@@ -42,6 +43,13 @@ namespace HelloWorld
             {
                 throw new IndexOutOfRangeException();
             }
+        }
+        public static double Accord_MMult(double[] m1, double[] m2)
+        {
+            DiagnosticsMenu.StartStopwatch();
+            var retVal = Matrix.Dot(m1, m2);
+            DiagnosticsMenu.StopStopwatch();
+            return retVal;
         }
 
     }

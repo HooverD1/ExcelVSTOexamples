@@ -179,6 +179,37 @@ namespace HelloWorld
             correlSheet.Correlates.CorrelMatrix.PrintCorrelationMatrix();
         }
 
+        public void btnTestMMult_Click(IRibbonControl e)
+        {
+            double[] m1 = { 1.1, 2.3, 4.0, 3.5, 1.8 };
+            double[] m2 = { 1.1, 2.3, 4.0, 3.5, 1.8 };
+            List<long> ticks1 = new List<long>();
+            List<long> ticks2 = new List<long>();
+            List<long> ticks3 = new List<long>();
+            
+            for (int i = 0; i < 100; i++)
+            {
+                DiagnosticsMenu.StartStopwatch();
+                double result1 = MatrixOps.MMult(m1, m2);
+                DiagnosticsMenu.StopStopwatch(TimeUnit.ticks);
+                ticks1.Add(DiagnosticsMenu.stopwatch.ElapsedTicks);
+                DiagnosticsMenu.StartStopwatch();
+                double result2 = MatrixOps.Accord_MMult(m1, m2);
+                DiagnosticsMenu.StopStopwatch(TimeUnit.ticks);
+                ticks2.Add(DiagnosticsMenu.stopwatch.ElapsedTicks);
+                DiagnosticsMenu.StartStopwatch();
+                dynamic result3 = ThisAddIn.MyApp.WorksheetFunction.MMult(m1, ThisAddIn.MyApp.WorksheetFunction.Transpose(m2));
+                DiagnosticsMenu.StopStopwatch(TimeUnit.ticks);
+                ticks3.Add(DiagnosticsMenu.stopwatch.ElapsedTicks);
+                result1 = 0;
+                result2 = 0;
+                result3 = 0;
+            }
+            MessageBox.Show($"{ticks1.Average().ToString()} manual");
+            MessageBox.Show($"{ticks2.Average().ToString()} accord");
+            MessageBox.Show($"{ticks3.Average().ToString()} VBA");
+        }
+
         public void btnSerializeFile_Click(IRibbonControl e)
         {
             //Serialize the FileSheet object to xml for the purpose of saving basic defaults

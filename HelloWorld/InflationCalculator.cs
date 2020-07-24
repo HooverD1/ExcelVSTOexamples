@@ -86,25 +86,25 @@ namespace HelloWorld
         private static double Calculate_BY_to_BY(int year1, int year2, int category, int agency)
         {
             double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return DiagnosticsMenu.StopStopwatch(false);
+            return DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, false);
             return returnVal;
         }
         private static double Calculate_BY_to_TY(int year1, int year2, int category, int agency)
         {
             double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return DiagnosticsMenu.StopStopwatch(false);
+            return DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, false);
             return returnVal;
         }
         private static double Calculate_TY_to_BY(int year1, int year2, int category, int agency)
         {
             double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return DiagnosticsMenu.StopStopwatch(false);
+            return DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, false);
             return returnVal;
         }
         private static double Calculate_TY_to_TY(int year1, int year2, int category, int agency)
         {
             double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return DiagnosticsMenu.StopStopwatch(false);
+            return DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, false);
             return returnVal;
         }
     }

@@ -23,6 +23,7 @@
             <button label="Format Correl" id="btnFormatCorrel" onAction="btnFormatCorrel_Click" imageMso="Piggy" />
             <button label="Beta Array" id="btnBetaArray" onAction="btnBetaArray_Click" getImage="GetImage"/>
             <button label="Build Estimate/Correlation" id="btnBuildEstimate" onAction="btnBuildEstimate_Click" imageMso ="Piggy"/>
+            <button label="Test Matrix Mult" id="btnTestMMult" onAction="btnTestMMult_Click" imageMso="Piggy"/>
           </menu>
         </group>
         <group id="Clear" label="Clear">

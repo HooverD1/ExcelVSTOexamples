@@ -8,6 +8,13 @@ using System.Diagnostics;
 
 namespace HelloWorld
 {
+    public enum TimeUnit
+    {
+        ticks,
+        milliseconds,
+        seconds
+    }
+
     public static class DiagnosticsMenu
     {
         public static Stopwatch stopwatch;
@@ -20,12 +27,30 @@ namespace HelloWorld
             stopwatch.Reset();
             stopwatch.Start();
         }
-        public static double StopStopwatch(bool msgbox = false, string message="")
+
+        public static double StopStopwatch(TimeUnit unit=TimeUnit.seconds, bool msgbox = false, string message="")
         {
             stopwatch.Stop();
-            if(msgbox == true)
-                MessageBox.Show($"{(double)stopwatch.ElapsedMilliseconds/1000} {message}");
-            return (double)stopwatch.ElapsedMilliseconds/1000;
+            double time=-1;
+            if (msgbox == true)
+            {
+                if (unit == TimeUnit.seconds)
+                {
+                    time = (double)stopwatch.ElapsedMilliseconds / 1000;
+                    MessageBox.Show($"{time} {message}");
+                }
+                else if (unit == TimeUnit.milliseconds)
+                {
+                    time = (double)stopwatch.ElapsedMilliseconds;
+                    MessageBox.Show($"{(double)stopwatch.ElapsedMilliseconds} {message}");
+                }
+                else
+                {
+                    time = (double)stopwatch.ElapsedTicks;
+                    MessageBox.Show($"{(double)stopwatch.ElapsedTicks} {message}");
+                }
+            }
+            return time;
         }
 
     }

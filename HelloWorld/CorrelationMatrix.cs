@@ -25,7 +25,7 @@ namespace HelloWorld
             Correlations = GetCorrelationMatrix();
             DiagnosticsMenu.StartStopwatch();
             eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
-            DiagnosticsMenu.StopStopwatch(true, "eigens");
+            DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, true, "eigens");
             if (eigenvalues.Min() < 0)
             {
                 AdjustToPositiveSemiDefinite();
@@ -95,7 +95,7 @@ namespace HelloWorld
             //correlCoefs = Measures.Correlation(correlData, means, stdevs);      //uses known mean and stdev
             correlCoefs = Measures.Correlation(correlData);                   //computes mean and stdev
             //correlCoefs = BuildCoefs(correlData);                             //uses mean=0 and stdev=1
-            DiagnosticsMenu.StopStopwatch(true, "correlation matrix generation");
+            DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, true, "correlation matrix generation");
             DiagnosticsMenu.StartStopwatch();
             Correlation[,] CorrelationMatrix = new Correlation[correlCoefs.GetLength(0),correlCoefs.GetLength(1)];
             for (int i = 0; i < inputs.Count; i++)
@@ -105,7 +105,7 @@ namespace HelloWorld
                     CorrelationMatrix[i, j] = new Correlation(inputs[i], inputs[j], correlCoefs[i, j]);
                 }
             }
-            DiagnosticsMenu.StopStopwatch(true, "Min/Max calculations");
+            DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, true, "Min/Max calculations");
             return CorrelationMatrix;
         }
         public void PrintCorrelationMatrix()
