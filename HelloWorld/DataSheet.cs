@@ -9,12 +9,12 @@ namespace HelloWorld
 {
     public class DataSheet: Sheet
     {
-        public DataSheet(): base(){ }
-
-        public override void Format()
+        public DataSheet(): base()
         {
-            
+            this.AttachSheet(ThisAddIn.MyApp.Worksheets["Data"]);
         }
+
+        public override void Format() { }
         public override void ReadFromSheet() { }
         public override void WriteToSheet() { }
     }

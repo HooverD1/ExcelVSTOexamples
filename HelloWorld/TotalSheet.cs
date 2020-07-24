@@ -9,7 +9,10 @@ namespace HelloWorld
 {
     public class TotalSheet: Sheet
     {
-        public TotalSheet() : base() { }
+        public TotalSheet() : base()
+        {
+            this.AttachSheet(ThisAddIn.MyApp.Worksheets["Total"]);
+        }
 
         public override void Format()
         {

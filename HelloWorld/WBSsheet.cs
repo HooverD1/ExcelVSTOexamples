@@ -9,7 +9,10 @@ namespace HelloWorld
 {
     public class WBSsheet: Sheet
     {
-        public WBSsheet() : base() { }
+        public WBSsheet() : base()
+        {
+            this.AttachSheet(ThisAddIn.MyApp.Worksheets["WBS_1"]);
+        }
         public List<WBS> WBSs { get; set; }
 
         public override void Format()

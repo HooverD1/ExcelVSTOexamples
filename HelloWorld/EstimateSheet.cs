@@ -9,7 +9,10 @@ namespace HelloWorld
 {
     public class EstimateSheet: Sheet
     {
-        public EstimateSheet() : base() { }
+        public EstimateSheet() : base()
+        {
+            this.AttachSheet(ThisAddIn.MyApp.Worksheets["EST_1"]);      //this will need to be dynamic for multiple sheets
+        }
 
         public List<Estimate> Estimates { get; set; }
 
