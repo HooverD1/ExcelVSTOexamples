@@ -128,12 +128,15 @@ namespace HelloWorld
         }
         private void FormatMatrix(Excel.Range printCell)
         {
-            Excel.Workbook templateBook = Utilities.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Template.xlsx");
-            Excel.Range template = templateBook.Worksheets["template"].range["C3"];
+            Excel.Workbook templateBook = ThisAddIn.Model.GetTemplateBook();
+            Excel.Range template = templateBook.Worksheets["Correl_Template"].range["C3"];
             Excel.Range target = printCell;
             Formatter fmter = new Formatter(template, target, (Excel.Worksheet)target.Parent);
             fmter.FormatRange();
+            ThisAddIn.MyApp.DisplayAlerts = false;
+            templateBook.Saved = true;
             templateBook.Close();
+            ThisAddIn.MyApp.DisplayAlerts = true;
         }
         private double[,] BuildCoefs(double[,] data)        //for mean = 0, stdev = 1
         {

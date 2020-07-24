@@ -68,8 +68,9 @@ namespace HelloWorld
                 sheet.Format();
             }
         }
-        public Excel.Workbook GetTemplateBook(string path)
+        public Excel.Workbook GetTemplateBook()
         {
+            string path = fileSheet.Settings.TemplatePath;
             if (TemplateBook == null)
                 return Utilities.OpenWorkbook(path, false, false);
             else

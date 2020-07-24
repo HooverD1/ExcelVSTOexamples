@@ -26,7 +26,7 @@ namespace HelloWorld
         }
         public override void Format()
         {
-            Excel.Workbook templateBook = ThisAddIn.Model.GetTemplateBook(Settings.TemplatePath);
+            Excel.Workbook templateBook = ThisAddIn.Model.GetTemplateBook();
             Excel.Worksheet templateSheet = templateBook.Worksheets["File_Template"];
             this.ThisSheet.Cells.Clear();
             templateSheet.Cells.Copy();
