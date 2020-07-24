@@ -22,7 +22,7 @@ namespace HelloWorld
             }
             else
                 this.Settings = new FileSheetSettings();
-            this.Write();
+            this.WriteToSheet();
         }
         public override void Format()
         {
@@ -35,14 +35,14 @@ namespace HelloWorld
             templateBook.Saved = true;
             templateBook.Close();
             ThisAddIn.MyApp.DisplayAlerts = true;
-            this.Write();            
+            this.WriteToSheet();            
         }        
-        public void Write()
+        public override void WriteToSheet()
         {
             ThisSheet.Range["E4"].Value = Settings.TemplatePath;
             ThisSheet.Range["E5"].Value = Settings.InflationDirectory;
         }
-        public void Read()
+        public override void ReadFromSheet()
         {
             Settings.TemplatePath = ThisSheet.Range["E4"].Value;
             Settings.InflationDirectory = ThisSheet.Range["E5"].Value;

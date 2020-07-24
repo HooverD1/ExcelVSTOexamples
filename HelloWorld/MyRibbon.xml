@@ -26,6 +26,7 @@
             <button label="Test Matrix Mult" id="btnTestMMult" onAction="btnTestMMult_Click" imageMso="Piggy"/>
             <button label="Test Inverse" id="btnTestInverse" onAction="btnTestInverse_Click" imageMso="Piggy"/>
             <button label="Test Transpose" id="btnTestTranspose" onAction="btnTestTranspose_Click" imageMso="Piggy"/>
+            <button label="Test Determinant" id="btnTestDeterminant" onAction="btnTestDeterminant_Click" imageMso="Piggy"/>
           </menu>
         </group>
         <group id="Clear" label="Clear">

@@ -15,5 +15,7 @@ namespace HelloWorld
         {
             
         }
+        public override void ReadFromSheet() { }
+        public override void WriteToSheet() { }
     }
 }

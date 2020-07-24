@@ -30,7 +30,8 @@ namespace HelloWorld
             this.ThisSheet.Cells.Clear();
         }
 
-        public virtual void WriteSheet() { }        //Print the stored objects to the sheet
+        public abstract void WriteToSheet();        //Print the stored objects to the sheet
+        public abstract void ReadFromSheet();
         public abstract void Format();        //virtuals can be overwritten (or not). Abstracts have to be overwritten.
         private RangeType GetRangeType()    //Get the RangeType of some cell
         {

@@ -59,6 +59,9 @@ namespace HelloWorld
         {
             return Matrix.Transpose<double>(m1);
         }
-
+        public static double Determinant(double[,] m1)
+        {
+            return Matrix.Determinant(m1);
+        }
     }
 }
