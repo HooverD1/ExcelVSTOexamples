@@ -302,6 +302,36 @@ namespace HelloWorld
             MessageBox.Show($"{ticks2.Average().ToString()} VBA");
         }
 
+        public void btnTestEigenvalues_Click(IRibbonControl e)
+        {
+            Random rando = new Random();
+            double[,] TwoArray = new double[500, 500];
+            for (int i = 0; i < TwoArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < TwoArray.GetLength(1); j++)
+                {
+                    TwoArray[i, j] = rando.NextDouble();
+                }
+            }
+
+            List<double> ticks1 = new List<double>();
+            List<double> ticks2 = new List<double>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                DiagnosticsMenu.StartStopwatch();
+                double[] result1 = MatrixOps.RealEigenvalues_Accord(TwoArray);
+                ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
+                DiagnosticsMenu.StartStopwatch();
+                //double[] result2 = ThisAddIn.MyApp.WorksheetFunction.MDeterm(TwoArray);
+                //ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.ticks));
+                result1 = null;
+                //result2 = 0;
+            }
+            MessageBox.Show($"{ticks1.Average().ToString()} Accord");
+            //MessageBox.Show($"{ticks2.Average().ToString()} Manual");
+        }
+
         public void btnSerializeFile_Click(IRibbonControl e)
         {
             //Serialize the FileSheet object to xml for the purpose of saving basic defaults

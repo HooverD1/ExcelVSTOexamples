@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Accord.Math;
+using Accord.Math.Decompositions;
 
 namespace HelloWorld
 {
@@ -63,5 +64,11 @@ namespace HelloWorld
         {
             return Matrix.Determinant(m1);
         }
+        public static double[] RealEigenvalues_Accord(double[,] matrix)
+        {
+            return new EigenvalueDecomposition(matrix, false, true).RealEigenvalues;
+        }
+
+        
     }
 }
