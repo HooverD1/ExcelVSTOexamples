@@ -247,32 +247,40 @@ namespace HelloWorld
         public void btnTestInverse_Click(IRibbonControl e)
         {
             Random rando = new Random();
-            double[,] TwoArray = new double[1000, 1000];
-            for(int i=0; i<TwoArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < TwoArray.GetLength(1); j++)
-                {
-                    TwoArray[i,j] = rando.NextDouble();
-                }
-            }
+            double[,] TwoArray = new double[100, 100];
 
+            double[,] result1 = new double[100, 100];
+            double[,] result2 = new double[100, 100];
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
             //int equalTo = 16;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 50; i++)
             {
+                for (int i2 = 0; i2 < TwoArray.GetLength(0); i2++)
+                {
+                    for (int j = 0; j < TwoArray.GetLength(1); j++)
+                    {
+                        TwoArray[i2, j] = rando.NextDouble();
+                    }
+                }
+
                 DiagnosticsMenu.StartStopwatch();
-                var result1 = MatrixOps.MatrixInverse(TwoArray);
-                ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.seconds));
+                result1 = MatrixOps.MatrixInverse(TwoArray);
+                ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
                 DiagnosticsMenu.StartStopwatch();
-                var result2 = ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray);
-                ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.seconds));
-                //int places = TestEquality(result1, result2);
-                //if (places < equalTo)
-                //    equalTo = places;
-                result1 = null;
-                result2 = null;
+                result2 = Utilities.ConvertObjectArrayToDouble(ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray));
+                //result2 = ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray);
+                ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
             }
+            ThisAddIn.MyApp.ActiveSheet.Range("A1").Value = "Original Matrix";
+            ThisAddIn.MyApp.ActiveSheet.Range("A2:CV101").Value = TwoArray;
+            ThisAddIn.MyApp.ActiveSheet.Range("A102").Value = "Accord Inverse";
+            ThisAddIn.MyApp.ActiveSheet.Range("A103:CV202").Value = result1;
+            ThisAddIn.MyApp.ActiveSheet.Range("A203").Value = "VBA Matrix";
+            ThisAddIn.MyApp.ActiveSheet.Range("A204:CV303").Value = result2;
+
+            MessageBox.Show($"ACC v VBA Precision: {TestEquality(result1, result2, 9)}");
+
             MessageBox.Show($"{ticks1.Average().ToString()} Accord");
             MessageBox.Show($"{ticks2.Average().ToString()} VBA");
 
@@ -405,9 +413,8 @@ namespace HelloWorld
             }
             return lowest_precision;
         }
-        private int TestEquality(double[,] a, double[,] b)
+        private int TestEquality(double[,] a, double[,] b, int precision=15)
         {
-            int precision = 15;
             for (int i = 0; i < a.GetLength(0); i++)
             {
                 for (int j = 0; j < a.GetLength(1); j++)
