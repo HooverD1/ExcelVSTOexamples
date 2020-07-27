@@ -36,19 +36,19 @@ namespace HelloWorld
                 {
                     time = (double)stopwatch.ElapsedMilliseconds / 1000;
                     if(msgbox)
-                        MessageBox.Show($"{time} {message}");
+                        MessageBox.Show($"{time} sec; {message}");
                 }
                 else if (unit == TimeUnit.milliseconds)
                 {
                     time = (double)stopwatch.ElapsedMilliseconds;
                     if(msgbox)
-                        MessageBox.Show($"{(double)stopwatch.ElapsedMilliseconds} {message}");
+                        MessageBox.Show($"{(double)stopwatch.ElapsedMilliseconds} ms; {message}");
                 }
                 else
                 {
                     time = (double)stopwatch.ElapsedTicks;
                     if(msgbox)
-                        MessageBox.Show($"{(double)stopwatch.ElapsedTicks} {message}");
+                        MessageBox.Show($"{(double)stopwatch.ElapsedTicks} ticks; {message}");
                 }
             
             return time;

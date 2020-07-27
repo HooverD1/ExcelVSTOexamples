@@ -186,7 +186,7 @@ namespace HelloWorld
             List<long> ticks1 = new List<long>();
             List<long> ticks2 = new List<long>();
             List<long> ticks3 = new List<long>();
-            
+            int equalTo = 16;
             for (int i = 0; i < 100; i++)
             {
                 DiagnosticsMenu.StartStopwatch();
@@ -201,6 +201,9 @@ namespace HelloWorld
                 dynamic result3 = ThisAddIn.MyApp.WorksheetFunction.MMult(m1, ThisAddIn.MyApp.WorksheetFunction.Transpose(m2));
                 DiagnosticsMenu.StopStopwatch(TimeUnit.ticks);
                 ticks3.Add(DiagnosticsMenu.stopwatch.ElapsedTicks);
+                int places = TestEquality(result1, result2);
+                if (places < equalTo)
+                    equalTo = places;
                 result1 = 0;
                 result2 = 0;
                 result3 = 0;
@@ -224,7 +227,7 @@ namespace HelloWorld
 
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
-
+            //int equalTo = 16;
             for (int i = 0; i < 3; i++)
             {
                 DiagnosticsMenu.StartStopwatch();
@@ -233,9 +236,11 @@ namespace HelloWorld
                 DiagnosticsMenu.StartStopwatch();
                 var result2 = ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray);
                 ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.seconds));
+                //int places = TestEquality(result1, result2);
+                //if (places < equalTo)
+                //    equalTo = places;
                 result1 = null;
                 result2 = null;
-
             }
             MessageBox.Show($"{ticks1.Average().ToString()} Accord");
             MessageBox.Show($"{ticks2.Average().ToString()} VBA");
@@ -256,7 +261,7 @@ namespace HelloWorld
 
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
-
+            //int equalTo = 16;
             for (int i = 0; i < 10; i++)
             {
                 DiagnosticsMenu.StartStopwatch();
@@ -265,6 +270,9 @@ namespace HelloWorld
                 DiagnosticsMenu.StartStopwatch();
                 var result2 = ThisAddIn.MyApp.WorksheetFunction.Transpose(TwoArray);
                 ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
+                //int places = TestEquality(result1, result2);
+                //if (places < equalTo)
+                //    equalTo = places;
                 result1 = null;
                 result2 = null;
             }
@@ -298,10 +306,7 @@ namespace HelloWorld
                 ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.ticks));
                 int places = TestEquality(result1, result2);
                 if (places < equalTo)
-                {
                     equalTo = places;
-                    //MessageBox.Show($"Result1: {result1}, Result2: {result2}");
-                }
                 result1 = 0;
                 result2 = 0;
             }
@@ -323,7 +328,7 @@ namespace HelloWorld
             }
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
-
+            int equalTo = 16;
             for (int i = 0; i < 10; i++)
             {
                 DiagnosticsMenu.StartStopwatch();
