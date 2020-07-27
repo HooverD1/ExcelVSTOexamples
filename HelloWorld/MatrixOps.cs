@@ -26,26 +26,46 @@ namespace HelloWorld
                 throw new IndexOutOfRangeException();
             }
         }
-        public static double[] MMult(double[,] m1, double[,] m2)
+        public static double[,] MMult(double[,] m1, double[,] m2)
         {
-            if (m1.GetLength(0) == m2.GetLength(0) && m1.GetLength(1) == m2.GetLength(1))
+            double[][] m1_rows = SplitOnRows(m1);
+            double[][] m2_rows = SplitOnRows(Matrix.Transpose(m2));
+            double[,] resultMatrix = new double[m2_rows.GetLength(0), m1.GetLength(1)];
+            for(int row=0;row<m1.GetLength(0);row++)
             {
-                double[] result = new double[m1.GetLength(0)];
-                for (int i = 0; i < m1.GetLength(0); i++)
+                for (int col = 0; col < m1.GetLength(0); col++)
                 {
-                    for(int j = 0; j < m1.GetLength(1); j++)
-                    {
-                        result[j] += m1[i, j] * m2[j, i];
-                    }                    
+                    resultMatrix[row,col] = LinearCombination(m1_rows[row], m2_rows[col]);
                 }
-                return result;
             }
-            else
-            {
-                throw new IndexOutOfRangeException();
-            }
+            return resultMatrix;
         }
+
+        private static double[][] SplitOnRows(double[,] input)
+        {
+            return Enumerable.Range(0, input.GetLength(0))
+            .Select(x => Enumerable.Range(0, input.GetLength(1))
+            .Select(y => input[x, y]).ToArray()).ToArray();
+        }
+
+        private static double LinearCombination(double[] row, double[] col)
+        {
+            double returnVal = 0;
+            for(int i = 0; i < row.Length; i++)
+            {
+                returnVal += row[i] * col[i];
+            }
+            return returnVal;
+        }   
+
         public static double Accord_MMult(double[] m1, double[] m2)
+        {
+            DiagnosticsMenu.StartStopwatch();
+            var retVal = Matrix.Dot(m1, m2);
+            DiagnosticsMenu.StopStopwatch();
+            return retVal;
+        }
+        public static double[,] Accord_MMult(double[,] m1, double[,] m2)
         {
             DiagnosticsMenu.StartStopwatch();
             var retVal = Matrix.Dot(m1, m2);
@@ -78,8 +98,8 @@ namespace HelloWorld
         //    int n;
         //    int iErr;
         //    double dT;
-
         //}
+
         //private static double[,] Hessenberg(long n, double[,] matrix)
         //{
         //    long i, j;

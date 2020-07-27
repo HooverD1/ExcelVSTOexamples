@@ -181,36 +181,67 @@ namespace HelloWorld
 
         public void btnTestMMult_Click(IRibbonControl e)
         {
-            double[] m1 = { 1.1, 2.3, 4.0, 3.5, 1.8 };
-            double[] m2 = { 1.1, 2.3, 4.0, 3.5, 1.8 };
+
+            Random rando = new Random();
+            double[,] m1 = new double[5, 5];
+            double[,] m2 = new double[5, 5];
+
             List<long> ticks1 = new List<long>();
             List<long> ticks2 = new List<long>();
             List<long> ticks3 = new List<long>();
-            int equalTo = 16;
-            for (int i = 0; i < 100; i++)
+
+            for (int i = 0; i < 10; i++)       //measure timing
             {
+                for (int i2 = 0; i2 < m2.GetLength(0); i2++)
+                {
+                    for (int j = 0; j < m2.GetLength(1); j++)
+                    {
+                        m1[i2, j] = rando.NextDouble();
+                        m2[i2, j] = rando.NextDouble();
+                    }
+                }
                 DiagnosticsMenu.StartStopwatch();
-                double result1 = MatrixOps.MMult(m1, m2);
+                double[,] result1 = MatrixOps.MMult(m1, m2);
                 DiagnosticsMenu.StopStopwatch(TimeUnit.ticks);
                 ticks1.Add(DiagnosticsMenu.stopwatch.ElapsedTicks);
                 DiagnosticsMenu.StartStopwatch();
-                double result2 = MatrixOps.Accord_MMult(m1, m2);
+                double[,] result2 = MatrixOps.Accord_MMult(m1, m2);
                 DiagnosticsMenu.StopStopwatch(TimeUnit.ticks);
                 ticks2.Add(DiagnosticsMenu.stopwatch.ElapsedTicks);
                 DiagnosticsMenu.StartStopwatch();
                 dynamic result3 = ThisAddIn.MyApp.WorksheetFunction.MMult(m1, ThisAddIn.MyApp.WorksheetFunction.Transpose(m2));
                 DiagnosticsMenu.StopStopwatch(TimeUnit.ticks);
                 ticks3.Add(DiagnosticsMenu.stopwatch.ElapsedTicks);
-                int places = TestEquality(result1, result2);
-                if (places < equalTo)
-                    equalTo = places;
-                result1 = 0;
-                result2 = 0;
-                result3 = 0;
+                //int places = TestEquality(result1, result2);
+                //if (places < equalTo)
+                //    equalTo = places;
+                result1 = null;
+                result2 = null;
+                result3 = null;
             }
             MessageBox.Show($"{ticks1.Average().ToString()} Manual");
             MessageBox.Show($"{ticks2.Average().ToString()} Accord");
             MessageBox.Show($"{ticks3.Average().ToString()} VBA");
+
+            double[,] vba_out = Utilities.ConvertObjectArrayToDouble(ThisAddIn.MyApp.WorksheetFunction.MMult(m1, m2));
+            double[,] man_out = MatrixOps.MMult(m1, m2);
+            double[,] acc_out = MatrixOps.Accord_MMult(m1, m2);
+
+            ThisAddIn.MyApp.ActiveSheet.Range("A1").Value = "Manual";
+            ThisAddIn.MyApp.ActiveSheet.Range("A2:E6").Value = man_out;
+            ThisAddIn.MyApp.ActiveSheet.Range("A7").Value = "Accord";
+            ThisAddIn.MyApp.ActiveSheet.Range("A8:E12").Value = acc_out;
+            ThisAddIn.MyApp.ActiveSheet.Range("A13").Value = "VBA Function";
+            ThisAddIn.MyApp.ActiveSheet.Range("A14:E18").Value = vba_out;
+
+            ThisAddIn.MyApp.ActiveSheet.Range("G1").Value = "M1";
+            ThisAddIn.MyApp.ActiveSheet.Range("G2:K6").Value = m1;
+            ThisAddIn.MyApp.ActiveSheet.Range("G7").Value = "M2";
+            ThisAddIn.MyApp.ActiveSheet.Range("G8:K12").Value = m2;
+
+            MessageBox.Show($"MAN v ACC Precision: {TestEquality(man_out, acc_out)}");
+            MessageBox.Show($"MAN v VBA Precision: {TestEquality(man_out, vba_out)}");
+            MessageBox.Show($"ACC v VBA Precision: {TestEquality(acc_out, vba_out)}");
         }
 
         public void btnTestInverse_Click(IRibbonControl e)
@@ -328,7 +359,7 @@ namespace HelloWorld
             }
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
-            int equalTo = 16;
+            
             for (int i = 0; i < 10; i++)
             {
                 DiagnosticsMenu.StartStopwatch();
@@ -352,6 +383,41 @@ namespace HelloWorld
                 new_a = Math.Round(a, precision);
                 new_b = Math.Round(b, precision);
             } while (new_a != new_b);
+            return precision;
+        }
+        private int TestEquality(double[] a, double[] b)
+        {
+            int lowest_precision = 1000;
+            double new_a;
+            double new_b;
+            for(int i=0;i<a.Length;i++)
+            {
+                int precision = 16;
+                do
+                {
+                    if (precision <= 0) { break; }
+                    else { precision--; }
+                    new_a = Math.Round(a[i], precision);
+                    new_b = Math.Round(b[i], precision);
+                } while (new_a != new_b);
+                if (precision < lowest_precision)
+                    lowest_precision = precision;
+            }
+            return lowest_precision;
+        }
+        private int TestEquality(double[,] a, double[,] b)
+        {
+            int precision = 15;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    if(Math.Round(a[i,j],precision) != Math.Round(b[i,j], precision))
+                    {
+                        return 0;   //this needs refactored to get accuracy
+                    }
+                }
+            }
             return precision;
         }
 
