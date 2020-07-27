@@ -275,7 +275,7 @@ namespace HelloWorld
         public void btnTestDeterminant_Click(IRibbonControl e)
         {
             Random rando = new Random();
-            double[,] TwoArray = new double[100, 100];
+            double[,] TwoArray = new double[5, 5];
             for (int i = 0; i < TwoArray.GetLength(0); i++)
             {
                 for (int j = 0; j < TwoArray.GetLength(1); j++)
@@ -287,6 +287,7 @@ namespace HelloWorld
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
 
+            int equalTo = 16;
             for (int i = 0; i < 100; i++)
             {
                 DiagnosticsMenu.StartStopwatch();
@@ -295,11 +296,18 @@ namespace HelloWorld
                 DiagnosticsMenu.StartStopwatch();
                 double result2 = ThisAddIn.MyApp.WorksheetFunction.MDeterm(TwoArray);
                 ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.ticks));
+                int places = TestEquality(result1, result2);
+                if (places < equalTo)
+                {
+                    equalTo = places;
+                    //MessageBox.Show($"Result1: {result1}, Result2: {result2}");
+                }
                 result1 = 0;
                 result2 = 0;
             }
             MessageBox.Show($"{ticks1.Average().ToString()} Accord");
             MessageBox.Show($"{ticks2.Average().ToString()} VBA");
+            MessageBox.Show($"Equal to {equalTo} decimal places.");
         }
 
         public void btnTestEigenvalues_Click(IRibbonControl e)
@@ -313,7 +321,6 @@ namespace HelloWorld
                     TwoArray[i, j] = rando.NextDouble();
                 }
             }
-
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
 
@@ -323,13 +330,24 @@ namespace HelloWorld
                 double[] result1 = MatrixOps.RealEigenvalues_Accord(TwoArray);
                 ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
                 DiagnosticsMenu.StartStopwatch();
-                //double[] result2 = ThisAddIn.MyApp.WorksheetFunction.MDeterm(TwoArray);
-                //ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.ticks));
                 result1 = null;
-                //result2 = 0;
             }
             MessageBox.Show($"{ticks1.Average().ToString()} Accord");
-            //MessageBox.Show($"{ticks2.Average().ToString()} Manual");
+        }
+
+        private int TestEquality(double a, double b)
+        {
+            int precision = 16;
+            double new_a;
+            double new_b;
+            do
+            {
+                if (precision <= 0) { break; }
+                else { precision--; }
+                new_a = Math.Round(a, precision);
+                new_b = Math.Round(b, precision);
+            } while (new_a != new_b);
+            return precision;
         }
 
         public void btnSerializeFile_Click(IRibbonControl e)
