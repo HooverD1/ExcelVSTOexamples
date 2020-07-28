@@ -190,7 +190,7 @@ namespace HelloWorld
             List<long> ticks2 = new List<long>();
             List<long> ticks3 = new List<long>();
 
-            for (int i = 0; i < 10; i++)       //measure timing
+            for (int i = 0; i < 100; i++)       //measure timing
             {
                 for (int i2 = 0; i2 < m2.GetLength(0); i2++)
                 {
@@ -323,20 +323,22 @@ namespace HelloWorld
         {
             Random rando = new Random();
             double[,] TwoArray = new double[5, 5];
-            for (int i = 0; i < TwoArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < TwoArray.GetLength(1); j++)
-                {
-                    TwoArray[i, j] = rando.NextDouble();
-                }
-            }
+
 
             List<double> ticks1 = new List<double>();
             List<double> ticks2 = new List<double>();
 
             int equalTo = 16;
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
+                for (int i2 = 0; i2 < TwoArray.GetLength(0); i2++)
+                {
+                    for (int j = 0; j < TwoArray.GetLength(1); j++)
+                    {
+                        TwoArray[i2, j] = rando.NextDouble();
+                    }
+                }
+
                 DiagnosticsMenu.StartStopwatch();
                 double result1 = MatrixOps.Determinant(TwoArray);
                 ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.ticks));

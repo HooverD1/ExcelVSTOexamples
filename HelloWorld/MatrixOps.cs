@@ -28,33 +28,23 @@ namespace HelloWorld
         }
         public static double[,] MMult(double[,] m1, double[,] m2)
         {
-            double[][] m1_rows = SplitOnRows(m1);
-            double[][] m2_rows = SplitOnRows(Matrix.Transpose(m2));
-            double[,] resultMatrix = new double[m2_rows.GetLength(0), m1.GetLength(1)];
+            m2 = Matrix.Transpose(m2);
+            double[,] resultMatrix = new double[m2.GetLength(0), m1.GetLength(1)];
             for(int row=0;row<m1.GetLength(0);row++)
             {
                 for (int col = 0; col < m1.GetLength(0); col++)
                 {
-                    resultMatrix[row,col] = LinearCombination(m1_rows[row], m2_rows[col]);
+                    resultMatrix[row,col] = LinearCombination(m1.GetRow(row), m2.GetRow(col));
                 }
             }
             return resultMatrix;
-        }
-
-        private static double[][] SplitOnRows(double[,] input)
-        {
-            return Enumerable.Range(0, input.GetLength(0))
-            .Select(x => Enumerable.Range(0, input.GetLength(1))
-            .Select(y => input[x, y]).ToArray()).ToArray();
         }
 
         private static double LinearCombination(double[] row, double[] col)
         {
             double returnVal = 0;
             for(int i = 0; i < row.Length; i++)
-            {
                 returnVal += row[i] * col[i];
-            }
             return returnVal;
         }   
 
