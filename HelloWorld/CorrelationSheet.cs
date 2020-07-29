@@ -48,7 +48,8 @@ namespace HelloWorld
             for (int row = 0; row < columns; row++)
             {
                 Excel.Range header = MatrixTopLeft.Offset[-1, row];
-                //header.Style.Orientation = Excel.XlOrientation.xlUpward;
+                if(row>0)
+                    header.Orientation = Excel.XlOrientation.xlUpward;
                 header.Value = CorrelationMatrix.Correlations[0, row].input2.Name;
                 MatrixTopLeft.Offset[row, row].Value = CorrelationMatrix.Correlations[row, 0].input1.Name;
             }
