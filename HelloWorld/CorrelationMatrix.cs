@@ -16,8 +16,8 @@ namespace HelloWorld
     {
         public Correlation[,] Correlations { get; set; }
         public Estimate Parent {get;set;}
-        private double[] eigenvalues { get; set; }
-        private double[] new_eigenvalues { get; set; }
+        public double[] eigenvalues { get; set; }
+        //private double[] new_eigenvalues { get; set; }
 
         public CorrelationMatrix(Estimate Parent)
         {
@@ -29,7 +29,6 @@ namespace HelloWorld
             if (eigenvalues.Min() < 0)
             {
                 AdjustToPositiveSemiDefinite();
-                new_eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
             }
         }
         public double[,] GetCoefficientsMatrix()
@@ -108,25 +107,8 @@ namespace HelloWorld
             DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, true, "Min/Max calculations");
             return CorrelationMatrix;
         }
-        public void PrintCorrelationMatrix()
-        {
-            ThisAddIn.MyApp.ScreenUpdating = false;
-            Excel.Range printCell = Parent.CorrelParent.ThisSheet.Range["E1"];  //estimate.sheet_obj.worksheet.range
-            for(int i=0;i<Correlations.GetLength(0); i++)
-            {
-                printCell.Offset[i, -4].Value = Parent.Inputs[i].Name;
-                printCell.Offset[i, -3].Value = eigenvalues[i];
-                if(new_eigenvalues != null)
-                    printCell.Offset[i, -2].Value = new_eigenvalues[i];
-                for (int j=0;j<Correlations.GetLength(1); j++)
-                {
-                    printCell.Offset[i, j].Value = Correlations[i, j].Coefficient;
-                }
-            }
-            FormatMatrix(printCell);
-            ThisAddIn.MyApp.ScreenUpdating = true;
-        }
-        private void FormatMatrix(Excel.Range printCell)
+        
+        public void FormatMatrix(Excel.Range printCell)
         {
             Excel.Workbook templateBook = ThisAddIn.Model.GetTemplateBook();
             Excel.Range template = templateBook.Worksheets["Correl_Template"].range["C3"];

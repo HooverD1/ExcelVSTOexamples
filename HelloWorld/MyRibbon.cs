@@ -174,9 +174,9 @@ namespace HelloWorld
             EstimateSheet estimateSheet = ThisAddIn.Model.EstimateSheets[0];
             CorrelationSheet correlSheet = ThisAddIn.Model.correlationSheet;
             correlSheet.ClearSheet();
-            var estimate = new Estimate(estimateSheet, correlSheet, 50);     //example estimate with 50 inputs
-            correlSheet.Correlates = estimate;
-            correlSheet.Correlates.CorrelMatrix.PrintCorrelationMatrix();
+            var estimate = new Estimate(estimateSheet, correlSheet, 10);
+            correlSheet.CorrelationMatrix = estimate.CorrelMatrix;
+            correlSheet.PrintCorrelationMatrix();
         }
 
         public void btnTestMMult_Click(IRibbonControl e)

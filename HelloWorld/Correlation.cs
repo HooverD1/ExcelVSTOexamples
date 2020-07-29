@@ -12,8 +12,8 @@ namespace HelloWorld
     public class Correlation
     {
         public int ID { get; set; }
-        private EstimateInput input1 { get; set; }
-        private EstimateInput input2 { get; set; }
+        public EstimateInput input1 { get; set; }
+        public EstimateInput input2 { get; set; }
         public double Coefficient { get; set; }
         public double CoefMin { get; set; }
         public double CoefMax { get; set; }
