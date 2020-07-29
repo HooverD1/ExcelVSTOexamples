@@ -179,6 +179,11 @@ namespace HelloWorld
             MessageBox.Show($"Transitivity test: {correlSheet.CheckTransitivity()}");
             correlSheet.PrintCorrelationMatrix();
         }
+        public void btnTestTransitivity_Click(IRibbonControl e)
+        {
+            ThisAddIn.Model.correlationSheet.CorrelationMatrix.Correlations[0,1].Coefficient = 1;
+            ThisAddIn.Model.correlationSheet.CheckTransitivity();
+        }
 
         public void btnTestMMult_Click(IRibbonControl e)
         {

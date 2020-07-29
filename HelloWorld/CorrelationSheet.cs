@@ -91,10 +91,6 @@ namespace HelloWorld
                     MessageBox.Show($"{correl.input1.Name} and {correl.input2.Name} fail min; {correl.Coefficient}");
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
             }
             return true;
         }
