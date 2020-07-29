@@ -15,9 +15,10 @@ namespace HelloWorld
         public ISampleableDistribution<double> Distribution { get; set; }
         const long datapoints = 5000;
 
-        public EstimateInput(string Name, ISampleableDistribution<double> Distribution)
+        public EstimateInput(string Name, int id, ISampleableDistribution<double> Distribution)
         {
             this.Name = Name;
+            this.InputID = id;
             this.Distribution = Distribution;
             this.Data = GenerateData();
         }

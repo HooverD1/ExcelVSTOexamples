@@ -23,9 +23,9 @@ namespace HelloWorld
         {
             this.Parent = Parent;
             Correlations = GetCorrelationMatrix();
-            DiagnosticsMenu.StartStopwatch();
+            foreach (Correlation correl in Correlations)
+                correl.CalculateTransitivity();
             eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
-            DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, true, "eigens");
             if (eigenvalues.Min() < 0)
             {
                 AdjustToPositiveSemiDefinite();
@@ -89,22 +89,15 @@ namespace HelloWorld
                 }
             }
             double[,] correlCoefs;
-            DiagnosticsMenu.StartStopwatch();
-            /*  OPTIONS   */
-            //correlCoefs = Measures.Correlation(correlData, means, stdevs);      //uses known mean and stdev
             correlCoefs = Measures.Correlation(correlData);                   //computes mean and stdev
-            //correlCoefs = BuildCoefs(correlData);                             //uses mean=0 and stdev=1
-            DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, true, "correlation matrix generation");
-            DiagnosticsMenu.StartStopwatch();
             Correlation[,] CorrelationMatrix = new Correlation[correlCoefs.GetLength(0),correlCoefs.GetLength(1)];
             for (int i = 0; i < inputs.Count; i++)
             {
                 for (int j = 0; j < inputs.Count; j++)      //use i+1?
                 {
-                    CorrelationMatrix[i, j] = new Correlation(inputs[i], inputs[j], correlCoefs[i, j]);
+                    CorrelationMatrix[i, j] = new Correlation(this, inputs[i], inputs[j], correlCoefs[i, j]);
                 }
             }
-            DiagnosticsMenu.StopStopwatch(TimeUnit.seconds, true, "Min/Max calculations");
             return CorrelationMatrix;
         }
         

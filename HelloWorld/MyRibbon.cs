@@ -176,6 +176,7 @@ namespace HelloWorld
             correlSheet.ClearSheet();
             var estimate = new Estimate(estimateSheet, correlSheet, 10);
             correlSheet.CorrelationMatrix = estimate.CorrelMatrix;
+            MessageBox.Show($"Transitivity test: {correlSheet.CheckTransitivity()}");
             correlSheet.PrintCorrelationMatrix();
         }
 
