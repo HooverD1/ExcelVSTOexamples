@@ -15,10 +15,7 @@ namespace HelloWorld
         }
         public List<WBS> WBSs { get; set; }
 
-        public override void Format()
-        {
-            
-        }
+        public override void Format() { }
         public override void ReadFromSheet() { }
         public override void WriteToSheet() { }
     }

@@ -236,8 +236,6 @@
     <Compile Include="FileSheet.cs" />
     <Compile Include="FileSheetSettings.cs" />
     <Compile Include="Formatter.cs" />
-    <Compile Include="InflationCalculator.cs" />
-    <Compile Include="InflationTable.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="MatrixOps.cs" />
     <Compile Include="MenuBuilder.cs" />
@@ -291,7 +289,6 @@
     <None Include="format_test.xlsx" />
     <None Include="HelloWorld_1_TemporaryKey.pfx" />
     <None Include="HelloWorld_TemporaryKey.pfx" />
-    <None Include="InflationTables.xlsx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -323,6 +320,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bitmap.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DNA_Test\DNA_Test.csproj">
+      <Project>{7714d24f-48e6-44b7-bb93-45da2dcd5589}</Project>
+      <Name>DNA_Test</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

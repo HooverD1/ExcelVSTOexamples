@@ -9,6 +9,5 @@ namespace HelloWorld
     public class WBS
     {
         public List<Estimate> Estimates { get; set; }
-
     }
 }

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 
+
 namespace HelloWorld
 {
     [ComVisible(true)]
@@ -18,10 +19,10 @@ namespace HelloWorld
         {
             MessageBox.Show("Run converted code to follow the link.");
         }
-        public double INFL2(int year1, int year2, int mode, int category, int agency)
-        {
-            return InflationCalculator.Calculate(year1, year2, mode, category, agency);
-        }
+        //public double INFL2(int year1, int year2, int mode, int category, int agency)     //outdated
+        //{
+        //    return DNA_Test.InflationCalculator.Calculate(year1, year2, mode, category, agency);
+        //}
         public double[] Beta2M(double mean, double stdev, double min, double max)
         {
             var beta = new BetaDistribution();
