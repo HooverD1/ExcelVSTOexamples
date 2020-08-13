@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using ExcelDna.Integration;
 
-namespace DNA_Test
+namespace Primer
 {
     public static class UDFs
     {

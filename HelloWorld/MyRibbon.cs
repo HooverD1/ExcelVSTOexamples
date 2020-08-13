@@ -118,7 +118,7 @@ namespace HelloWorld
         public void btnCopySheet_Click(IRibbonControl e)
         {
             //open template sheet
-            Excel.Workbook book = Hello_Utilities.OpenWorkbook(@"C:\Users\grins\Documents\Custom Office Templates\TestTemplate.xlsx");
+            Excel.Workbook book = Utilities.ObjectModel.OpenWorkbook(@"C:\Users\grins\Documents\Custom Office Templates\TestTemplate.xlsx", ThisAddIn.MyApp, false);
             Excel.Worksheet sheet = book.Worksheets["ABC"];
             Excel.Worksheet copyTo = book.Worksheets["DEF"];
             Excel.Worksheet copyTwo = ThisAddIn.MyApp.Worksheets["Sheet1"];
@@ -229,7 +229,7 @@ namespace HelloWorld
             MessageBox.Show($"{ticks2.Average().ToString()} Accord");
             MessageBox.Show($"{ticks3.Average().ToString()} VBA");
 
-            double[,] vba_out = Hello_Utilities.ConvertObjectArrayToDouble(ThisAddIn.MyApp.WorksheetFunction.MMult(m1, m2));
+            double[,] vba_out = Utilities.Conversions.ConvertObjectArrayToDouble(ThisAddIn.MyApp.WorksheetFunction.MMult(m1, m2));
             double[,] man_out = MatrixOps.MMult(m1, m2);
             double[,] acc_out = MatrixOps.Accord_MMult(m1, m2);
 
@@ -274,7 +274,7 @@ namespace HelloWorld
                 result1 = MatrixOps.MatrixInverse(TwoArray);
                 ticks1.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
                 DiagnosticsMenu.StartStopwatch();
-                result2 = Hello_Utilities.ConvertObjectArrayToDouble(ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray));
+                result2 = Utilities.Conversions.ConvertObjectArrayToDouble(ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray));
                 //result2 = ThisAddIn.MyApp.WorksheetFunction.MInverse(TwoArray);
                 ticks2.Add(DiagnosticsMenu.StopStopwatch(TimeUnit.milliseconds));
             }

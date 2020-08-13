@@ -9,7 +9,7 @@ using System.Data;
 using System.Runtime.Serialization;
 using ExcelDna.Integration;
 
-namespace DNA_Test
+namespace Primer
 {
     [Serializable]
     public class InflationTable

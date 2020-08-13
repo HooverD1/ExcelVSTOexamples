@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace DNA_Test
+namespace Primer
 {
     public enum InflationMode
     {
