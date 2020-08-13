@@ -70,7 +70,7 @@ namespace Primer
             }
             catch(Exception e)
             {
-                XlCall.Excel(XlCall.xlcAlert, "Inflation Table not found!");
+                inflBook.Close();
                 return;
             }            
             object[,] table = (object[,])sheet.UsedRange.Value2;
@@ -96,7 +96,12 @@ namespace Primer
             var returnValue = from Entry e in this.entries
                               where e.Category == category && e.Year == year && e.ValueType == InflValue.Raw
                               select e;
-            return returnValue.First().Value;
+            if(returnValue.Any())
+                return returnValue.First().Value;
+            else
+            {
+                throw new FileNotFoundException();
+            }
         }
         public double GetWeightedValue(int category, int year)
         {

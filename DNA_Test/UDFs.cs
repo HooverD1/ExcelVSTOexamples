@@ -15,7 +15,7 @@ namespace Primer
         //All public static functions will be registered as UDFs
 
         [ExcelFunction(Description = "Inflation calculation function", Category = "ROSE Primer")]
-        public static double INFL(int fromYear, int toYear, int mode, int category, int agency=4)
+        public static dynamic INFL(int fromYear, int toYear, int mode, int category, int agency=4)
         {
             if(inflCalc == null)
             {
@@ -27,8 +27,15 @@ namespace Primer
                 inflTable.SetAgency(4);
                 inflTable.UpdateTable();
             }
-            var returnVal = inflCalc.Calculate(fromYear, toYear, mode, category, agency);
-            return returnVal;
+            try
+            {
+                return inflCalc.Calculate(fromYear, toYear, mode, category, agency);
+            }
+            catch(Exception e)
+            {
+                return ExcelError.ExcelErrorValue;
+            }
+            
         }
     }
 }
