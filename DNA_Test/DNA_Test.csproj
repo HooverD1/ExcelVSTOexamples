@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="Keybinds.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="UDFs.cs" />
     <Compile Include="InflationTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

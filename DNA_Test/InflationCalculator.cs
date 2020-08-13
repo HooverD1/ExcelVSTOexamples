@@ -15,34 +15,27 @@ namespace Primer
         TY_to_TY
     }
 
-    public static class InflationCalculator
+    public class InflationCalculator
     {
-        private static Dictionary<int, InflationTable> InflationTables { get; set; }    //<agencyNumber, agency's table>
-        static InflationCalculator()
+        private Dictionary<int, InflationTable> InflationTables { get; set; }    //<agencyNumber, agency's table>
+        public InflationCalculator()
         {
             InflationTables = new Dictionary<int, InflationTable>();                    //initialize property
         }
-        private static void GetTable(int agencyNumber, int thisCategory)
+        private void GetTable(int agencyNumber, int thisCategory)
         {
             if (!InflationTables.ContainsKey(agencyNumber))                                          //if the table is not yet in the dictionary, retrieve it
             {
                 InflationTable newTable = new InflationTable();
                 InflationTables.Add(agencyNumber, newTable);
-                newTable.SetAgency(agencyNumber);
-                if(!File.Exists($@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml"))    //if xml file does not exist, use updateTable
-                    InflationTables[agencyNumber].UpdateTable();
-                else
-                {
-                    InflationTables[agencyNumber] = newTable.DeserializeTable(); //if xml file does exist, use it instead
-                }
+                if (!newTable.SetAgency(agencyNumber))      //If this fails, kill GetTable()
+                    return;
+                InflationTables[agencyNumber].UpdateTable();
             }
             
         }
-        public static void SerializeTables()
-        {
-            InflationTables[4].SerializeTable();
-        }
-        public static void Calculate(int year1, int year2, InflationMode mode, int category, int agency)
+
+        public void Calculate(int year1, int year2, InflationMode mode, int category, int agency)
         {
             
             int modeInteger;
@@ -65,7 +58,7 @@ namespace Primer
             }
             Calculate(year1, year2, modeInteger, category, agency);
         }   //Allow enums for inputs
-        public static double Calculate(int year1, int year2, int mode, int category, int agency)
+        public double Calculate(int year1, int year2, int mode, int category, int agency)
         {
             GetTable(agency, category);       //loads the table if it hasn't been loaded yet
             switch (mode)
@@ -82,25 +75,29 @@ namespace Primer
                     throw new KeyNotFoundException();
             }            
         }
-        private static double Calculate_BY_to_BY(int year1, int year2, int category, int agency)
+        private double Calculate_BY_to_BY(int year1, int year2, int category, int agency)
         {
-            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return returnVal;
+            double raw1 = InflationTables[agency].GetRawValue(category, year1);
+            double raw2 = InflationTables[agency].GetRawValue(category, year2);
+            return raw2 / raw1;
         }
-        private static double Calculate_BY_to_TY(int year1, int year2, int category, int agency)
+        private double Calculate_BY_to_TY(int year1, int year2, int category, int agency)
         {
-            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return returnVal;
+            double raw1 = InflationTables[agency].GetRawValue(category, year1);
+            double weighted2 = InflationTables[agency].GetWeightedValue(category, year2);
+            return weighted2 / raw1;
         }
-        private static double Calculate_TY_to_BY(int year1, int year2, int category, int agency)
+        private double Calculate_TY_to_BY(int year1, int year2, int category, int agency)
         {
-            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return returnVal;
+            double weighted1 = InflationTables[agency].GetWeightedValue(category, year1);
+            double raw2 = InflationTables[agency].GetRawValue(category, year2);     
+            return raw2 / weighted1;
         }
-        private static double Calculate_TY_to_TY(int year1, int year2, int category, int agency)
+        private double Calculate_TY_to_TY(int year1, int year2, int category, int agency)
         {
-            double returnVal = InflationTables[agency].GetRawValue(category, year1);      //need to complete these calculations
-            return returnVal;
+            double weighted1 = InflationTables[agency].GetWeightedValue(category, year1);      
+            double weighted2 = InflationTables[agency].GetWeightedValue(category, year2);      
+            return weighted2 / weighted1;
         }
     }
 }

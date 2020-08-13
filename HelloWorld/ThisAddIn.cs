@@ -10,6 +10,7 @@ using Microsoft.Office.Core;
 using System.Reflection;
 using System.Windows.Forms;
 
+
 namespace HelloWorld
 {
     public partial class ThisAddIn
@@ -22,9 +23,7 @@ namespace HelloWorld
         {            
             DiagnosticsMenu.PrimeDiagnostics();     //initializes any diagnostic objects early so that they don't affect the results
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
-            TempAppList = new List<Excel.Application>();
-            Primer.Keybinds.LoadKeybinds(MyApp);
-            //HelperVBA = MyApp.AddIns["Experimental"];
+            TempAppList = new List<Excel.Application>();            
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
