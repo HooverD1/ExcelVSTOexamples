@@ -15,11 +15,11 @@ namespace HelloWorld
         
         public void SerializeSettings()
         {
-            Serializer.SerializeObject<FileSheetSettings>(this, $@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\FileSheetSettings_xml.xml");
+            Utilities.Serializer.SerializeObject<FileSheetSettings>(this, $@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\FileSheetSettings_xml.xml");
         }
         public static FileSheetSettings DeserializeSettings()
         {
-            return Serializer.ReadXML<FileSheetSettings>($@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\FileSheetSettings_xml.xml");
+            return Utilities.Serializer.ReadXML<FileSheetSettings>($@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\FileSheetSettings_xml.xml");
         }
     }
 }

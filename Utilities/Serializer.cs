@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace DNA_Test
+namespace Utilities
 {
     public static class Serializer
     {

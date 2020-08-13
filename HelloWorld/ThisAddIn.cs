@@ -24,7 +24,7 @@ namespace HelloWorld
             MyApp = Globals.ThisAddIn.Application;      //Grab Excel at startup.
 
             TempAppList = new List<Excel.Application>();
-            Utilities.LoadKeybinds();
+            Hello_Utilities.LoadKeybinds();
             //this.test();
             HelperVBA = MyApp.AddIns["Experimental"];
             //TestMe();
@@ -52,7 +52,7 @@ namespace HelloWorld
         public void TestMe()
         {
             var path = HelperVBA.Path;
-            var bookin = Utilities.OpenWorkbook(path, true);
+            var bookin = Hello_Utilities.OpenWorkbook(path, true);
             
             //Excel._Workbook aa = Globals.Factory.GetVstoObject(HelperVBA);
             

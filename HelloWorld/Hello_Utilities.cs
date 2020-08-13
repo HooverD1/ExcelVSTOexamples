@@ -11,7 +11,7 @@ using Accord.Math.Decompositions;
 
 namespace HelloWorld
 {
-    public static class Utilities
+    public static class Hello_Utilities
     {
         //============= KEYBINDS =============
         public static void LoadKeybinds()
@@ -24,7 +24,7 @@ namespace HelloWorld
         {            
             Worksheet localSheet = ObjModel.GetActiveSheet();
             //Excel.Workbook formatBook = ThisAddIn.MyApp.Workbooks.Open(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
-            Excel.Workbook formatBook = Utilities.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
+            Excel.Workbook formatBook = Hello_Utilities.OpenWorkbook(@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\format_test.xlsx");
             Excel.Worksheet formatSheet = formatBook.Worksheets["Sheet1"];
             Excel.Range formatRange = formatSheet.Range["A1:C2"];
             //range.Copy;
@@ -61,7 +61,7 @@ namespace HelloWorld
                 
             else if (RunInNewApp == true)
             {
-                Excel.Application tempApp = Utilities.CreateTempApplication();
+                Excel.Application tempApp = Hello_Utilities.CreateTempApplication();
                 return tempApp.Workbooks.Open(path);
 
             }

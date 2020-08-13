@@ -72,7 +72,7 @@ namespace HelloWorld
         {
             string path = fileSheet.Settings.TemplatePath;
             if (TemplateBook == null)
-                return Utilities.OpenWorkbook(path, false, false);
+                return Hello_Utilities.OpenWorkbook(path, false, false);
             else
                 return TemplateBook;
         }

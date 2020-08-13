@@ -94,11 +94,11 @@ namespace DNA_Test
 
         public void SerializeTable()
         {
-            Serializer.SerializeObject<InflationTable>(this, $@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml");
+            Utilities.Serializer.SerializeObject<InflationTable>(this, $@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml");
         }
         public InflationTable DeserializeTable()
         {
-            return Serializer.ReadXML<InflationTable>($@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml");
+            return Utilities.Serializer.ReadXML<InflationTable>($@"C:\Users\grins\source\repos\HelloWorld\HelloWorld\Agency{agencyNumber}_xml.xml");
         }
     }
 }

@@ -253,7 +253,6 @@
     <Compile Include="RefEdit.cs" />
     <Compile Include="COM_Visibles.cs" />
     <Compile Include="RightClick.cs" />
-    <Compile Include="Serializer.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="TemplateAddIn.cs" />
     <Compile Include="TestForm.cs">
@@ -263,7 +262,7 @@
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TotalSheet.cs" />
-    <Compile Include="Utilities.cs" />
+    <Compile Include="Hello_Utilities.cs" />
     <Compile Include="WBS.cs" />
     <Compile Include="WBSsheet.cs" />
     <EmbeddedResource Include="ExcelReference.resx">
@@ -325,6 +324,10 @@
     <ProjectReference Include="..\DNA_Test\DNA_Test.csproj">
       <Project>{7714d24f-48e6-44b7-bb93-45da2dcd5589}</Project>
       <Name>DNA_Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{36ce02bb-a1ce-4475-8489-b4bd39498ae3}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
