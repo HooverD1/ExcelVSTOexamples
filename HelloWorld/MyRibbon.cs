@@ -442,6 +442,16 @@ namespace HelloWorld
             ThisAddIn.Model.fileSheet.Settings.SerializeSettings();     //export Settings object to xml
         }
 
+        public void btnAddLink_Click(IRibbonControl e)
+        {
+            Excel.Range linkCell = ThisAddIn.MyApp.ActiveCell;
+            linkCell.Interior.Color = Color.Beige;
+            linkCell.Value = "=D5";
+            linkCell.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            linkCell.Font.Underline = Excel.XlUnderlineStyle.xlUnderlineStyleSingle;
+            linkCell.NumberFormat = "0.00";
+        }
+
         public Bitmap GetImage(IRibbonControl control)
         {
             switch(control.Id)

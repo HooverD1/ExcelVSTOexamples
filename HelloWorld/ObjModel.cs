@@ -18,10 +18,10 @@ namespace HelloWorld
         //private static Worksheet GetActiveSheet() => Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
         public static Worksheet GetActiveSheet() => Globals.Factory.GetVstoObject(ThisAddIn.MyApp.ActiveSheet);
         //private static Excel.Application GetMyApp() => Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application);
-        public static Excel.Range GetSheetRange(Worksheet sheet, string rangeString) => GetSheetRange(sheet, rangeString, Utilities.RefType.A1);
-        public static Excel.Range GetSheetRange(Worksheet sheet, string rangeString, Utilities.RefType refType)
+        public static Excel.Range GetSheetRange(Worksheet sheet, string rangeString) => GetSheetRange(sheet, rangeString, Primer.RefType.A1);
+        public static Excel.Range GetSheetRange(Worksheet sheet, string rangeString, Primer.RefType refType)
         {
-            var parser = new Utilities.RefParser(rangeString, ThisAddIn.MyApp, refType);
+            var parser = new Primer.RefParser(rangeString, ThisAddIn.MyApp, refType);
             int rowNumber = parser.firstRowNumber;
             int columnNumber = parser.firstColumnNumber;
             int rowNumber2 = parser.secondRowNumber;
@@ -43,11 +43,11 @@ namespace HelloWorld
                 cell.Value = newValue;
         }
         
-        public static void SetFormulas(string cellRange, string formula, Utilities.RefType refType = Utilities.RefType.A1)
+        public static void SetFormulas(string cellRange, string formula, Primer.RefType refType = Primer.RefType.A1)
         {
             var sheet = GetActiveSheet();
-            var parser = new Utilities.RefParser(cellRange, ThisAddIn.MyApp, refType);
-            if (refType == Utilities.RefType.R1C1)
+            var parser = new Primer.RefParser(cellRange, ThisAddIn.MyApp, refType);
+            if (refType == Primer.RefType.R1C1)
             {
                 //Need to convert back to A1
                 cellRange = parser.ConvertRangeA1_R1C1(cellRange);
@@ -56,11 +56,11 @@ namespace HelloWorld
             setRange.Formula = formula;
             sheet.Cells[1, 1].Calculate();       //this doesn't seem to do much..
         }
-        public static void SetArrayFormulas(string cellRange, string formula, Utilities.RefType refType = Utilities.RefType.A1)
+        public static void SetArrayFormulas(string cellRange, string formula, Primer.RefType refType = Primer.RefType.A1)
         {
             var sheet = GetActiveSheet();
-            var parser = new Utilities.RefParser(cellRange, ThisAddIn.MyApp, refType);
-            if (refType == Utilities.RefType.R1C1)
+            var parser = new Primer.RefParser(cellRange, ThisAddIn.MyApp, refType);
+            if (refType == Primer.RefType.R1C1)
             {
                 //Need to convert back to A1
                 cellRange = parser.ConvertRangeA1_R1C1(cellRange);

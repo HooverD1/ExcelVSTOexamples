@@ -33,6 +33,7 @@
         </group>
         <group id="Clear" label="Clear">
           <button label="Clear Sheet" id="btnClear" onAction="btnClear_Click" imageMso="Clear" />
+          <button label="Add Link" id="btnAddLink" onAction="btnAddLink_Click" imageMso="Piggy"/>
         </group>
         <group id="Developer" label="Developer">
           <menu id="DeveloperMenu" label="Developer Tools" size="large" imageMso="AccountSettings">

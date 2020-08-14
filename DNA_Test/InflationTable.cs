@@ -68,7 +68,7 @@ namespace Primer
             {
                  sheet = inflBook.Worksheets[agencyNumberToName[agencyNumber]];
             }
-            catch(Exception e)
+            catch
             {
                 inflBook.Close();
                 return;

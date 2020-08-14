@@ -46,7 +46,7 @@ namespace HelloWorld
             Excel.Range newTargetRange = targetCell.Offset[0,1];
             Excel.Range newMergeRange = targetCell;
             Excel.Range newHeaderRange = targetCell;
-            Utilities.RefParser targetParser = new Utilities.RefParser(targetRange.Address, ThisAddIn.MyApp);
+            Primer.RefParser targetParser = new Primer.RefParser(targetRange.Address, ThisAddIn.MyApp);
             int rowNum_start = targetParser.firstRowNumber;
             int colNum_start = targetParser.firstColumnNumber;
             int rowNum_end = targetParser.secondRowNumber;

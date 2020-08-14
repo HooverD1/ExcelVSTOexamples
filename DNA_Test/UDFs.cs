@@ -31,7 +31,7 @@ namespace Primer
             {
                 return inflCalc.Calculate(fromYear, toYear, mode, category, agency);
             }
-            catch(Exception e)
+            catch
             {
                 return ExcelError.ExcelErrorValue;
             }

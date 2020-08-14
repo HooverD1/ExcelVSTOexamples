@@ -9,7 +9,7 @@ using Excel = Microsoft.Office.Interop.Excel;
  *  MOST REFPARSER METHODS NEED REWRITTEN TO BUILD OFF OF THE DECOMP DICTIONARY
  */
 
-namespace Utilities
+namespace Primer
 {
     public enum RefType
     {
@@ -27,6 +27,7 @@ namespace Utilities
         }
         private Dictionary<RefParts, string> refDecomp { get; set; }
         private Excel.Application MyApp { get; set; }
+        public bool malformed { get; set; }
         private string reference { get; set; }
         public string firstColumn { get; set; }
         public int firstColumnNumber { get; set; }
@@ -43,9 +44,15 @@ namespace Utilities
 
         public RefParser(string reference, Excel.Application MyApp, RefType refType = RefType.A1)       //constructor
         {
+            this.malformed = false;
             this.reference = reference;
             this.MyApp = MyApp;
             refDecomp = DeCompReference(reference);       //decompose the reference. Need a different one for R1C1 or a conversion...
+            if (refDecomp == null)
+            {
+                malformed = true;
+                return; //Cancel the whole project is the reference is malformed
+            }
             this.firstCell = GetFirstCell();
             this.secondCell = GetSecondCell();
             
@@ -73,6 +80,11 @@ namespace Utilities
 
         private Dictionary<RefParts, string> DeCompReference(string reference)  //takes a raw reference and breaks it down into components
         {
+            if (!reference.Contains('='))
+            {
+                //Malformed reference handling
+                return null;
+            }
             var refDecomp = new Dictionary<RefParts, string>();
             //remove garbage                    //=Sheet1!B12:D14
             reference = reference.Replace("=", "");
