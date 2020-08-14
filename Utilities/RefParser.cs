@@ -3,11 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Excel = Microsoft.Office.Interop.Excel;
 
-namespace HelloWorld
+/*
+ *  MOST REFPARSER METHODS NEED REWRITTEN TO BUILD OFF OF THE DECOMP DICTIONARY
+ */
+
+namespace Utilities
 {
+    public enum RefType
+    {
+        A1,
+        R1C1
+    }
+
     public class RefParser
     {
+        private enum RefParts
+        {
+            firstCell,
+            secondCell,
+            foreignSheet
+        }
+        private Dictionary<RefParts, string> refDecomp { get; set; }
+        private Excel.Application MyApp { get; set; }
         private string reference { get; set; }
         public string firstColumn { get; set; }
         public int firstColumnNumber { get; set; }
@@ -19,10 +38,17 @@ namespace HelloWorld
         public int secondRowNumber { get; set; }
         public string A1_Range { get; set; }
         public string R1C1_Range { get; set; }
+        public Excel.Range firstCell { get; set; }
+        public Excel.Range secondCell { get; set; }
 
-        public RefParser(string reference, RefType refType = RefType.A1)       //constructor
+        public RefParser(string reference, Excel.Application MyApp, RefType refType = RefType.A1)       //constructor
         {
             this.reference = reference;
+            this.MyApp = MyApp;
+            refDecomp = DeCompReference(reference);       //decompose the reference. Need a different one for R1C1 or a conversion...
+            this.firstCell = GetFirstCell();
+            this.secondCell = GetSecondCell();
+            
             firstColumn = GetFirstColumn();
             firstColumnNumber = TextToNumber(firstColumn);
             secondColumn = GetSecondColumn();
@@ -43,6 +69,111 @@ namespace HelloWorld
             }
             else
                 throw new KeyNotFoundException();
+        }
+
+        private Dictionary<RefParts, string> DeCompReference(string reference)  //takes a raw reference and breaks it down into components
+        {
+            var refDecomp = new Dictionary<RefParts, string>();
+            //remove garbage                    //=Sheet1!B12:D14
+            reference = reference.Replace("=", "");
+            reference = reference.Replace("$", "");
+            if (reference.Contains('!'))        //Sheet1!B12:D14
+            {
+                //contains a foreignSheet
+                string[] split_string = reference.Split('!');
+                if(split_string.Length > 2)
+                {
+                    //Malformed reference handling
+                    return null;
+                }
+                else
+                {
+                    refDecomp.Add(RefParts.foreignSheet, split_string[0]);
+                    reference = split_string[1];
+                }
+            }
+            if (reference.Contains(':'))   //B12:D14
+            {
+                //contains a second cell
+                string[] split_string = reference.Split(':');
+                if(split_string.Length != 2)
+                {
+                    //Malformed reference handling
+                    return null;
+                }
+                else
+                {
+                    refDecomp.Add(RefParts.secondCell, split_string[1]);
+                    reference = split_string[0];
+                }
+            }
+            refDecomp.Add(RefParts.firstCell, reference);   //B12
+
+            return refDecomp;
+        }
+
+        private Excel.Range GetFirstCell()
+        {
+            Excel.Worksheet refSheet;
+            if (refDecomp.ContainsKey(RefParts.foreignSheet))
+                refSheet = MyApp.Worksheets[refDecomp[RefParts.foreignSheet]];
+            else
+                refSheet = MyApp.ActiveSheet;
+
+            if (refDecomp.ContainsKey(RefParts.firstCell))
+            {
+                //use refDecomp first cell to get row and column indexes
+                string firstCellRef = refDecomp[RefParts.firstCell];
+                var col_builder = new StringBuilder();
+                var row_builder = new StringBuilder();
+                foreach(char c in firstCellRef)
+                {
+                    if (Char.IsLetter(c))
+                        col_builder.Append(c);
+                    else if (Char.IsNumber(c))
+                        row_builder.Append(c);
+                }
+                int column = TextToNumber(col_builder.ToString());
+                int row = Convert.ToInt32(row_builder.ToString());
+                return refSheet.Cells[row, column];
+            }
+            else
+            {
+                //this should always be here
+                throw new Exception();
+            }
+            
+        }
+
+        private Excel.Range GetSecondCell()
+        {
+            Excel.Worksheet refSheet;
+            if (refDecomp.ContainsKey(RefParts.foreignSheet))
+                refSheet = MyApp.Worksheets[refDecomp[RefParts.foreignSheet]];
+            else
+                refSheet = MyApp.ActiveSheet;
+
+            if (refDecomp.ContainsKey(RefParts.secondCell))
+            {
+                //use refDecomp first cell to get row and column indexes
+                string secondCellRef = refDecomp[RefParts.secondCell];
+                var col_builder = new StringBuilder();
+                var row_builder = new StringBuilder();
+                foreach (char c in secondCellRef)
+                {
+                    if (Char.IsLetter(c))
+                        col_builder.Append(c);
+                    else if (Char.IsNumber(c))
+                        row_builder.Append(c);
+                }
+                int column = TextToNumber(col_builder.ToString());
+                int row = Convert.ToInt32(row_builder.ToString());
+                return refSheet.Cells[row, column];
+            }
+            else
+            {
+                return this.firstCell;        //no second cell reference given - so the range is 1 cell - return the first cell
+            }
         }
 
         private string GetFirstColumn()     //A1
@@ -135,14 +266,14 @@ namespace HelloWorld
             StringBuilder row = new StringBuilder();
             foreach (char c in A1)
             {
-                if (c == '$')
+                if (c == '$' || c == '=')
                     continue;
                 else if (char.IsLetter(c))
                     col.Append(c);
                 else if (char.IsNumber(c))
                     row.Append(c);
-                else
-                    throw new FormatException();
+                else { }
+                    //throw new FormatException();
             }
             int colNumber = TextToNumber(col.ToString());
             int rowNumber = Convert.ToInt32(row.ToString());

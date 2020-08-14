@@ -18,14 +18,14 @@ namespace HelloWorld
 
     public class MenuBuilder
     {
-        private RefParser Parser { get; set; }
+        private Utilities.RefParser Parser { get; set; }
         private Excel.Range Selection { get; set; }
         private Region CellRegion {get;set;}
 
         public MenuBuilder()
         {
             Selection = ObjModel.GetSelection();
-            Parser = new RefParser(Selection.Address);
+            Parser = new Utilities.RefParser(Selection.Address, ThisAddIn.MyApp);
             CellRegion = GetRegion();
         }
         private Region GetRegion()
