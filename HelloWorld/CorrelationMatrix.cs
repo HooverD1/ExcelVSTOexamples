@@ -17,7 +17,6 @@ namespace HelloWorld
         public Correlation[,] Correlations { get; set; }
         public Estimate Parent {get;set;}
         public double[] eigenvalues { get; set; }
-        //private double[] new_eigenvalues { get; set; }
 
         public CorrelationMatrix(Estimate Parent)
         {
@@ -129,6 +128,22 @@ namespace HelloWorld
                 }
             }
             return correlationMatrix;
+        }
+
+        public string CreateCorrelationString()
+        {
+            StringBuilder correlBuilder = new StringBuilder();
+            for(int i = 0; i < Correlations.GetLength(0); i++)
+            {
+                for(int j = 0; j < Correlations.GetLength(1); j++)
+                {
+                    Correlation printCorrel = Correlations[i, j];
+                    correlBuilder.Append(printCorrel.Coefficient);
+                    correlBuilder.Append(",");
+                }
+                correlBuilder.Append(System.Environment.NewLine);
+            }
+            return correlBuilder.ToString();
         }
     }
 }

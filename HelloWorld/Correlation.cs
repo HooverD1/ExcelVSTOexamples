@@ -27,8 +27,8 @@ namespace HelloWorld
             this.input1 = input1;
             this.input2 = input2;
             this.Coefficient = CalculateCoefficient();
-            //this.CoefMin = CalculateMin();
-            //this.CoefMax = CalculateMax();
+            this.CoefMin = CalculateMin();
+            this.CoefMax = CalculateMax();
         }
         public Correlation(CorrelationMatrix Parent, EstimateInput input1, EstimateInput input2, double coef) //allows for building these after mass-calculating a correl coef matrix
         {
@@ -36,8 +36,8 @@ namespace HelloWorld
             this.input1 = input1;
             this.input2 = input2;
             this.Coefficient = coef;
-            //this.CoefMin = CalculateMin();
-            //this.CoefMax = CalculateMax();
+            this.CoefMin = CalculateMin();
+            this.CoefMax = CalculateMax();
         }
         public void CalculateTransitivity()
         {

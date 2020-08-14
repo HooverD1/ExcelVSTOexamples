@@ -95,7 +95,10 @@ namespace HelloWorld
             }
             return true;
         }
-
+        public void ExportCorrelation(Excel.Range exportCell)
+        {
+            exportCell.Value = CorrelationMatrix.CreateCorrelationString();
+        }
         public override void Format() { }
         public override void ReadFromSheet() { }
         public override void WriteToSheet() { }
