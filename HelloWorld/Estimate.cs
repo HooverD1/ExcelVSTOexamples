@@ -7,28 +7,22 @@ using Accord.Statistics.Distributions.Univariate;
 
 namespace HelloWorld
 {
-    public class Estimate
+    public class Estimate : ICorrelParent, ICorrelChild
     {
+        public string Ident {get;set;}
         public EstimateSheet SheetParent { get; set; }
         public CorrelationSheet CorrelParent { get; set; }
-        public List<EstimateInput> Inputs { get; set; }
+        public ICorrelParent Parent { get; set; }
+        public List<ICorrelChild> Children { get; set; }
         public CorrelationMatrix CorrelMatrix { get; set; }
 
-        public Estimate(EstimateSheet SheetParent, CorrelationSheet CorrelParent, int input_count)
+        public Estimate(EstimateSheet SheetParent, CorrelationSheet CorrelParent, int input_count=0)
         {
             this.SheetParent = SheetParent;
             this.CorrelParent = CorrelParent;
-            Inputs = GetFakeEstimateInputs(input_count);
-            CorrelMatrix = new CorrelationMatrix(this);
+            //Inputs = GetFakeEstimateInputs(input_count);    //these will get set up off the sheet by the user
         }
-        public List<EstimateInput> GetFakeEstimateInputs(int input_count)
-        {
-            List<EstimateInput> returnInputs = new List<EstimateInput>();
-            for(int i = 0; i < input_count; i++)
-            {
-                returnInputs.Add(new EstimateInput($"Input{i}", i, new NormalDistribution()));            
-            }
-            return returnInputs;
-        }
+        
+
     }
 }

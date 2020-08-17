@@ -221,6 +221,7 @@
     <Compile Include="Correlation.cs" />
     <Compile Include="CorrelationMatrix.cs" />
     <Compile Include="CorrelationSheet.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="DataSheet.cs" />
     <Compile Include="DiagnosticsMenu.cs" />
     <Compile Include="Estimate.cs" />
@@ -236,6 +237,8 @@
     <Compile Include="FileSheet.cs" />
     <Compile Include="FileSheetSettings.cs" />
     <Compile Include="Formatter.cs" />
+    <Compile Include="ICorrelParent.cs" />
+    <Compile Include="ICorrelChild.cs" />
     <Compile Include="MathUtils.cs" />
     <Compile Include="MatrixOps.cs" />
     <Compile Include="MenuBuilder.cs" />

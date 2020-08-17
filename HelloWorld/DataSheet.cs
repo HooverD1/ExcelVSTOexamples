@@ -13,7 +13,7 @@ namespace HelloWorld
         {
             this.AttachSheet(ThisAddIn.MyApp.Worksheets["Data"]);
         }
-
+        //public override void Bootstrap() { }
         public override void Format() { }
         public override void ReadFromSheet() { }
         public override void WriteToSheet() { }

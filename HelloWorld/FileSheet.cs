@@ -28,9 +28,9 @@ namespace HelloWorld
         {
             Excel.Workbook templateBook = ThisAddIn.Model.GetTemplateBook();
             Excel.Worksheet templateSheet = templateBook.Worksheets["File_Template"];
-            this.ThisSheet.Cells.Clear();
+            this.ThisWorkSheet.Cells.Clear();
             templateSheet.Cells.Copy();
-            ThisSheet.Cells.PasteSpecial(Excel.XlPasteType.xlPasteAll);
+            ThisWorkSheet.Cells.PasteSpecial(Excel.XlPasteType.xlPasteAll);
             ThisAddIn.MyApp.DisplayAlerts = false;
             templateBook.Saved = true;
             templateBook.Close();
@@ -39,18 +39,19 @@ namespace HelloWorld
         }        
         public override void WriteToSheet()
         {
-            ThisSheet.Range["E4"].Value = Settings.TemplatePath;
-            ThisSheet.Range["E5"].Value = Settings.InflationDirectory;
+            ThisWorkSheet.Range["E4"].Value = Settings.TemplatePath;
+            ThisWorkSheet.Range["E5"].Value = Settings.InflationDirectory;
         }
         public override void ReadFromSheet()
         {
-            Settings.TemplatePath = ThisSheet.Range["E4"].Value;
-            Settings.InflationDirectory = ThisSheet.Range["E5"].Value;
+            Settings.TemplatePath = ThisWorkSheet.Range["E4"].Value;
+            Settings.InflationDirectory = ThisWorkSheet.Range["E5"].Value;
         }
         public void ClearSheetSettings()
         {
-            ThisSheet.Range["B4:B13"].Clear();
-            ThisSheet.Range["E4:E13"].Clear();
+            ThisWorkSheet.Range["B4:B13"].Clear();
+            ThisWorkSheet.Range["E4:E13"].Clear();
         }
+        
     }
 }

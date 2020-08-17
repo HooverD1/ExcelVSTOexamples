@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace HelloWorld
 {
-    public class Correlation
+    public class Correlation                //This may be good as a utility class?
     {
         public int ID { get; set; }
         public EstimateInput input1 { get; set; }
@@ -87,9 +87,9 @@ namespace HelloWorld
             //Create a list of intermediates
             //LINQ query that list to find the intermediates
             return from Correlation correl in Parent.Correlations      //All the intermediates for this correlation
-                            where (correl.input1.InputID == this.input1.InputID || correl.input2.InputID == this.input2.InputID) &&
-                               !(correl.input1.InputID == this.input1.InputID && correl.input2.InputID == this.input2.InputID) &&
-                                (correl.input1.InputID != correl.input2.InputID)
+                            where (correl.input1.Ident == this.input1.Ident || correl.input2.Ident == this.input2.Ident) &&
+                               !(correl.input1.Ident == this.input1.Ident && correl.input2.Ident == this.input2.Ident) &&
+                                (correl.input1.Ident != correl.input2.Ident)
                             select correl;
         }
         private double CalculateTransValue()

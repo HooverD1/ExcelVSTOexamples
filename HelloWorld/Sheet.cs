@@ -19,21 +19,22 @@ namespace HelloWorld
         }
         
         private Dictionary<RangeType, Excel.Range> format_template { get; set; }       //<range context type, template range>
-        public Excel.Worksheet ThisSheet { get; set; }
+        public Excel.Worksheet ThisWorkSheet { get; set; }
 
         public void AttachSheet(Excel.Worksheet ThisSheet)
         {
-            this.ThisSheet = ThisSheet;
+            this.ThisWorkSheet = ThisSheet;
         }
 
         public void ClearSheet()
         {
-            if (this.ThisSheet != null)
-                this.ThisSheet.Cells.Clear();
+            if (this.ThisWorkSheet != null)
+                this.ThisWorkSheet.Cells.Clear();
             else
                 MessageBox.Show("No sheet attached to object.");
         }
 
+        //public abstract void Bootstrap();       //instantiate implied objects from sheet storage
         public abstract void WriteToSheet();        //Print the stored objects to the sheet
         public abstract void ReadFromSheet();
         public abstract void Format();        //virtuals can be overwritten (or not). Abstracts have to be overwritten.

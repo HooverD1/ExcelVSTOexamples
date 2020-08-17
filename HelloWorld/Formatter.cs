@@ -55,7 +55,7 @@ namespace HelloWorld
             Excel.Range formatRange;
             ThisAddIn.MyApp.ScreenUpdating = false;
             int rangeCount = 0;
-            for (int i = rowNum_start;i<=rowNum_end;i++)
+            for (int i = rowNum_start+1;i<=rowNum_end;i++)
             {
                 Excel.Range row = targetSheet.Range[$"A{i}"].EntireRow;
                 if (shift + 1 <= colNum_end)

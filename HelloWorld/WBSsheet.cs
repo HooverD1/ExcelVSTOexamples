@@ -14,7 +14,6 @@ namespace HelloWorld
             this.AttachSheet(ThisAddIn.MyApp.Worksheets["WBS_1"]);
         }
         public List<WBS> WBSs { get; set; }
-
         public override void Format() { }
         public override void ReadFromSheet() { }
         public override void WriteToSheet() { }

@@ -4,146 +4,76 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
-using Accord.Statistics.Distributions.Univariate;
-using Accord.Statistics;
-using Accord.Math.Decompositions;
-using MathNet.Numerics;
-using MStats = MathNet.Numerics.Statistics;
 
 namespace HelloWorld
 {
     public class CorrelationMatrix
     {
+        public struct Correlation
+        {
+            public string ChildIdent1 { get; set; }
+            public string ChildIdent2 { get; set; }
+            public double Coefficient { get; set; }
+        }
+        public double[,] Coefficients { get; set; }
         public Correlation[,] Correlations { get; set; }
-        public Estimate Parent {get;set;}
-        public double[] eigenvalues { get; set; }
+        public ICorrelParent Parent { get; set; }
+        public CorrelationSheet CorrelSheet { get; set; }
 
-        public CorrelationMatrix(Estimate Parent)
+        public CorrelationMatrix(string correlString)                          //build object off of a correlationString cell value for pushing into a correlation worksheet
         {
-            this.Parent = Parent;
-            Correlations = GetCorrelationMatrix();
-            foreach (Correlation correl in Correlations)
-                correl.CalculateTransitivity();
-            eigenvalues = GetEigenvalues(GetCoefficientsMatrix());
-            if (eigenvalues.Min() < 0)
-            {
-                AdjustToPositiveSemiDefinite();
-            }
+            throw new NotImplementedException();
         }
-        public double[,] GetCoefficientsMatrix()
+        public CorrelationMatrix(CorrelationSheet CorrelSheet)                 //build object off of the correlation sheet for pushing back into a cell
         {
-            double[,] matrix = new double[Correlations.GetLength(0), Correlations.GetLength(1)];
-            for(int i = 0; i < Correlations.GetLength(0);i++)
-            {
-                for(int j = 0; j < Correlations.GetLength(1); j++)
-                {
-                    matrix[i, j] = Correlations[i, j].Coefficient;
-                }
-            }
-            return matrix;
-        }
-        public double[] GetEigenvalues(double[,] matrix)
-        {
-            return new EigenvalueDecomposition(matrix, false, true).RealEigenvalues;
-        }
-        public double[,] GetEigenvectors(double[,] matrix)
-        {
-            return new EigenvalueDecomposition(matrix, false, true).Eigenvectors;
-        }
-        public void AdjustToPositiveSemiDefinite()
-        {
-            int iNum = Correlations.GetLength(0);
-            double minEigen = eigenvalues.Min();
-            if (minEigen < 0)
-            {
-                for (int i = 0; i < iNum; i++)
-                {
-                    Correlations[i, i].Coefficient = Correlations[i, i].Coefficient - minEigen * 1.000000001;
-                }
-                for (int i = 0; i < iNum; i++)
-                {
-                    for (int j = 0; j < iNum; j++)
-                    {
-                        Correlations[i, j].Coefficient = Correlations[i, j].Coefficient / (1 - minEigen * 1.000000001);
-                    }
-                }
-            }
-        }
-        public Correlation[,] GetCorrelationMatrix()   //this should take the data from the Estimate Inputs
-        {
-            
-            var inputs = this.Parent.Inputs;
-            if (!inputs.Any())
-                return null;
-            double[,] correlData = new double[inputs[0].Data.Length, inputs.Count];   //[datapoint, input]
-            double[] means = new double[inputs.Count];
-            double[] stdevs = new double[inputs.Count];
-            for(int i = 0; i < inputs.Count; i++)
-            {
-                means[i] = 0;
-                stdevs[i] = 1;
-                for(int j = 0; j < inputs[i].Data.Length; j++)
-                {
-                    correlData[j, i] = inputs[i].Data[j];
-                }
-            }
-            double[,] correlCoefs;
-            correlCoefs = Measures.Correlation(correlData);                   //computes mean and stdev
-            Correlation[,] CorrelationMatrix = new Correlation[correlCoefs.GetLength(0),correlCoefs.GetLength(1)];
-            for (int i = 0; i < inputs.Count; i++)
-            {
-                for (int j = 0; j < inputs.Count; j++)      //use i+1?
-                {
-                    CorrelationMatrix[i, j] = new Correlation(this, inputs[i], inputs[j], correlCoefs[i, j]);
-                }
-            }
-            return CorrelationMatrix;
-        }
-        
-        public void FormatMatrix(Excel.Range printCell)
-        {
-            Excel.Workbook templateBook = ThisAddIn.Model.GetTemplateBook();
-            Excel.Range template = templateBook.Worksheets["Correl_Template"].range["C3"];
-            Excel.Range target = printCell;
-            Formatter fmter = new Formatter(template, target, (Excel.Worksheet)target.Parent);
-            fmter.FormatRange();
-            ThisAddIn.MyApp.DisplayAlerts = false;
-            templateBook.Saved = true;
-            templateBook.Close();
-            ThisAddIn.MyApp.DisplayAlerts = true;
-        }
-        private double[,] BuildCoefs(double[,] data)        //for mean = 0, stdev = 1
-        {
-            double[,] correlationMatrix = new double[data.GetLength(1), data.GetLength(1)];
-            for (int j = 0; j < data.GetLength(1); j++)         //input1
-            {
-                for (int j2 = 0; j2 < data.GetLength(1); j2++)   //input2
-                {
-                    double sum = 0;
-                    for (int i = 0; i < data.GetLength(0); i++) //row
-                    {
-                        sum += data[i, j] * data[i, j2];
-                    }
-                    correlationMatrix[j2, j] = sum / (data.GetLength(0)-1);
-                }
-            }
-            return correlationMatrix;
+            this.CorrelSheet = CorrelSheet;
+            //Does a correlation worksheet exist?       -- method on correlSheet object
+            //Does a well-formed correlation matrix exist on the sheet?     -- method on correlSheet object
+            //Bootstrap Parent object
+            //Build Correlations array
+            this.Correlations = BuildCorrelationArray(this.CorrelSheet);
+            //this.Parent = FindParent(this.CorrelSheet);
+
         }
 
-        public string CreateCorrelationString()
+
+        private Correlation[,] BuildCorrelationArray(CorrelationSheet CorrelSheet)  //take what's on the correlation sheet and build the array
         {
-            StringBuilder correlBuilder = new StringBuilder();
-            for(int i = 0; i < Correlations.GetLength(0); i++)
+            Excel.Worksheet CorrelWorksheet = CorrelSheet.ThisWorkSheet;    //Excel tab
+            //CorrelSheet.MatrixTopLeft has the cell with the first cell of where the correlation matrix goes
+            var top_left = CorrelSheet.MatrixTopLeft;
+            int row_index = top_left.Row;
+            int col_index = top_left.Column;
+            Excel.Range bottom_right = top_left.End[Excel.XlDirection.xlToRight].End[Excel.XlDirection.xlDown];
+            Excel.Range matrix_range = CorrelWorksheet.Range[top_left, bottom_right];
+            Correlation[,] returnArray = new Correlation[matrix_range.Rows.Count, matrix_range.Columns.Count];
+            //does this need each position initialized?
+            for(int r = 0; r < matrix_range.Rows.Count; r++)
             {
-                for(int j = 0; j < Correlations.GetLength(1); j++)
+                for(int c = 0; c < matrix_range.Columns.Count; c++)
                 {
-                    Correlation printCorrel = Correlations[i, j];
-                    correlBuilder.Append(printCorrel.Coefficient);
-                    correlBuilder.Append(",");
+                    returnArray[r, c].Coefficient = CorrelWorksheet.Range[row_index + r, col_index + c].Value;
+                    returnArray[r, c].ChildIdent1 = CorrelWorksheet.Range[row_index + r, col_index].Value;
+                    returnArray[r, c].ChildIdent2 = CorrelWorksheet.Range[row_index, col_index + c].Value;
                 }
-                correlBuilder.Append(System.Environment.NewLine);
             }
-            return correlBuilder.ToString();
+            return returnArray;
+        }        
+
+        public string CreateCorrelString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PrintToCorrelSheet()
+        {
+            if (ThisAddIn.Model.correlationSheet == null)
+            {
+                ThisAddIn.Model.correlationSheet = new CorrelationSheet();
+                //check if a worksheet exists? Should that be implicit in creating a correlationSheet object? Probably
+            }
+            // CODE TO Print necessary object data to the correlation sheet here
+            throw new NotImplementedException();
         }
     }
 }

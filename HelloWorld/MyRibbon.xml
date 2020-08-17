@@ -34,6 +34,7 @@
         <group id="Clear" label="Clear">
           <button label="Clear Sheet" id="btnClear" onAction="btnClear_Click" imageMso="Clear" />
           <button label="Add Link" id="btnAddLink" onAction="btnAddLink_Click" imageMso="Piggy"/>
+          <button label="Add Estimate" id="btnAddEstimate" onAction="btnAddEstimate_Click" imageMso="Piggy"/>
           <button label="Desicate Correlation" id="btnDesicateCorrelation" onAction="btnDesicateCorrelation_Click" imageMso="Piggy"/>
         </group>
         <group id="Developer" label="Developer">

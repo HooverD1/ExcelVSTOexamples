@@ -152,17 +152,22 @@ namespace HelloWorld
         public void btnBuildEstimate_Click(IRibbonControl e)
         {
             //check if "Correlation" sheet exists & create if not. Otherwise just grab it.
+            if(ThisAddIn.Model == null)
+            {
+                MessageBox.Show("No CASE model loaded.");
+                return;
+            }
             EstimateSheet estimateSheet = ThisAddIn.Model.EstimateSheets[0];
             CorrelationSheet correlSheet = ThisAddIn.Model.correlationSheet;
             correlSheet.ClearSheet();
             var estimate = new Estimate(estimateSheet, correlSheet, 10);
-            correlSheet.CorrelationMatrix = estimate.CorrelMatrix;
+            correlSheet.CorrelMatrix = estimate.CorrelMatrix;
             MessageBox.Show($"Transitivity test: {correlSheet.CheckTransitivity()}");
             correlSheet.PrintCorrelationMatrix();
         }
         public void btnTestTransitivity_Click(IRibbonControl e)
         {
-            ThisAddIn.Model.correlationSheet.CorrelationMatrix.Correlations[0,1].Coefficient = 1;
+            ThisAddIn.Model.correlationSheet.CorrelMatrix.Correlations[0,1].Coefficient = 1;
             ThisAddIn.Model.correlationSheet.CheckTransitivity();
         }
 
@@ -425,7 +430,12 @@ namespace HelloWorld
         
         public void btnDesicateCorrelation(IRibbonControl e, CorrelationMatrix correlMat)
         {
-            ThisAddIn.MyApp.ActiveCell.Value = correlMat.CreateCorrelationString();
+            ThisAddIn.MyApp.ActiveCell.Value = correlMat.CreateCorrelString();
+        }
+        
+        public void btnAddEstimate_Click(IRibbonControl e)
+        {
+            throw new NotImplementedException();
         }
 
         public void btnAddLink_Click(IRibbonControl e)

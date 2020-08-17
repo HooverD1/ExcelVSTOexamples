@@ -9,16 +9,16 @@ namespace HelloWorld
 {
     public class EstimateInput
     {
-        public int InputID { get; set; }
+        public string Ident { get; set; }
         public string Name { get; set; }
         public double[] Data { get; set; }
         public ISampleableDistribution<double> Distribution { get; set; }
         const long datapoints = 5000;
 
-        public EstimateInput(string Name, int id, ISampleableDistribution<double> Distribution)
+        public EstimateInput(string Name, string ident, ISampleableDistribution<double> Distribution)
         {
             this.Name = Name;
-            this.InputID = id;
+            this.Ident = ident;
             this.Distribution = Distribution;
             this.Data = GenerateData();
         }
