@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNA_Test", "DNA_Test\DNA_Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{36CE02BB-A1CE-4475-8489-B4BD39498AE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject\UnitTestProject.csproj", "{887E6439-25CB-4B41-87D6-CE3D83FF2175}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{36CE02BB-A1CE-4475-8489-B4BD39498AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36CE02BB-A1CE-4475-8489-B4BD39498AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36CE02BB-A1CE-4475-8489-B4BD39498AE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{887E6439-25CB-4B41-87D6-CE3D83FF2175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{887E6439-25CB-4B41-87D6-CE3D83FF2175}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{887E6439-25CB-4B41-87D6-CE3D83FF2175}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{887E6439-25CB-4B41-87D6-CE3D83FF2175}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

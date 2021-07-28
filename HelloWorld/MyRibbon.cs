@@ -12,6 +12,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Tools = Microsoft.Office.Tools.Excel;
 using System.Drawing;
 using HelloWorld.Properties;
+using System.Diagnostics;
 
 namespace HelloWorld
 {
@@ -432,7 +433,48 @@ namespace HelloWorld
         {
             ThisAddIn.MyApp.ActiveCell.Value = correlMat.CreateCorrelString();
         }
-        
+        public void btnSetCorrel_Click(IRibbonControl e)
+        {
+            var worksheet = ThisAddIn.MyApp.ActiveSheet;
+            Excel.Range startCell = worksheet.cells[2, 3];
+            Excel.Range endCell = worksheet.cells[11, 12];
+            Excel.Range myRange = worksheet.range[startCell, endCell];
+            double[,] myArray = new double[10,10];
+            for(int i = 0; i < 10; i++)
+            {
+                for(int j = 0; j < 10; j++)
+                {
+                    myArray[i, j] = 0.5F;
+                }
+            }
+            myRange.Value2 = myArray;
+            string[] myStrings = new string[10];
+            startCell = worksheet.cells[1, 3];
+            endCell = worksheet.cells[1, 12];
+            myRange = worksheet.range[startCell, endCell];
+            for (int i = 0; i < 10; i++)
+            {
+                if (i > 0)
+                    myStrings[i] = $"{myStrings[i - 1]}A";
+                else
+                    myStrings[i] = "A";
+            }
+            myRange.Value2 = myStrings;
+        }
+        public void btnCorrel2D_Click(IRibbonControl e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var ct = new CorrelTest(ThisAddIn.MyApp.Selection);
+            var result = ct.AccessArray("AA", "AAA");
+            sw.Stop();
+            MessageBox.Show($"Time: {sw.ElapsedMilliseconds}");
+        }
+        //public void btnCorrelDict_Click(IRibbonControl e)
+        //{
+        //    var ct = new CorrelTest(CorrelTest.CorrelStructure.Dictionary, 1000);
+        //    ThisAddIn.MyApp.ActiveCell.Value = "done";
+        //}
         public void btnAddEstimate_Click(IRibbonControl e)
         {
             throw new NotImplementedException();

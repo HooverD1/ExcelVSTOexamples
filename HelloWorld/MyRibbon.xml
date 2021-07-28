@@ -36,6 +36,9 @@
           <button label="Add Link" id="btnAddLink" onAction="btnAddLink_Click" imageMso="Piggy"/>
           <button label="Add Estimate" id="btnAddEstimate" onAction="btnAddEstimate_Click" imageMso="Piggy"/>
           <button label="Desicate Correlation" id="btnDesicateCorrelation" onAction="btnDesicateCorrelation_Click" imageMso="Piggy"/>
+          <button label="Correl2D" id="btnCorrel2D" onAction="btnCorrel2D_Click" imageMso="Piggy"/>
+          <button label="CorrelDict" id="btnCorrelDict" onAction="btnCorrelDict_Click" imageMso="Piggy"/>
+          <button label="SetCorrel" id="btnSetCorrel" onAction="btnSetCorrel_Click" imageMso="Piggy"/>
         </group>
         <group id="Developer" label="Developer">
           <menu id="DeveloperMenu" label="Developer Tools" size="large" imageMso="AccountSettings">

@@ -7,6 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using ExcelDna.Integration;
 using ExcelDna.ComInterop;
 using System.Reflection;
+using System.Windows;
 
 namespace Primer
 {
@@ -32,6 +33,14 @@ namespace Primer
                 parser.firstCell.Select();
             }
         }
-
+        [ExcelCommand(ShortCut = "^{F5}")]
+        public static void LaunchScheduler()
+        {
+            DNA_Test.Scheduler.SchedulerForm schedulerForm = new DNA_Test.Scheduler.SchedulerForm();
+            if (!schedulerForm.VerifySingleDimension())
+                MessageBox.Show("Selection must be a single row or column.");
+            else
+                schedulerForm.ShowDialog();
+        }
     }
 }

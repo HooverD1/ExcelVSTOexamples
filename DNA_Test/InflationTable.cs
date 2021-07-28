@@ -8,6 +8,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Data;
 using System.Runtime.Serialization;
 using ExcelDna.Integration;
+using System.Reflection;
+
 
 namespace Primer
 {
@@ -57,11 +59,13 @@ namespace Primer
         {
             //Grab table from the excel
             this.entries = new List<Entry>();
-
-            if (!File.Exists(@"C:\Users\grins\source\repos\HelloWorld\DNA_Test\inflation_table.xlsx"))
+            string AppRoot = @"C:\Users\grins\source\repos\HelloWorld\DNA_Test";
+            if (!File.Exists(Path.Combine(AppRoot, @"inflation_table.xlsx")))
+            {                
                 throw new FileNotFoundException();
+            }
             Excel.Application MyApp = (Excel.Application)ExcelDnaUtil.Application;
-            Excel.Workbook inflBook = MyApp.Workbooks.Open(@"C:\Users\grins\source\repos\HelloWorld\DNA_Test\inflation_table.xlsx");
+            Excel.Workbook inflBook = MyApp.Workbooks.Open(Path.Combine(AppRoot, @"inflation_table.xlsx"));
             var sheetsCount = inflBook.Worksheets.Count;
             Excel.Worksheet sheet;
             try
