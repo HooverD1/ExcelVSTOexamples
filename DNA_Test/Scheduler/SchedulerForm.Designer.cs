@@ -35,10 +35,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox_IntervalType = new System.Windows.Forms.ComboBox();
-            this.comboBox_IntervalLength = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBox_IntervalLength = new System.Windows.Forms.ComboBox();
+            this.comboBox_IntervalType = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -111,36 +111,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling Options";
             // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(3, 6);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 20);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Every";
-            // 
-            // comboBox_IntervalType
-            // 
-            this.comboBox_IntervalType.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.comboBox_IntervalType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox_IntervalType.FormattingEnabled = true;
-            this.comboBox_IntervalType.Location = new System.Drawing.Point(131, 3);
-            this.comboBox_IntervalType.Name = "comboBox_IntervalType";
-            this.comboBox_IntervalType.Size = new System.Drawing.Size(121, 26);
-            this.comboBox_IntervalType.TabIndex = 5;
-            // 
-            // comboBox_IntervalLength
-            // 
-            this.comboBox_IntervalLength.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.comboBox_IntervalLength.FormattingEnabled = true;
-            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 4);
-            this.comboBox_IntervalLength.Name = "comboBox_IntervalLength";
-            this.comboBox_IntervalLength.Size = new System.Drawing.Size(65, 24);
-            this.comboBox_IntervalLength.TabIndex = 8;
-            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -153,6 +123,36 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(265, 42);
             this.flowLayoutPanel1.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(3, 6);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(51, 20);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Every";
+            // 
+            // comboBox_IntervalLength
+            // 
+            this.comboBox_IntervalLength.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.comboBox_IntervalLength.FormattingEnabled = true;
+            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 3);
+            this.comboBox_IntervalLength.Name = "comboBox_IntervalLength";
+            this.comboBox_IntervalLength.Size = new System.Drawing.Size(65, 24);
+            this.comboBox_IntervalLength.TabIndex = 8;
+            // 
+            // comboBox_IntervalType
+            // 
+            this.comboBox_IntervalType.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.comboBox_IntervalType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_IntervalType.FormattingEnabled = true;
+            this.comboBox_IntervalType.Location = new System.Drawing.Point(131, 3);
+            this.comboBox_IntervalType.Name = "comboBox_IntervalType";
+            this.comboBox_IntervalType.Size = new System.Drawing.Size(121, 26);
+            this.comboBox_IntervalType.TabIndex = 5;
             // 
             // SchedulerForm
             // 

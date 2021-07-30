@@ -28,7 +28,8 @@ namespace DNA_Test.Scheduler
             {
                 //Defaults
                 dateTimePicker_Start.Value = DateTime.Today;
-                dateTimePicker_End.Value = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
+                //dateTimePicker_End.Value = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
+                dateTimePicker_End.Value = DateTime.Today.AddDays(1);
                 comboBox_IntervalLength.Text = "1";
                 comboBox_IntervalType.SelectedIndex = 0;
             }
@@ -126,7 +127,9 @@ namespace DNA_Test.Scheduler
             if (firstScheduleIndex > -1 && lastScheduleIndex == -1)
             {
                 lastScheduleIndex = oneDimValues.Length - 1;
-
+            }
+            if(firstScheduleIndex > -1 && lastScheduleIndex > -1)
+            { 
                 for (int i = firstScheduleIndex; i <= lastScheduleIndex; i++)
                 {
                     midpoints.Add(existingDateTimes[i]);

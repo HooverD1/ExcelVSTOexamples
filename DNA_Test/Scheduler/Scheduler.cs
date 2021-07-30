@@ -15,7 +15,7 @@ namespace DNA_Test.Scheduler
             Monthly,
             Yearly
         }
-        private Interval IntervalType {get;set;}
+        private Interval? IntervalType { get; set; } = null;
         private double IntervalLength { get; set; }
         protected DateTime StartDate { get; set; }
         protected DateTime EndDate { get; set; }
@@ -48,19 +48,13 @@ namespace DNA_Test.Scheduler
         {
             Scheduler newScheduler = new Scheduler();
             newScheduler.Midpoints = midpoints;
-            DateTime[] endpoints = new DateTime[midpoints.Count() + 1];
-            //Construct to aid in autopopulating the form
-            if (midpoints.Count() < 2)
-                return null;
-            double distance = (midpoints[1].ToOADate() - midpoints[0].ToOADate());
-            for(int i = 0; i < endpoints.Count(); i++)
-            {
-                endpoints[i] = DateTime.FromOADate((midpoints[0].ToOADate() - (distance / 2))+(distance*i));
-            }
-            newScheduler.Endpoints = endpoints;
-            var intervalData = newScheduler.MatchPoints(endpoints);
+            var intervalData = newScheduler.MatchPoints(midpoints);
             newScheduler.IntervalLength = intervalData.Item1;
             newScheduler.IntervalType = intervalData.Item2;
+            double difference = (midpoints.Last().ToOADate() - midpoints.First().ToOADate()) / midpoints.Count();
+            newScheduler.StartDate = DateTime.FromOADate(midpoints.First().ToOADate() - (difference / 2));
+            newScheduler.EndDate = DateTime.FromOADate(midpoints.Last().ToOADate() + (difference / 2));
+            newScheduler.GetEndpoints();
             return newScheduler;
         }
 
@@ -71,7 +65,22 @@ namespace DNA_Test.Scheduler
             newScheduler.Endpoints = endpoints;
             newScheduler.StartDate = endpoints.First();
             newScheduler.EndDate = endpoints.Last();
-            var intervalData = newScheduler.MatchPoints(endpoints);
+
+            newScheduler.GetMidpoints();
+
+            ////MIDPOINTS TO ENDPOINTS
+            //DateTime[] midpoints = new DateTime[endpoints.Count() + 1];
+            ////Construct to aid in autopopulating the form
+            //if (endpoints.Count() < 2)
+            //    return null;
+            //double distance = (midpoints[1].ToOADate() - midpoints[0].ToOADate());
+            //for (int i = 0; i < endpoints.Count(); i++)
+            //{
+            //    endpoints[i] = DateTime.FromOADate((midpoints[0].ToOADate() - (distance / 2)) + (distance * i));
+            //}
+            //newScheduler.Endpoints = endpoints;
+
+            var intervalData = newScheduler.MatchPoints(newScheduler.Midpoints);
             newScheduler.IntervalLength = intervalData.Item1;
             newScheduler.IntervalType = intervalData.Item2;
             return newScheduler;
@@ -88,13 +97,58 @@ namespace DNA_Test.Scheduler
 
         protected virtual DateTime[] BuildMidpoints()
         {
-            //Take the end points and divide them by 2
             DateTime[] endpoints = GetEndpoints();
             DateTime[] midpoints = new DateTime[GetNumberOfMidpoints()];
-            for (int ept = 1; ept < endpoints.Length; ept++)
+            DateTime firstPoint = endpoints[0];
+            DateTime secondPoint = endpoints[1];
+            double days = (secondPoint - firstPoint).TotalDays;
+            //How far apart are the first two points?
+            if (this.IntervalType == null)
             {
-                midpoints[ept - 1] = DateTime.FromOADate((endpoints[ept].ToOADate() + endpoints[ept - 1].ToOADate()) / 2);
+                //Estimate the intervaltype if need be
+                
+                if (days % 365 <= 1)
+                    this.IntervalType = Interval.Yearly;
+                else if (days % 30 <= 1 || days % 28 <= 1)
+                    this.IntervalType = Interval.Monthly;
+                else if (days % 7 == 0)
+                    this.IntervalType = Interval.Weekly;
+                else
+                    this.IntervalType = Interval.Daily;
             }
+
+            if (this.IntervalType == Interval.Daily || this.IntervalType == Interval.Weekly)
+            {
+                //Days or Weeks
+                midpoints[0] = endpoints[0].AddDays(days / 2);
+                for (int ept = 1; ept < endpoints.Length; ept++)
+                {
+                    midpoints[ept] = midpoints[ept - 1].AddDays(1);
+                }
+            }
+            else if (this.IntervalType == Interval.Monthly)
+            {
+                //Months
+                midpoints[0] = endpoints[0].AddDays(days / 2);
+                for (int ept = 1; ept < endpoints.Length; ept++)
+                {
+                    midpoints[ept] = midpoints[ept - 1].AddDays(1);
+                }
+            }
+            else if (this.IntervalType == Interval.Yearly)
+            {
+                //Years
+                midpoints[0] = endpoints[0].AddDays(days / 2);
+                for (int ept = 1; ept < endpoints.Length; ept++)
+                {
+                    midpoints[ept] = midpoints[ept - 1].AddDays(1);
+                }
+            }
+
+            //Take the end points and divide them by 2
+
+
+
             return midpoints;
         }
 
@@ -183,22 +237,22 @@ namespace DNA_Test.Scheduler
             return GetNumberOfEndpoints() - 1;
         }
 
-        private Tuple<double, Interval> MatchPoints(DateTime[] endpoints)
+        private Tuple<double, Interval> MatchPoints(DateTime[] midpoints)
         {
             double intervalLength = 0;
             Scheduler.Interval intervalType;
             //Autopop the fields if you can
             //Attempt to autopop the intervalLength and intervalType
-            int points = endpoints.Count() - 1;
-            DateTime lastPoint = endpoints.Last();
-            DateTime firstPoint = endpoints.First();
+            int points = midpoints.Count();
+            DateTime lastPoint = midpoints.Last();
+            DateTime firstPoint = midpoints.First();
             //This is not giving the correct number for years.. think 12/31/00 to 01/01/01.
             int days = Convert.ToInt32(Math.Floor((lastPoint - firstPoint).TotalDays));
             int years = 0;
-            DateTime checkYears = firstPoint.AddDays(0);
+            DateTime checkYears;
             for (int y = 0; y < 1000; y++)
             {
-                checkYears = checkYears.AddYears(y);
+                checkYears = firstPoint.AddYears(y);
                 if (checkYears.ToOADate() < lastPoint.ToOADate())
                     continue;
                 else if (checkYears.ToOADate() > lastPoint.ToOADate())
@@ -213,10 +267,10 @@ namespace DNA_Test.Scheduler
                 }
             }
             int months = 0;
-            DateTime checkMonths = firstPoint.AddDays(0);
+            DateTime checkMonths;
             for (int m = 0; m < 12000; m++)
             {
-                checkMonths = checkMonths.AddMonths(m);
+                checkMonths = firstPoint.AddMonths(m);
                 if (checkMonths.ToOADate() < lastPoint.ToOADate())
                     continue;
                 if (checkMonths.ToOADate() > lastPoint.ToOADate())
