@@ -67,6 +67,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DateSelector.Designer.cs">
+      <DependentUpon>DateSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="DNA_Sandbox.cs" />
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="Keybinds.cs" />
@@ -90,6 +96,9 @@
     <None Include="Properties\ExcelDna.Build.props" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DateSelector.resx">
+      <DependentUpon>DateSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scheduler\SchedulerForm.resx">
       <DependentUpon>SchedulerForm.cs</DependentUpon>
     </EmbeddedResource>

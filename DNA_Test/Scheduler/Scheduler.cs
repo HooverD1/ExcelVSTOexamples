@@ -36,54 +36,13 @@ namespace DNA_Test.Scheduler
             {
                 throw new Exception("Start date occurs on or after end date");
             }
-            if (!(startDate - Math.Floor(startDate) > 0 || endDate - Math.Floor(endDate) > 0))
-            {   //If neither specify a time, set the start to midnight and the stop to one tick before midnight.
-                EndDate = EndDate.AddHours(11);
-                EndDate = EndDate.AddMinutes(59);
-                EndDate = EndDate.AddSeconds(59);
-            }
-        }
-
-        public static Scheduler ConstructFromMidpoints(DateTime[] midpoints)
-        {
-            Scheduler newScheduler = new Scheduler();
-            newScheduler.Midpoints = midpoints;
-            var intervalData = newScheduler.MatchPoints(midpoints);
-            newScheduler.IntervalLength = intervalData.Item1;
-            newScheduler.IntervalType = intervalData.Item2;
-            double difference = (midpoints.Last().ToOADate() - midpoints.First().ToOADate()) / midpoints.Count();
-            newScheduler.StartDate = DateTime.FromOADate(midpoints.First().ToOADate() - (difference / 2));
-            newScheduler.EndDate = DateTime.FromOADate(midpoints.Last().ToOADate() + (difference / 2));
-            newScheduler.GetEndpoints();
-            return newScheduler;
-        }
-
-
-        public static Scheduler ConstructFromEndpoints(DateTime[] endpoints)
-        {
-            Scheduler newScheduler = new Scheduler();
-            newScheduler.Endpoints = endpoints;
-            newScheduler.StartDate = endpoints.First();
-            newScheduler.EndDate = endpoints.Last();
-
-            newScheduler.GetMidpoints();
-
-            ////MIDPOINTS TO ENDPOINTS
-            //DateTime[] midpoints = new DateTime[endpoints.Count() + 1];
-            ////Construct to aid in autopopulating the form
-            //if (endpoints.Count() < 2)
-            //    return null;
-            //double distance = (midpoints[1].ToOADate() - midpoints[0].ToOADate());
-            //for (int i = 0; i < endpoints.Count(); i++)
-            //{
-            //    endpoints[i] = DateTime.FromOADate((midpoints[0].ToOADate() - (distance / 2)) + (distance * i));
+            //Took this out because it can be handled through the form.
+            //if (!(startDate - Math.Floor(startDate) > 0 || endDate - Math.Floor(endDate) > 0))
+            //{   //If neither specify a time, set the start to midnight and the stop to one tick before midnight.
+            //    EndDate = EndDate.AddHours(11);
+            //    EndDate = EndDate.AddMinutes(59);
+            //    EndDate = EndDate.AddSeconds(59);
             //}
-            //newScheduler.Endpoints = endpoints;
-
-            var intervalData = newScheduler.MatchPoints(newScheduler.Midpoints);
-            newScheduler.IntervalLength = intervalData.Item1;
-            newScheduler.IntervalType = intervalData.Item2;
-            return newScheduler;
         }
 
         public DateTime[] GetMidpoints()
@@ -97,59 +56,23 @@ namespace DNA_Test.Scheduler
 
         protected virtual DateTime[] BuildMidpoints()
         {
-            DateTime[] endpoints = GetEndpoints();
+            DateTime[] endpoints = GetEndpoints();            
             DateTime[] midpoints = new DateTime[GetNumberOfMidpoints()];
-            DateTime firstPoint = endpoints[0];
-            DateTime secondPoint = endpoints[1];
-            double days = (secondPoint - firstPoint).TotalDays;
-            //How far apart are the first two points?
-            if (this.IntervalType == null)
+            if (endpoints.Count() == 1)
             {
-                //Estimate the intervaltype if need be
-                
-                if (days % 365 <= 1)
-                    this.IntervalType = Interval.Yearly;
-                else if (days % 30 <= 1 || days % 28 <= 1)
-                    this.IntervalType = Interval.Monthly;
-                else if (days % 7 == 0)
-                    this.IntervalType = Interval.Weekly;
-                else
-                    this.IntervalType = Interval.Daily;
+                midpoints = endpoints;
+                return midpoints;
             }
-
-            if (this.IntervalType == Interval.Daily || this.IntervalType == Interval.Weekly)
+            else
             {
-                //Days or Weeks
-                midpoints[0] = endpoints[0].AddDays(days / 2);
-                for (int ept = 1; ept < endpoints.Length; ept++)
+                DateTime firstPoint = endpoints[0];
+                DateTime secondPoint = endpoints[1];
+                for (int i = 0; i < midpoints.Length; i++)
                 {
-                    midpoints[ept] = midpoints[ept - 1].AddDays(1);
+                    midpoints[i] = DateTime.FromOADate((endpoints[i].ToOADate() + endpoints[i + 1].ToOADate()) / 2);
                 }
+                return midpoints;
             }
-            else if (this.IntervalType == Interval.Monthly)
-            {
-                //Months
-                midpoints[0] = endpoints[0].AddDays(days / 2);
-                for (int ept = 1; ept < endpoints.Length; ept++)
-                {
-                    midpoints[ept] = midpoints[ept - 1].AddDays(1);
-                }
-            }
-            else if (this.IntervalType == Interval.Yearly)
-            {
-                //Years
-                midpoints[0] = endpoints[0].AddDays(days / 2);
-                for (int ept = 1; ept < endpoints.Length; ept++)
-                {
-                    midpoints[ept] = midpoints[ept - 1].AddDays(1);
-                }
-            }
-
-            //Take the end points and divide them by 2
-
-
-
-            return midpoints;
         }
 
         public DateTime[] GetEndpoints()
@@ -223,7 +146,7 @@ namespace DNA_Test.Scheduler
                 case Interval.Monthly:
                     int years = EndDate.Year - StartDate.Year;
                     int months = EndDate.Month - StartDate.Month;
-                    return 12 * years + months + 1;
+                    return (12 * years + months) / (int)IntervalLength + 1;
                 case Interval.Yearly:
                     int years2 = EndDate.Year - StartDate.Year + 1;
                     return years2;

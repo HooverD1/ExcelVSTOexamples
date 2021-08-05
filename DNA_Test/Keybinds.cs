@@ -36,11 +36,17 @@ namespace Primer
         [ExcelCommand(ShortCut = "^{F5}")]
         public static void LaunchScheduler()
         {
-            DNA_Test.Scheduler.SchedulerForm schedulerForm = new DNA_Test.Scheduler.SchedulerForm();
-            if (!schedulerForm.VerifySingleDimension())
-                MessageBox.Show("Selection must be a single row or column.");
+            if (DNA_Test.MyAddin.MyApp.Selection.Cells.Count() == 1)
+                new DNA_Test.DateSelector().ShowDialog();
             else
-                schedulerForm.ShowDialog();
+            {
+                var schForm = new DNA_Test.Scheduler.SchedulerForm();
+                if (!schForm.VerifySingleDimension())
+                    MessageBox.Show("Selection must be a single row or column.");
+                else
+                    schForm.ShowDialog();
+            }
+                
         }
     }
 }

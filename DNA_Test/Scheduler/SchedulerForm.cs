@@ -24,16 +24,16 @@ namespace DNA_Test.Scheduler
             dateTimePicker_End.Format = DateTimePickerFormat.Custom;
             dateTimePicker_End.CustomFormat = "MMM d, yyyy HH:mm:ss";
             PopulateCombobox();
+            PopulateCombobox_Periods();
             if (!AutoPopulate())
             {
                 //Defaults
                 dateTimePicker_Start.Value = DateTime.Today;
                 //dateTimePicker_End.Value = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
                 dateTimePicker_End.Value = DateTime.Today.AddDays(1);
-                comboBox_IntervalLength.Text = "1";
-                comboBox_IntervalType.SelectedIndex = 0;
             }
-
+            comboBox_IntervalLength.Text = "";
+            comboBox_IntervalType.SelectedIndex = 0;
         }
         public bool VerifySingleDimension()
         {
@@ -44,108 +44,74 @@ namespace DNA_Test.Scheduler
             else
                 return true;
         }
+
         private bool AutoPopulate()
         {
-            Excel.Range selection = MyAddin.MyApp.Selection;
-            object[,] cellValues;
-            if (selection.Value != null)
-                 cellValues = selection.Value;
-            else
+            try
             {
-                //Nothing to autopopulate from - abort
-                return false;
-            }
-            //Find if the selection is a row or a column
-            if (cellValues.GetLength(0) > 1 && cellValues.GetLength(1) > 1)
-                throw new Exception("Invalid selection size");      //This should have been caught when the form was launched
-            bool isVertical;
-            if (cellValues.GetLength(0) > 1)
-                isVertical = true;
-            else
-                isVertical = false;
-            object[] oneDimValues;
-            if (isVertical)
-            {
-                //column
-                oneDimValues = new object[cellValues.GetLength(0)];
-                for(int i = 0; i < cellValues.GetLength(0); i++)
+                Excel.Range selection = DNA_Test.MyAddin.MyApp.Selection;
+                //Autopop the datetimepickers
+                object[,] cellValues = selection.Value;
+                object[] values = new object[selection.Cells.Count];
+                int i = 0;
+                foreach (object cv in cellValues)
                 {
-                    oneDimValues[i] = cellValues[i+1, 1];
+                    values[i] = cv;
+                    i++;
                 }
-            }
-            else
-            {
-                //row
-                oneDimValues = new object[cellValues.GetLength(1)];
-                for (int i = 0; i < cellValues.GetLength(1); i++)
+                int firstIndex = values.Length;
+                int lastIndex = 0;
+                DateTime d1 = DateTime.FromOADate(0);
+                DateTime d2 = DateTime.FromOADate(0);
+                bool inDateRegion = false;
+                for (int j = 0; j < values.Length; j++)
                 {
-                    oneDimValues[i] = cellValues[1, i+1];
-                }
-            }
-            
-            //Determine if the values are datetimes
-            bool[] isSchedule = new bool[oneDimValues.Length];      //determine how much of the selection is a schedule and autopop from those
-            DateTime[] existingDateTimes = new DateTime[oneDimValues.Length];
-            for(int i = 0; i < oneDimValues.Length; i++)
-            {
-                if(oneDimValues[i] != null && DateTime.TryParse(oneDimValues[i].ToString(), out DateTime dt))
-                {
-                    isSchedule[i] = true;
-                    existingDateTimes[i] = dt;
-                }
-                else if (oneDimValues[i] != null && Double.TryParse(oneDimValues[i].ToString(), out double dt_double))
-                {
-                    DateTime dt2 = DateTime.FromOADate(dt_double);
-                    if (dt2.Year >= 1950 && dt2.Year <= 2100)
+                    if (values[j] == null)
+                        continue;
+                    if (DateTime.TryParse(values[j].ToString(), out DateTime dt))
                     {
-                        //If the year makes sense, assume it's a date
-                        isSchedule[i] = true;
-                        existingDateTimes[i] = dt2;
+                        inDateRegion = true;
+                        if (firstIndex == values.Length)
+                        {
+                            d1 = dt;
+                            firstIndex = j;
+                        }
+                        if (firstIndex != values.Length)
+                        {
+                            d2 = dt;
+                            lastIndex = j;
+                        }
                     }
-                    else
-                        isSchedule[i] = false;
+                    else if (inDateRegion == true)
+                    {
+                        break;
+                    }
+                }
+                if (d1.ToOADate() != 0 && d2.ToOADate() != 0 && d2.ToOADate() >= d1.ToOADate())
+                {
+                    dateTimePicker_Start.Value = d1;
+                    dateTimePicker_End.Value = d2;
+                    return true;
                 }
                 else
                 {
-                    isSchedule[i] = false;
+                    return false;
                 }
             }
-
-            //CONVERT OneDimValues into an array of midpoints, then construct them with Scheduler.ConstructFromMidpoints
-            //Use the constructed Scheduler to fill out the form
-            List<DateTime> midpoints = new List<DateTime>();
-            int firstScheduleIndex = -1;
-            int lastScheduleIndex = -1;
-            for (int i = 0; i < oneDimValues.Length; i++)
-            {
-                //Find the indexes of the first contiguous range of schedule values in oneDimValues
-                if (isSchedule[i] && firstScheduleIndex == -1)
-                    firstScheduleIndex = i;
-                else if (!isSchedule[i] && firstScheduleIndex > -1)
-                    lastScheduleIndex = i-1;
-            }
-            if (firstScheduleIndex > -1 && lastScheduleIndex == -1)
-            {
-                lastScheduleIndex = oneDimValues.Length - 1;
-            }
-            if(firstScheduleIndex > -1 && lastScheduleIndex > -1)
-            { 
-                for (int i = firstScheduleIndex; i <= lastScheduleIndex; i++)
-                {
-                    midpoints.Add(existingDateTimes[i]);
-                }
-                Scheduler loadScheduler = Scheduler.ConstructFromMidpoints(midpoints.ToArray());
-                this.dateTimePicker_Start.Value = loadScheduler.GetEndpoints().First();
-                this.dateTimePicker_End.Value = loadScheduler.GetEndpoints().Last();
-                this.comboBox_IntervalLength.Text = loadScheduler.GetIntervalLength().ToString();
-                this.comboBox_IntervalType.Text = loadScheduler.GetIntervalTypeString();
-                return true;
-            }
-            else
+            catch
             {
                 return false;
             }
         }
+
+        private void PopulateCombobox_Periods()
+        {
+            for(int i = 1; i <= 5000; i++)
+            {
+                comboBox_Periods.Items.Add(i);
+            }
+        }
+        
         private void PopulateCombobox()
         {
             comboBox_IntervalType.Items.Add("Days");
@@ -239,8 +205,22 @@ namespace DNA_Test.Scheduler
                 isVertical = false;
             }
             int points = scheduler.GetMidpoints().Length;
+
+            if (points > cellsLength)
+            {
+                DialogResult dlgRst = MessageBox.Show($"Selection was not large enough to place all {points} schedule values. Expand selection to place full schedule?", "Expand Range?", MessageBoxButtons.YesNo);
+                if (dlgRst == DialogResult.Yes)
+                {
+                    if (isVertical)
+                        selection = selection.Resize[points, 1];
+                    else
+                        selection = selection.Resize[1, points];
+                }
+                cellValues = new object[selection.Cells.Rows.Count, selection.Cells.Columns.Count];
+            }
+            
             //Overwrite cellValues array with the schedule values -- if too many cells are selected, just fill the ones you need
-            for(int i = 0; i < Math.Min(cellsLength, points); i++)
+            for(int i = 0; i < Math.Min(selection.Cells.Count, scheduler.GetMidpoints().Count()); i++)
             {
                 if (isVertical)
                     cellValues[i, 0] = scheduler.GetMidpoints()[i].ToOADate().ToString();
@@ -252,16 +232,166 @@ namespace DNA_Test.Scheduler
             selection.NumberFormat = "MM/dd/yyyy HH:mm:ss";
             this.Close();
             //Check the array to make sure it's big enough to handle the schedule -- warn user if not all values are printed
-            if (points > cellsLength)
-            {
-                MessageBox.Show("Selection was not large enough to place all schedule values");
-            }
+            
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-        
+
+        private void radioButton_SpecifyPeriods_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton_SpecifyPeriods.Checked)
+            {
+                this.dateTimePicker_End.Enabled = false;
+                this.comboBox_Periods.Enabled = true;
+
+            }
+            
+        }
+
+        private void radioButton_SpecifyDate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton_SpecifyDate.Checked)
+            {
+                this.dateTimePicker_End.Enabled = true;
+                this.comboBox_Periods.Enabled = false;
+            }
+            
+        }
+
+        private void comboBox_IntervalType_SelectedValueChanged(object sender, EventArgs e)
+        {
+            UpdatePeriods();
+        }
+
+        private void comboBox_IntervalLength_SelectedValueChanged(object sender, EventArgs e)
+        {
+            UpdatePeriods();
+        }
+
+        private void UpdatePeriods()
+        {
+            if (comboBox_IntervalLength.Text == null)
+                return;
+            if (!int.TryParse(comboBox_IntervalLength.Text, out int intervalLength))
+                return;
+            double totalDays = (dateTimePicker_End.Value - dateTimePicker_Start.Value).TotalDays;
+            //Recalculate the Period combo value
+            int period;
+            switch (comboBox_IntervalType.Text)
+            {
+                case "Days":
+                    period = Convert.ToInt32(totalDays / intervalLength);
+                    if (period >= 1)
+                        comboBox_Periods.SelectedIndex = period - 1;
+                    else
+                        comboBox_Periods.Text = "0";
+                    break;
+                case "Weeks":
+                    period = Convert.ToInt32(totalDays / 7 / intervalLength);
+                    if (period >= 1)
+                        comboBox_Periods.SelectedIndex = period - 1;
+                    else
+                        comboBox_Periods.Text = "0";
+                    break;
+                case "Months":
+                    DateTime checkDate;
+                    for(int i = 0; i < 12000; i++)
+                    {
+                        checkDate = dateTimePicker_Start.Value.AddMonths(i);
+                        if (checkDate.ToOADate() == dateTimePicker_End.Value.ToOADate())
+                        {
+                            if (i >= 1)
+                                comboBox_Periods.SelectedIndex = i - 1;
+                            else
+                                comboBox_Periods.Text = "0";
+                            break;
+                        }
+                        else if (checkDate.ToOADate() > dateTimePicker_End.Value.ToOADate())
+                        {
+                            if (i >= 2)
+                                comboBox_Periods.SelectedIndex = i - 2;
+                            else if (i >= 1)
+                                comboBox_Periods.SelectedIndex = i - 1;
+                            else
+                                comboBox_Periods.Text = "0";
+                            break;
+                        }
+                    }
+                    break;
+                case "Years":
+                    //These are going to require adding years until a greater oadate is reached
+                    DateTime checkDate2;
+                    for (int i = 0; i < 12000; i++)
+                    {
+                        checkDate2 = dateTimePicker_Start.Value.AddYears(i);
+                        if (checkDate2.ToOADate() == dateTimePicker_End.Value.ToOADate())
+                        {
+                            if(i >= 1)
+                                comboBox_Periods.SelectedIndex = i - 1;
+                            else
+                                comboBox_Periods.Text = "0";
+                            break;
+                        }
+                        else if (checkDate2.ToOADate() > dateTimePicker_End.Value.ToOADate())
+                        {
+                            if (i >= 2)
+                                comboBox_Periods.SelectedIndex = i - 2;
+                            else
+                                comboBox_Periods.Text = "0";
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void dateTimePicker_End_ValueChanged(object sender, EventArgs e)
+        {
+            if(dateTimePicker_End.Enabled)
+                UpdatePeriods();
+        }
+
+        private void dateTimePicker_Start_ValueChanged(object sender, EventArgs e)
+        {
+            UpdatePeriods();
+        }
+
+        private void comboBox_Periods_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!comboBox_Periods.Enabled)      //Only run this when it's enabled.
+                return;
+            //Update the end date when the periods are manually changed
+            if (!int.TryParse(comboBox_Periods.Text, out int periods))
+                return;
+            DateTime startDate = dateTimePicker_Start.Value;
+            if (comboBox_IntervalLength.Text == null)
+                return;
+            if (!int.TryParse(comboBox_IntervalLength.Text, out int intervalLength))
+                return;
+            double totalDays = (dateTimePicker_End.Value - dateTimePicker_Start.Value).TotalDays;
+            //Recalculate the Period combo value
+            switch (comboBox_IntervalType.Text)
+            {
+                case "Days":
+                    dateTimePicker_End.Value = startDate.AddDays(periods * intervalLength);
+                    break;
+                case "Weeks":
+                    dateTimePicker_End.Value = startDate.AddDays(periods * 7 * intervalLength);
+                    break;
+                case "Months":
+                    dateTimePicker_End.Value = startDate.AddMonths(periods * intervalLength);
+                    break;
+                case "Years":
+                    dateTimePicker_End.Value = startDate.AddYears(periods * intervalLength);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
