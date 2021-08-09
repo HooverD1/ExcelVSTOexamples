@@ -39,12 +39,12 @@
             this.radioButton_SpecifyDate = new System.Windows.Forms.RadioButton();
             this.radioButton_SpecifyPeriods = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.comboBox_Periods = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_IntervalLength = new System.Windows.Forms.ComboBox();
             this.comboBox_IntervalType = new System.Windows.Forms.ComboBox();
+            this.textBox_Periods = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -161,7 +161,7 @@
             this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel2.Controls.Add(this.comboBox_Periods);
+            this.flowLayoutPanel2.Controls.Add(this.textBox_Periods);
             this.flowLayoutPanel2.Controls.Add(this.label4);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(6, 199);
@@ -169,23 +169,12 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(299, 41);
             this.flowLayoutPanel2.TabIndex = 12;
             // 
-            // comboBox_Periods
-            // 
-            this.comboBox_Periods.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.comboBox_Periods.Enabled = false;
-            this.comboBox_Periods.FormattingEnabled = true;
-            this.comboBox_Periods.Location = new System.Drawing.Point(210, 3);
-            this.comboBox_Periods.Name = "comboBox_Periods";
-            this.comboBox_Periods.Size = new System.Drawing.Size(86, 24);
-            this.comboBox_Periods.TabIndex = 8;
-            this.comboBox_Periods.SelectedValueChanged += new System.EventHandler(this.comboBox_Periods_SelectedValueChanged);
-            // 
             // label4
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(133, 5);
+            this.label4.Location = new System.Drawing.Point(119, 4);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(71, 20);
             this.label4.TabIndex = 7;
@@ -219,7 +208,7 @@
             // 
             this.comboBox_IntervalLength.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.comboBox_IntervalLength.FormattingEnabled = true;
-            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 3);
+            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 4);
             this.comboBox_IntervalLength.Name = "comboBox_IntervalLength";
             this.comboBox_IntervalLength.Size = new System.Drawing.Size(65, 24);
             this.comboBox_IntervalLength.TabIndex = 8;
@@ -235,6 +224,14 @@
             this.comboBox_IntervalType.Size = new System.Drawing.Size(121, 26);
             this.comboBox_IntervalType.TabIndex = 5;
             this.comboBox_IntervalType.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalType_SelectedValueChanged);
+            // 
+            // textBox_Periods
+            // 
+            this.textBox_Periods.Location = new System.Drawing.Point(196, 3);
+            this.textBox_Periods.Name = "textBox_Periods";
+            this.textBox_Periods.Size = new System.Drawing.Size(100, 22);
+            this.textBox_Periods.TabIndex = 9;
+            this.textBox_Periods.TextChanged += new System.EventHandler(this.textBox_Periods_TextChanged);
             // 
             // SchedulerForm
             // 
@@ -272,9 +269,9 @@
         private System.Windows.Forms.ComboBox comboBox_IntervalLength;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox_Periods;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.RadioButton radioButton_SpecifyDate;
         private System.Windows.Forms.RadioButton radioButton_SpecifyPeriods;
+        private System.Windows.Forms.TextBox textBox_Periods;
     }
 }

@@ -48,5 +48,45 @@ namespace Primer
             }
                 
         }
+        [ExcelCommand(ShortCut = "^{F6}")]
+        public static void AutoBucketData()
+        {
+            Excel.Range selection = DNA_Test.MyAddin.MyApp.Selection;
+            
+            object[,] data = selection.Value;
+            DateTime[] dates = new DateTime[data.GetLength(0)];
+            double[] values = new double[data.GetLength(0)];
+            for (int r = 1; r <= data.GetLength(0); r++)
+            {
+                if(DateTime.TryParse(data[r, 1].ToString(), out DateTime dt))
+                    dates[r - 1] = dt;
+                if(double.TryParse(data[r,2].ToString(), out double dbl))
+                    values[r - 1] = dbl;
+            }
+            DNA_Test.Bucketer bucketer = new DNA_Test.Bucketer();
+            var optimalBuckets = bucketer.AutoBucket(dates, values, DNA_Test.Optimizers.ScheduleOptimizer, true);
+            var optimalSchedule = bucketer.OptimalSchedule;
+            double optimalScore = bucketer.OptimalScore;
+        }
+
+        [ExcelCommand(ShortCut = "^{F1}")]
+        public static void FakeData()
+        {
+            int datapoints = 100000;
+            Accord.Statistics.Distributions.Univariate.NormalDistribution normDist = new Accord.Statistics.Distributions.Univariate.NormalDistribution(10, 1);
+            Excel.Worksheet sheet = DNA_Test.MyAddin.MyApp.ActiveSheet;
+            DateTime[,] dates = new DateTime[datapoints,1];
+            double[,] values = new double[datapoints, 1];
+            Random rando = new Random();
+            for(int i = 0; i < datapoints; i++)
+            {
+                dates[i,0] = DateTime.Today.AddDays(rando.Next(365*10));
+                values[i, 0] = normDist.Generate();
+            }
+            sheet.Range[$"A1:A{datapoints}"].Value = dates;
+            sheet.Range[$"A1:A{datapoints}"].NumberFormat = "MM/DD/YYYY";
+            sheet.Range[$"B1:B{datapoints}"].Value = values;
+            sheet.Range[$"A1:B{datapoints}"].Select();
+        }
     }
 }

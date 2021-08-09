@@ -24,7 +24,7 @@ namespace DNA_Test.Scheduler
             dateTimePicker_End.Format = DateTimePickerFormat.Custom;
             dateTimePicker_End.CustomFormat = "MMM d, yyyy HH:mm:ss";
             PopulateCombobox();
-            PopulateCombobox_Periods();
+            
             if (!AutoPopulate())
             {
                 //Defaults
@@ -34,6 +34,9 @@ namespace DNA_Test.Scheduler
             }
             comboBox_IntervalLength.Text = "";
             comboBox_IntervalType.SelectedIndex = 0;
+
+            textBox_Periods.Enabled = false;
+            textBox_Periods.Text = (dateTimePicker_End.Value - dateTimePicker_Start.Value).TotalDays.ToString();
         }
         public bool VerifySingleDimension()
         {
@@ -104,14 +107,6 @@ namespace DNA_Test.Scheduler
             }
         }
 
-        private void PopulateCombobox_Periods()
-        {
-            for(int i = 1; i <= 5000; i++)
-            {
-                comboBox_Periods.Items.Add(i);
-            }
-        }
-        
         private void PopulateCombobox()
         {
             comboBox_IntervalType.Items.Add("Days");
@@ -205,16 +200,28 @@ namespace DNA_Test.Scheduler
                 isVertical = false;
             }
             int points = scheduler.GetMidpoints().Length;
+            if(points > 10000)
+            {
+                MessageBox.Show("Cannot place a schedule of over 10,000 dates.");
+                return;
+            }
 
             if (points > cellsLength)
             {
                 DialogResult dlgRst = MessageBox.Show($"Selection was not large enough to place all {points} schedule values. Expand selection to place full schedule?", "Expand Range?", MessageBoxButtons.YesNo);
                 if (dlgRst == DialogResult.Yes)
                 {
-                    if (isVertical)
-                        selection = selection.Resize[points, 1];
-                    else
-                        selection = selection.Resize[1, points];
+                    try
+                    {
+                        if (isVertical)
+                            selection = selection.Resize[points, 1];
+                        else
+                            selection = selection.Resize[1, points];
+                    }
+                    catch(System.Runtime.InteropServices.COMException)
+                    {
+                        MessageBox.Show("Selection cannot be expanded");
+                    }
                 }
                 cellValues = new object[selection.Cells.Rows.Count, selection.Cells.Columns.Count];
             }
@@ -230,6 +237,7 @@ namespace DNA_Test.Scheduler
             //Return the array to the .Value property
             selection.Value = cellValues;
             selection.NumberFormat = "MM/dd/yyyy HH:mm:ss";
+            
             this.Close();
             //Check the array to make sure it's big enough to handle the schedule -- warn user if not all values are printed
             
@@ -245,7 +253,7 @@ namespace DNA_Test.Scheduler
             if (radioButton_SpecifyPeriods.Checked)
             {
                 this.dateTimePicker_End.Enabled = false;
-                this.comboBox_Periods.Enabled = true;
+                this.textBox_Periods.Enabled = true;
 
             }
             
@@ -256,23 +264,62 @@ namespace DNA_Test.Scheduler
             if (radioButton_SpecifyDate.Checked)
             {
                 this.dateTimePicker_End.Enabled = true;
-                this.comboBox_Periods.Enabled = false;
+                this.textBox_Periods.Enabled = false;
             }
             
         }
 
         private void comboBox_IntervalType_SelectedValueChanged(object sender, EventArgs e)
         {
-            UpdatePeriods();
+            if (radioButton_SpecifyDate.Checked)
+                UpdatePeriods();
+            else if (radioButton_SpecifyPeriods.Checked)
+                UpdateEndDate();
+            else
+                throw new Exception("Radio button selection error");
         }
 
         private void comboBox_IntervalLength_SelectedValueChanged(object sender, EventArgs e)
         {
-            UpdatePeriods();
+            if (radioButton_SpecifyDate.Checked)
+                UpdatePeriods();
+            else if (radioButton_SpecifyPeriods.Checked)
+                UpdateEndDate();
+            else
+                throw new Exception("Radio button selection error");
+        }
+
+        private void UpdateEndDate()
+        {
+            //ASSUME PERIODS IS TRUE
+            if (comboBox_IntervalLength.Text == null)
+                return;
+            if (!int.TryParse(comboBox_IntervalLength.Text, out int intervalLength))
+                return;
+            if (!int.TryParse(textBox_Periods.Text, out int periods))
+                return; //If the periods box doesn't contain an integer, just do nothing
+            switch (comboBox_IntervalType.Text)
+            {
+                case "Days":
+                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddDays(periods * intervalLength);
+                    break;
+                case "Weeks":
+                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddDays(periods * intervalLength * 7);
+                    break;
+                case "Months":
+                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddMonths(periods * intervalLength);
+                    break;
+                case "Years":
+                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddYears(periods * intervalLength);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void UpdatePeriods()
         {
+            //ASSUME END DATE IS TRUE
             if (comboBox_IntervalLength.Text == null)
                 return;
             if (!int.TryParse(comboBox_IntervalLength.Text, out int intervalLength))
@@ -285,16 +332,16 @@ namespace DNA_Test.Scheduler
                 case "Days":
                     period = Convert.ToInt32(totalDays / intervalLength);
                     if (period >= 1)
-                        comboBox_Periods.SelectedIndex = period - 1;
+                        textBox_Periods.Text = period.ToString();
                     else
-                        comboBox_Periods.Text = "0";
+                        textBox_Periods.Text = "0";
                     break;
                 case "Weeks":
                     period = Convert.ToInt32(totalDays / 7 / intervalLength);
                     if (period >= 1)
-                        comboBox_Periods.SelectedIndex = period - 1;
+                        textBox_Periods.Text = period.ToString();
                     else
-                        comboBox_Periods.Text = "0";
+                        textBox_Periods.Text = "0";
                     break;
                 case "Months":
                     DateTime checkDate;
@@ -304,19 +351,19 @@ namespace DNA_Test.Scheduler
                         if (checkDate.ToOADate() == dateTimePicker_End.Value.ToOADate())
                         {
                             if (i >= 1)
-                                comboBox_Periods.SelectedIndex = i - 1;
+                                textBox_Periods.Text = i.ToString();
                             else
-                                comboBox_Periods.Text = "0";
+                                textBox_Periods.Text = "0";
                             break;
                         }
                         else if (checkDate.ToOADate() > dateTimePicker_End.Value.ToOADate())
                         {
                             if (i >= 2)
-                                comboBox_Periods.SelectedIndex = i - 2;
+                                textBox_Periods.Text = (i - 1).ToString();
                             else if (i >= 1)
-                                comboBox_Periods.SelectedIndex = i - 1;
+                                textBox_Periods.Text = i.ToString();
                             else
-                                comboBox_Periods.Text = "0";
+                                textBox_Periods.Text = "0";
                             break;
                         }
                     }
@@ -330,17 +377,17 @@ namespace DNA_Test.Scheduler
                         if (checkDate2.ToOADate() == dateTimePicker_End.Value.ToOADate())
                         {
                             if(i >= 1)
-                                comboBox_Periods.SelectedIndex = i - 1;
+                                textBox_Periods.Text = i.ToString();
                             else
-                                comboBox_Periods.Text = "0";
+                                textBox_Periods.Text = "0";
                             break;
                         }
                         else if (checkDate2.ToOADate() > dateTimePicker_End.Value.ToOADate())
                         {
                             if (i >= 2)
-                                comboBox_Periods.SelectedIndex = i - 2;
+                                textBox_Periods.Text = (i - 1).ToString();
                             else
-                                comboBox_Periods.Text = "0";
+                                textBox_Periods.Text = "0";
                             break;
                         }
                     }
@@ -363,10 +410,15 @@ namespace DNA_Test.Scheduler
 
         private void comboBox_Periods_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (!comboBox_Periods.Enabled)      //Only run this when it's enabled.
+            
+        }
+
+        private void textBox_Periods_TextChanged(object sender, EventArgs e)
+        {
+            if (!textBox_Periods.Enabled)      //Only run this when it's enabled.
                 return;
             //Update the end date when the periods are manually changed
-            if (!int.TryParse(comboBox_Periods.Text, out int periods))
+            if (!int.TryParse(textBox_Periods.Text, out int periods))
                 return;
             DateTime startDate = dateTimePicker_Start.Value;
             if (comboBox_IntervalLength.Text == null)

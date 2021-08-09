@@ -15,6 +15,12 @@ namespace DNA_Test.Scheduler
             Monthly,
             Yearly
         }
+
+        private const int MaxDays = 365;
+        private const int MaxWeeks = 52;
+        private const int MaxMonths = 36;
+        private const int MaxYears = 40;
+
         private Interval? IntervalType { get; set; } = null;
         private double IntervalLength { get; set; }
         protected DateTime StartDate { get; set; }
@@ -32,6 +38,10 @@ namespace DNA_Test.Scheduler
             EndDate = DateTime.FromOADate(endDate);
             this.IntervalLength = intervalLength;
             this.IntervalType = intervalType;
+            if(IntervalType != Interval.Daily && intervalLength % 1 != 0)
+            {
+                throw new Exception("Cannot use decimal interval lengths for non-daily interval types");
+            }
             if (DateTime.Compare(StartDate, EndDate) > 0)
             {
                 throw new Exception("Start date occurs on or after end date");
@@ -262,6 +272,23 @@ namespace DNA_Test.Scheduler
                     return "Years";
                 default:
                     throw new Exception("Unknown interval type");
+            }
+        }
+
+        public static int GetMaximumReasonablePeriods(Interval intType)
+        {
+            switch (intType)
+            {
+                case Interval.Daily:
+                    return MaxDays;
+                case Interval.Weekly:
+                    return MaxWeeks;
+                case Interval.Monthly:
+                    return MaxMonths;
+                case Interval.Yearly:
+                    return MaxYears;
+                default:
+                    throw new Exception("Unknown interval type.");
             }
         }
     }
