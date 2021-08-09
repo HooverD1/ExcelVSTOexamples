@@ -405,7 +405,13 @@ namespace DNA_Test.Scheduler
 
         private void dateTimePicker_Start_ValueChanged(object sender, EventArgs e)
         {
-            UpdatePeriods();
+            UpdateEndDate();
+            //Verify that the selection is not past the 28th -- if so, move it to the 28th
+            if (dateTimePicker_Start.Value.Day > 28)
+            {
+                DateTime startDate = dateTimePicker_Start.Value;
+                dateTimePicker_Start.Value = new DateTime(startDate.Year, startDate.Month, 28);
+            }
         }
 
         private void comboBox_Periods_SelectedValueChanged(object sender, EventArgs e)
