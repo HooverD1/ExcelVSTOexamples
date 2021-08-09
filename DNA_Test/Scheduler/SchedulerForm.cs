@@ -265,8 +265,7 @@ namespace DNA_Test.Scheduler
             {
                 this.dateTimePicker_End.Enabled = true;
                 this.textBox_Periods.Enabled = false;
-            }
-            
+            }            
         }
 
         private void comboBox_IntervalType_SelectedValueChanged(object sender, EventArgs e)
@@ -277,6 +276,12 @@ namespace DNA_Test.Scheduler
                 UpdateEndDate();
             else
                 throw new Exception("Radio button selection error");
+
+            if ((comboBox_IntervalType.Text == "Months" || comboBox_IntervalType.Text == "Years") && dateTimePicker_Start.Value.Day > 28)
+            {
+                DateTime startDate = dateTimePicker_Start.Value;
+                dateTimePicker_Start.Value = new DateTime(startDate.Year, startDate.Month, 28);
+            }
         }
 
         private void comboBox_IntervalLength_SelectedValueChanged(object sender, EventArgs e)
@@ -407,7 +412,7 @@ namespace DNA_Test.Scheduler
         {
             UpdateEndDate();
             //Verify that the selection is not past the 28th -- if so, move it to the 28th
-            if (dateTimePicker_Start.Value.Day > 28)
+            if ((comboBox_IntervalType.Text == "Months" || comboBox_IntervalType.Text == "Years") && dateTimePicker_Start.Value.Day > 28)
             {
                 DateTime startDate = dateTimePicker_Start.Value;
                 dateTimePicker_Start.Value = new DateTime(startDate.Year, startDate.Month, 28);
