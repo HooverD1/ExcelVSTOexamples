@@ -35,7 +35,7 @@ namespace DNA_Test
             //Take dates and paired values, determine the best fit with the input fitting function??, return a tuple of bucket midpoints and paired bucket sums
             OptimalScore = 0;
             int iterationCount = 0;
-            foreach (DNA_Test.Scheduler.Scheduler.Interval iType in (DNA_Test.Scheduler.Scheduler.Interval[])Enum.GetValues(typeof(DNA_Test.Scheduler.Scheduler.Interval)))
+            foreach (Scheduler.Scheduler.Interval iType in (DNA_Test.Scheduler.Scheduler.Interval[])Enum.GetValues(typeof(Scheduler.Scheduler.Interval)))
             {
                 for (int iLen = 1; iLen <= Scheduler.Scheduler.GetMaximumReasonablePeriods(iType); iLen++)
                 {
@@ -46,7 +46,7 @@ namespace DNA_Test
                     if (midpoints.Length <= 1)
                     {
                         break;
-                        //Once the length is so long that it puts everything in one bucket, checking longer lengths is not productive...
+                        //Once the interval is so long that it puts everything in one bucket, checking longer lengths is not productive...
                         //...Break the inner loop and move on to the next iType
                     }
                     
@@ -71,19 +71,23 @@ namespace DNA_Test
             double[] bucketSums_Saved = OptimalBuckets;
 
             totalWatch.Stop();
-            MessageBox.Show($"Sort time: {sortWatch.ElapsedMilliseconds} ms \n" +
+            MessageBox.Show($"Iterations: {iterationCount}\n" +
+                $"Sort time: {sortWatch.ElapsedMilliseconds} ms \n" +
                 $"Scheduler time: {scheduleWatch.ElapsedMilliseconds} ms\n" +
-                $"Bucketing time: {bucketWatch.ElapsedMilliseconds} ms; {iterationCount} iterations\n" +
+                $"Bucketing time: {bucketWatch.ElapsedMilliseconds} ms\n" +
                 $"Total time: {totalWatch.ElapsedMilliseconds} ms");
             return new Tuple<DateTime[], double[]>(midpoints_Saved, bucketSums_Saved);
         }
 
         public static double[] BucketToSchedule(DateTime[] dates, double[] values, Scheduler.Scheduler schedule, bool sort=false)
         {
+            //System.Diagnostics.Stopwatch whileWatch = new System.Diagnostics.Stopwatch();
+            //System.Diagnostics.Stopwatch bucketWatch = new System.Diagnostics.Stopwatch();
+            //bucketWatch.Start();
             //This function runs in roughly 20 - 40ms
             //Take dates and values and bucket them according to a schedule
             int midpoints = schedule.GetMidpoints().Count();
-            double[] bucketSum = new double[schedule.GetMidpoints().Length];
+            double[] bucketSum = new double[midpoints];
             if(sort)
             {
                 Array.Sort(dates, values);      //(Keys, Values)
@@ -93,14 +97,20 @@ namespace DNA_Test
             for(int v = 0; v < values.Length; v++)
             {
                 //Assumes the data is ordered
-                if(bucketIndex < schedule.GetMidpoints().Count() - 1)      //This puts the last point, which is always the end date, into the last bucket
+                //whileWatch.Start();
+                if (bucketIndex < midpoints - 1)      //This puts the last point, which is always the end date, into the last bucket
                 {
+                    
                     while (DateTime.Compare(dates[v], schedule.GetEndpoints()[bucketIndex]) > 0 && bucketIndex < midpoints - 1)
                         bucketIndex++;
+                    
                 }
+                //whileWatch.Stop();
                 bucketSum[bucketIndex] += values[v];
             }
-            
+            //bucketWatch.Stop();
+            //MessageBox.Show($"While Watch: {whileWatch.ElapsedMilliseconds} ms");
+            //MessageBox.Show($"Bucket Watch: {bucketWatch.ElapsedMilliseconds} ms");
             return bucketSum;
         }
 
