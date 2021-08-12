@@ -64,7 +64,8 @@ namespace Primer
                     values[r - 1] = dbl;
             }
             DNA_Test.Bucketer bucketer = new DNA_Test.Bucketer();
-            var optimalBuckets = bucketer.AutoBucket(dates, values, DNA_Test.Optimizers.ScheduleOptimizer, true);
+            List<DNA_Test.Optimizers.OptimizerFunction> optimizers = new List<DNA_Test.Optimizers.OptimizerFunction> { DNA_Test.Optimizers.ScheduleOptimizer };
+            var optimalBuckets = bucketer.AutoBucket(dates, values, optimizers, true);
             var optimalSchedule = bucketer.OptimalSchedule;
             double optimalScore = bucketer.OptimalScore;
         }

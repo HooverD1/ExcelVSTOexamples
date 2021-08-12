@@ -13,6 +13,7 @@ namespace DNA_Test.Scheduler
 {
     public partial class SchedulerForm : Form
     {
+        private bool specifyDate { get; set; } = true;
         public SchedulerForm()
         {
             //Auto-populate the form from the selection if pertinent
@@ -35,7 +36,6 @@ namespace DNA_Test.Scheduler
             comboBox_IntervalLength.Text = "";
             comboBox_IntervalType.SelectedIndex = 0;
 
-            textBox_Periods.Enabled = false;
             textBox_Periods.Text = (dateTimePicker_End.Value - dateTimePicker_Start.Value).TotalDays.ToString();
         }
         public bool VerifySingleDimension()
@@ -248,31 +248,11 @@ namespace DNA_Test.Scheduler
             this.Close();
         }
 
-        private void radioButton_SpecifyPeriods_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton_SpecifyPeriods.Checked)
-            {
-                this.dateTimePicker_End.Enabled = false;
-                this.textBox_Periods.Enabled = true;
-
-            }
-            
-        }
-
-        private void radioButton_SpecifyDate_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton_SpecifyDate.Checked)
-            {
-                this.dateTimePicker_End.Enabled = true;
-                this.textBox_Periods.Enabled = false;
-            }            
-        }
-
         private void comboBox_IntervalType_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (radioButton_SpecifyDate.Checked)
+            if (specifyDate)
                 UpdatePeriods();
-            else if (radioButton_SpecifyPeriods.Checked)
+            else if (!specifyDate)
                 UpdateEndDate();
             else
                 throw new Exception("Radio button selection error");
@@ -286,12 +266,10 @@ namespace DNA_Test.Scheduler
 
         private void comboBox_IntervalLength_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (radioButton_SpecifyDate.Checked)
+            if (specifyDate)
                 UpdatePeriods();
-            else if (radioButton_SpecifyPeriods.Checked)
-                UpdateEndDate();
             else
-                throw new Exception("Radio button selection error");
+                UpdateEndDate();
         }
 
         private void UpdateEndDate()
@@ -404,7 +382,7 @@ namespace DNA_Test.Scheduler
 
         private void dateTimePicker_End_ValueChanged(object sender, EventArgs e)
         {
-            if(dateTimePicker_End.Enabled)
+            if(specifyDate == true)
                 UpdatePeriods();
         }
 
@@ -426,7 +404,7 @@ namespace DNA_Test.Scheduler
 
         private void textBox_Periods_TextChanged(object sender, EventArgs e)
         {
-            if (!textBox_Periods.Enabled)      //Only run this when it's enabled.
+            if (specifyDate == true) 
                 return;
             //Update the end date when the periods are manually changed
             if (!int.TryParse(textBox_Periods.Text, out int periods))
@@ -455,6 +433,16 @@ namespace DNA_Test.Scheduler
                 default:
                     break;
             }
+        }
+
+        private void textBox_Periods_MouseClick(object sender, MouseEventArgs e)
+        {
+            specifyDate = false;
+        }
+
+        private void dateTimePicker_End_MouseUp(object sender, MouseEventArgs e)
+        {
+            specifyDate = true;
         }
     }
 }

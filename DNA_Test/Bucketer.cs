@@ -12,9 +12,10 @@ namespace DNA_Test
         public Scheduler.Scheduler OptimalSchedule { get; set; } = null;
         public double OptimalScore { get; set; }        // Ranges 0.0 - 1.0 where 1.0 is perfect.
         public double[] OptimalBuckets { get; set; }
+        public Dictionary<string, dynamic> OptimalResult {get;set;}
         //Returns value from 0 - 1 to denote how optimal the schedule-defined buckets are in matching the data
-        public delegate double OptimizerFunction(DateTime[] dt, double[] db, Scheduler.Scheduler schedule);     
-        public Tuple<DateTime[], double[]> AutoBucket(DateTime[] dates, double[] values, OptimizerFunction optimizer, bool sort = false)
+        
+        public Tuple<DateTime[], double[]> AutoBucket(DateTime[] dates, double[] values, List<Optimizers.OptimizerFunction> optimizers, bool sort = false)
         {
             //Bucketing time: ~14ms per BucketToSchedule -- ~7,000ms at 100,000 datapoints and 10 year duration
             //Schedule time: ~3 - 5ms @ 10 years -- This varies by the duration of the period (calculating mid/endpoints)
@@ -22,6 +23,7 @@ namespace DNA_Test
             System.Diagnostics.Stopwatch bucketWatch = new System.Diagnostics.Stopwatch();
             System.Diagnostics.Stopwatch scheduleWatch = new System.Diagnostics.Stopwatch();
             System.Diagnostics.Stopwatch sortWatch = new System.Diagnostics.Stopwatch();
+            System.Diagnostics.Stopwatch optimizeWatch = new System.Diagnostics.Stopwatch();
             System.Diagnostics.Stopwatch totalWatch = new System.Diagnostics.Stopwatch();
             totalWatch.Start();
             sortWatch.Start();
@@ -43,7 +45,7 @@ namespace DNA_Test
                     Scheduler.Scheduler schedule = new Scheduler.Scheduler(iLen, iType, startDate, endDate);
                     DateTime[] midpoints = schedule.GetMidpoints();
                     scheduleWatch.Stop();
-                    if (midpoints.Length <= 1)
+                    if (midpoints.Length < 3)
                     {
                         break;
                         //Once the interval is so long that it puts everything in one bucket, checking longer lengths is not productive...
@@ -54,13 +56,24 @@ namespace DNA_Test
                     double[] bucketSums = BucketToSchedule(dates, values, schedule);
                     bucketWatch.Stop();
                     iterationCount++;
-                    double result = optimizer(midpoints, bucketSums, schedule);
-                    if (result > OptimalScore)
+                    optimizeWatch.Start();
+                    List<Dictionary<string, dynamic>> results = new List<Dictionary<string, dynamic>>();
+                    foreach(Optimizers.OptimizerFunction optimizer in optimizers)
                     {
-                        //Save the best result found
-                        OptimalScore = result;
-                        OptimalSchedule = schedule;
-                        OptimalBuckets = bucketSums;
+                        //Run all the passed in optimizing functions here
+                        //Each optimizer tests a regression type against the schedule
+                        results.Add(optimizer(midpoints, bucketSums, schedule));
+                    }
+                    optimizeWatch.Stop();
+                    if (!results.Any())
+                        throw new Exception("No optimizers loaded");
+                    foreach(Dictionary<string, dynamic> result in results)
+                    {
+                        if (result["Score"] > OptimalScore)
+                        {
+                            //Save the best result found
+                            OptimalResult = result;
+                        }
                     }
                 }
             }
@@ -75,6 +88,7 @@ namespace DNA_Test
                 $"Sort time: {sortWatch.ElapsedMilliseconds} ms \n" +
                 $"Scheduler time: {scheduleWatch.ElapsedMilliseconds} ms\n" +
                 $"Bucketing time: {bucketWatch.ElapsedMilliseconds} ms\n" +
+                $"Optimizer time: {optimizeWatch.ElapsedMilliseconds} ms\n" +
                 $"Total time: {totalWatch.ElapsedMilliseconds} ms");
             return new Tuple<DateTime[], double[]>(midpoints_Saved, bucketSums_Saved);
         }

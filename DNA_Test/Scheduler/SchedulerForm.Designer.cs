@@ -35,18 +35,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.radioButton_SpecifyDate = new System.Windows.Forms.RadioButton();
-            this.radioButton_SpecifyPeriods = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.textBox_Periods = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_IntervalLength = new System.Windows.Forms.ComboBox();
             this.comboBox_IntervalType = new System.Windows.Forms.ComboBox();
-            this.textBox_Periods = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +69,7 @@
             // 
             // dateTimePicker_Start
             // 
+            this.dateTimePicker_Start.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker_Start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker_Start.Location = new System.Drawing.Point(6, 116);
             this.dateTimePicker_Start.Name = "dateTimePicker_Start";
@@ -88,6 +85,7 @@
             this.dateTimePicker_End.Size = new System.Drawing.Size(299, 22);
             this.dateTimePicker_End.TabIndex = 2;
             this.dateTimePicker_End.ValueChanged += new System.EventHandler(this.dateTimePicker_End_ValueChanged);
+            this.dateTimePicker_End.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dateTimePicker_End_MouseUp);
             // 
             // label1
             // 
@@ -109,7 +107,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.flowLayoutPanel3);
             this.groupBox1.Controls.Add(this.flowLayoutPanel2);
             this.groupBox1.Controls.Add(this.flowLayoutPanel1);
             this.groupBox1.Controls.Add(this.label2);
@@ -122,39 +119,6 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling Options";
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.radioButton_SpecifyDate);
-            this.flowLayoutPanel3.Controls.Add(this.radioButton_SpecifyPeriods);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(13, 68);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(292, 25);
-            this.flowLayoutPanel3.TabIndex = 15;
-            // 
-            // radioButton_SpecifyDate
-            // 
-            this.radioButton_SpecifyDate.AutoSize = true;
-            this.radioButton_SpecifyDate.Checked = true;
-            this.radioButton_SpecifyDate.Location = new System.Drawing.Point(3, 3);
-            this.radioButton_SpecifyDate.Name = "radioButton_SpecifyDate";
-            this.radioButton_SpecifyDate.Size = new System.Drawing.Size(138, 21);
-            this.radioButton_SpecifyDate.TabIndex = 13;
-            this.radioButton_SpecifyDate.TabStop = true;
-            this.radioButton_SpecifyDate.Text = "Specify End Date";
-            this.radioButton_SpecifyDate.UseVisualStyleBackColor = true;
-            this.radioButton_SpecifyDate.CheckedChanged += new System.EventHandler(this.radioButton_SpecifyDate_CheckedChanged);
-            // 
-            // radioButton_SpecifyPeriods
-            // 
-            this.radioButton_SpecifyPeriods.AutoSize = true;
-            this.radioButton_SpecifyPeriods.Location = new System.Drawing.Point(147, 3);
-            this.radioButton_SpecifyPeriods.Name = "radioButton_SpecifyPeriods";
-            this.radioButton_SpecifyPeriods.Size = new System.Drawing.Size(133, 21);
-            this.radioButton_SpecifyPeriods.TabIndex = 14;
-            this.radioButton_SpecifyPeriods.Text = "Specify Duration";
-            this.radioButton_SpecifyPeriods.UseVisualStyleBackColor = true;
-            this.radioButton_SpecifyPeriods.CheckedChanged += new System.EventHandler(this.radioButton_SpecifyPeriods_CheckedChanged);
             // 
             // flowLayoutPanel2
             // 
@@ -169,14 +133,23 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(299, 41);
             this.flowLayoutPanel2.TabIndex = 12;
             // 
+            // textBox_Periods
+            // 
+            this.textBox_Periods.Location = new System.Drawing.Point(196, 3);
+            this.textBox_Periods.Name = "textBox_Periods";
+            this.textBox_Periods.Size = new System.Drawing.Size(100, 22);
+            this.textBox_Periods.TabIndex = 9;
+            this.textBox_Periods.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox_Periods_MouseClick);
+            this.textBox_Periods.TextChanged += new System.EventHandler(this.textBox_Periods_TextChanged);
+            // 
             // label4
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(119, 4);
+            this.label4.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(120, 4);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 20);
+            this.label4.Size = new System.Drawing.Size(70, 19);
             this.label4.TabIndex = 7;
             this.label4.Text = "Periods:";
             // 
@@ -208,7 +181,7 @@
             // 
             this.comboBox_IntervalLength.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.comboBox_IntervalLength.FormattingEnabled = true;
-            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 4);
+            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 3);
             this.comboBox_IntervalLength.Name = "comboBox_IntervalLength";
             this.comboBox_IntervalLength.Size = new System.Drawing.Size(65, 24);
             this.comboBox_IntervalLength.TabIndex = 8;
@@ -225,14 +198,6 @@
             this.comboBox_IntervalType.TabIndex = 5;
             this.comboBox_IntervalType.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalType_SelectedValueChanged);
             // 
-            // textBox_Periods
-            // 
-            this.textBox_Periods.Location = new System.Drawing.Point(196, 3);
-            this.textBox_Periods.Name = "textBox_Periods";
-            this.textBox_Periods.Size = new System.Drawing.Size(100, 22);
-            this.textBox_Periods.TabIndex = 9;
-            this.textBox_Periods.TextChanged += new System.EventHandler(this.textBox_Periods_TextChanged);
-            // 
             // SchedulerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -245,8 +210,6 @@
             this.Text = "Scheduler";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel3.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -269,9 +232,6 @@
         private System.Windows.Forms.ComboBox comboBox_IntervalLength;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
-        private System.Windows.Forms.RadioButton radioButton_SpecifyDate;
-        private System.Windows.Forms.RadioButton radioButton_SpecifyPeriods;
         private System.Windows.Forms.TextBox textBox_Periods;
     }
 }
