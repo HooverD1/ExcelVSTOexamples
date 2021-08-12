@@ -462,5 +462,10 @@ namespace DNA_Test.Scheduler
         {
             specifyDate = true;
         }
+
+        private void SchedulerForm_HelpButtonClicked(object sender, CancelEventArgs e)
+        {
+            MessageBox.Show("Help launched.");
+        }
     }
 }
