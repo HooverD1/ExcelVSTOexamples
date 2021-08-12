@@ -86,6 +86,12 @@
     <Compile Include="DateSelector.Designer.cs">
       <DependentUpon>DateSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="DateTimePicker_Custom.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DateTimePicker_Custom.Designer.cs">
+      <DependentUpon>DateTimePicker_Custom.cs</DependentUpon>
+    </Compile>
     <Compile Include="DNA_Sandbox.cs" />
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="Keybinds.cs" />

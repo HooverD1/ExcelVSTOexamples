@@ -465,7 +465,8 @@ namespace DNA_Test.Scheduler
 
         private void SchedulerForm_HelpButtonClicked(object sender, CancelEventArgs e)
         {
-            MessageBox.Show("Help launched.");
+            string indexPath = @"C:\Users\grins\Documents\CASE_Help\Index.html";
+            System.Diagnostics.Process.Start(indexPath);
         }
     }
 }
