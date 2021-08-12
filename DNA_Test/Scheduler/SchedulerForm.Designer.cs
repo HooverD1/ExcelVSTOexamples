@@ -54,7 +54,7 @@
             this.button_Insert.Name = "button_Insert";
             this.button_Insert.Size = new System.Drawing.Size(197, 48);
             this.button_Insert.TabIndex = 2;
-            this.button_Insert.Text = "Insert";
+            this.button_Insert.Text = "Insert Midpoints";
             this.button_Insert.UseVisualStyleBackColor = true;
             this.button_Insert.Click += new System.EventHandler(this.button_Insert_Click);
             // 
@@ -227,7 +227,7 @@
             this.MinimizeBox = false;
             this.Name = "SchedulerForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Scheduler";
+            this.Text = "Create a Schedule";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.SchedulerForm_HelpButtonClicked);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
