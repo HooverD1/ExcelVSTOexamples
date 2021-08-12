@@ -150,95 +150,113 @@ namespace DNA_Test.Scheduler
 
         private void button_Insert_Click(object sender, EventArgs e)
         {
-            Excel.Range selection = MyAddin.MyApp.Selection;
-            Double.TryParse(comboBox_IntervalLength.Text, out double intervalLength);
-            DateTime startDate = dateTimePicker_Start.Value;
-            DateTime endDate = dateTimePicker_End.Value;
-            Scheduler.Interval intervalType;
-            switch (comboBox_IntervalType.Text)
+            try
             {
-                case "Days":
-                    intervalType = Scheduler.Interval.Daily;
-                    break;
-                case "Weeks":
-                    intervalType = Scheduler.Interval.Weekly;
-                    break;
-                case "Months":
-                    intervalType = Scheduler.Interval.Monthly;
-                    break;
-                case "Years":
-                    intervalType = Scheduler.Interval.Yearly;
-                    break;
-                default:
-                    throw new Exception("Unknown interval type");
-            }
-
-            var st = startDate.ToOADate();
-            var en = endDate.ToOADate();
-            if (startDate.ToOADate() > endDate.ToOADate())
-            {
-                MessageBox.Show("End date must be after start date.");
-                return;
-            }
-
-            Scheduler scheduler = new Scheduler(intervalLength, intervalType, startDate, endDate);
-            //Define the array with the correct size.
-            object[,] cellValues = new object[selection.Cells.Rows.Count, selection.Cells.Columns.Count];
-            //Check the selection to make sure it's a single column or row
-            if (cellValues.GetLength(0) > 1 && cellValues.GetLength(1) > 1)
-                throw new Exception("Invalid selection size");      //This should have been caught when the form was launched
-            int cellsLength;
-            bool isVertical;
-            if (cellValues.GetLength(0) > 1)
-            {
-                cellsLength = cellValues.GetLength(0);
-                isVertical = true;
-            }
-            else
-            {
-                cellsLength = cellValues.GetLength(1);
-                isVertical = false;
-            }
-            int points = scheduler.GetMidpoints().Length;
-            if(points > 10000)
-            {
-                MessageBox.Show("Cannot place a schedule of over 10,000 dates.");
-                return;
-            }
-
-            if (points > cellsLength)
-            {
-                DialogResult dlgRst = MessageBox.Show($"Selection was not large enough to place all {points} schedule values. Expand selection to place full schedule?", "Expand Range?", MessageBoxButtons.YesNo);
-                if (dlgRst == DialogResult.Yes)
+                Excel.Range selection = MyAddin.MyApp.Selection;
+                Double.TryParse(comboBox_IntervalLength.Text, out double intervalLength);
+                DateTime startDate = dateTimePicker_Start.Value;
+                DateTime endDate = dateTimePicker_End.Value;
+                Scheduler.Interval intervalType;
+                switch (comboBox_IntervalType.Text)
                 {
-                    try
-                    {
-                        if (isVertical)
-                            selection = selection.Resize[points, 1];
-                        else
-                            selection = selection.Resize[1, points];
-                    }
-                    catch(System.Runtime.InteropServices.COMException)
-                    {
-                        MessageBox.Show("Selection cannot be expanded");
-                    }
+                    case "Days":
+                        intervalType = Scheduler.Interval.Daily;
+                        break;
+                    case "Weeks":
+                        intervalType = Scheduler.Interval.Weekly;
+                        break;
+                    case "Months":
+                        intervalType = Scheduler.Interval.Monthly;
+                        break;
+                    case "Years":
+                        intervalType = Scheduler.Interval.Yearly;
+                        break;
+                    default:
+                        throw new Exception("Unknown interval type");
                 }
-                cellValues = new object[selection.Cells.Rows.Count, selection.Cells.Columns.Count];
-            }
-            
-            //Overwrite cellValues array with the schedule values -- if too many cells are selected, just fill the ones you need
-            for(int i = 0; i < Math.Min(selection.Cells.Count, scheduler.GetMidpoints().Count()); i++)
-            {
-                if (isVertical)
-                    cellValues[i, 0] = scheduler.GetMidpoints()[i].ToOADate().ToString();
+
+                var st = startDate.ToOADate();
+                var en = endDate.ToOADate();
+                if (startDate.ToOADate() > endDate.ToOADate())
+                {
+                    MessageBox.Show("End date must be after start date.");
+                    return;
+                }
+
+                Scheduler scheduler = new Scheduler(intervalLength, intervalType, startDate, endDate);
+                //Define the array with the correct size.
+                object[,] cellValues = new object[selection.Cells.Rows.Count, selection.Cells.Columns.Count];
+                //Check the selection to make sure it's a single column or row
+                if (cellValues.GetLength(0) > 1 && cellValues.GetLength(1) > 1)
+                    throw new Exception("Invalid selection size");      //This should have been caught when the form was launched
+                int cellsLength;
+                bool isVertical;
+                if (cellValues.GetLength(0) > 1)
+                {
+                    cellsLength = cellValues.GetLength(0);
+                    isVertical = true;
+                }
                 else
-                    cellValues[0, i] = scheduler.GetMidpoints()[i].ToOADate().ToString();
+                {
+                    cellsLength = cellValues.GetLength(1);
+                    isVertical = false;
+                }
+                int points = scheduler.GetMidpoints().Length;
+                if (points > 10000)
+                {
+                    MessageBox.Show("Cannot place a schedule of over 10,000 dates.");
+                    return;
+                }
+
+                if (points > cellsLength)
+                {
+                    DialogResult dlgRst = MessageBox.Show($"Selection was not large enough to place all {points} schedule values. Expand selection to place full schedule?", "Expand Range?", MessageBoxButtons.YesNo);
+                    if (dlgRst == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            if (isVertical)
+                                selection = selection.Resize[points, 1];
+                            else
+                                selection = selection.Resize[1, points];
+                        }
+                        catch (System.Runtime.InteropServices.COMException)
+                        {
+                            MessageBox.Show("Selection cannot be expanded");
+                        }
+                    }
+                    cellValues = new object[selection.Cells.Rows.Count, selection.Cells.Columns.Count];
+                }
+
+                //Overwrite cellValues array with the schedule values -- if too many cells are selected, just fill the ones you need
+                for (int i = 0; i < Math.Min(selection.Cells.Count, scheduler.GetMidpoints().Count()); i++)
+                {
+                    if (isVertical)
+                        cellValues[i, 0] = scheduler.GetMidpoints()[i].ToOADate().ToString();
+                    else
+                        cellValues[0, i] = scheduler.GetMidpoints()[i].ToOADate().ToString();
+                }
+                //Return the array to the .Value property
+                selection.Value = cellValues;
+                selection.NumberFormat = "MM/dd/yyyy HH:mm:ss";
+                this.Close();
             }
-            //Return the array to the .Value property
-            selection.Value = cellValues;
-            selection.NumberFormat = "MM/dd/yyyy HH:mm:ss";
+            catch(Exception ex) //BOH invalid inputs should throw exceptions for the developer while FOH invalid inputs should notify the user
+            {
+                switch (ex.Message)
+                {
+                    case "Cannot use decimal interval lengths for non-daily interval types":
+                        MessageBox.Show(ex.Message);
+                        break;
+                    case "Start date occurs on or after end date":
+                        MessageBox.Show(ex.Message);
+                        break;
+                    default:
+                        MessageBox.Show("Unhandled error in SchedulerForm");
+                        break;
+                }
+            }
             
-            this.Close();
             //Check the array to make sure it's big enough to handle the schedule -- warn user if not all values are printed
             
         }

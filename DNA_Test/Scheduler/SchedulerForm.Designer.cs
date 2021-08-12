@@ -69,20 +69,20 @@
             // 
             // dateTimePicker_Start
             // 
-            this.dateTimePicker_Start.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker_Start.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker_Start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker_Start.Location = new System.Drawing.Point(6, 116);
+            this.dateTimePicker_Start.Location = new System.Drawing.Point(6, 104);
             this.dateTimePicker_Start.Name = "dateTimePicker_Start";
-            this.dateTimePicker_Start.Size = new System.Drawing.Size(299, 22);
+            this.dateTimePicker_Start.Size = new System.Drawing.Size(299, 27);
             this.dateTimePicker_Start.TabIndex = 1;
             this.dateTimePicker_Start.ValueChanged += new System.EventHandler(this.dateTimePicker_Start_ValueChanged);
             // 
             // dateTimePicker_End
             // 
             this.dateTimePicker_End.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker_End.Location = new System.Drawing.Point(6, 166);
+            this.dateTimePicker_End.Location = new System.Drawing.Point(6, 162);
             this.dateTimePicker_End.Name = "dateTimePicker_End";
-            this.dateTimePicker_End.Size = new System.Drawing.Size(299, 22);
+            this.dateTimePicker_End.Size = new System.Drawing.Size(299, 27);
             this.dateTimePicker_End.TabIndex = 2;
             this.dateTimePicker_End.ValueChanged += new System.EventHandler(this.dateTimePicker_End_ValueChanged);
             this.dateTimePicker_End.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dateTimePicker_End_MouseUp);
@@ -90,18 +90,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 96);
+            this.label1.Location = new System.Drawing.Point(3, 80);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 17);
+            this.label1.Size = new System.Drawing.Size(131, 19);
             this.label1.TabIndex = 3;
             this.label1.Text = "Start Date / Time";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 146);
+            this.label2.Location = new System.Drawing.Point(3, 140);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(110, 17);
+            this.label2.Size = new System.Drawing.Size(126, 19);
             this.label2.TabIndex = 4;
             this.label2.Text = "End Date / Time";
             // 
@@ -113,6 +113,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dateTimePicker_End);
             this.groupBox1.Controls.Add(this.dateTimePicker_Start);
+            this.groupBox1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(311, 248);
@@ -137,7 +138,7 @@
             // 
             this.textBox_Periods.Location = new System.Drawing.Point(196, 3);
             this.textBox_Periods.Name = "textBox_Periods";
-            this.textBox_Periods.Size = new System.Drawing.Size(100, 22);
+            this.textBox_Periods.Size = new System.Drawing.Size(100, 27);
             this.textBox_Periods.TabIndex = 9;
             this.textBox_Periods.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox_Periods_MouseClick);
             this.textBox_Periods.TextChanged += new System.EventHandler(this.textBox_Periods_TextChanged);
@@ -147,7 +148,7 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(120, 4);
+            this.label4.Location = new System.Drawing.Point(120, 7);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 19);
             this.label4.TabIndex = 7;
@@ -180,21 +181,22 @@
             // comboBox_IntervalLength
             // 
             this.comboBox_IntervalLength.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.comboBox_IntervalLength.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_IntervalLength.FormattingEnabled = true;
-            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 3);
+            this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 4);
             this.comboBox_IntervalLength.Name = "comboBox_IntervalLength";
-            this.comboBox_IntervalLength.Size = new System.Drawing.Size(65, 24);
+            this.comboBox_IntervalLength.Size = new System.Drawing.Size(65, 27);
             this.comboBox_IntervalLength.TabIndex = 8;
             this.comboBox_IntervalLength.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalLength_SelectedValueChanged);
             // 
             // comboBox_IntervalType
             // 
             this.comboBox_IntervalType.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.comboBox_IntervalType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_IntervalType.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_IntervalType.FormattingEnabled = true;
             this.comboBox_IntervalType.Location = new System.Drawing.Point(131, 3);
             this.comboBox_IntervalType.Name = "comboBox_IntervalType";
-            this.comboBox_IntervalType.Size = new System.Drawing.Size(121, 26);
+            this.comboBox_IntervalType.Size = new System.Drawing.Size(121, 27);
             this.comboBox_IntervalType.TabIndex = 5;
             this.comboBox_IntervalType.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalType_SelectedValueChanged);
             // 
