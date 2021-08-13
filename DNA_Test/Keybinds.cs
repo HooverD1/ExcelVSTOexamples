@@ -65,9 +65,11 @@ namespace Primer
             }
             DNA_Test.Bucketer bucketer = new DNA_Test.Bucketer();
             List<DNA_Test.Optimizers.OptimizerFunction> optimizers = new List<DNA_Test.Optimizers.OptimizerFunction> { DNA_Test.Optimizers.ScheduleOptimizer };
-            var optimalBuckets = bucketer.AutoBucket(dates, values, optimizers, true);
-            var optimalSchedule = bucketer.OptimalSchedule;
-            double optimalScore = bucketer.OptimalScore;
+            List<DNA_Test.OptimizationResult> optimizationResults = bucketer.AutoBucket(dates, values, optimizers, true);
+            //Hand off the results to the user selection form
+            DNA_Test.FitSelectorForm fitSelector = new DNA_Test.FitSelectorForm(optimizationResults);
+            fitSelector.Show();
+
         }
 
         [ExcelCommand(ShortCut = "^{F1}")]

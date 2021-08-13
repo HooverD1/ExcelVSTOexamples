@@ -30,11 +30,10 @@
         {
             this.button_Insert = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
-            this.dateTimePicker_S2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker_E2 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dateTimePicker_End = new DNA_Test.DateTimePicker_Custom();
             this.dateTimePicker_Start = new DNA_Test.DateTimePicker_Custom();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBox_Periods = new System.Windows.Forms.TextBox();
@@ -43,7 +42,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_IntervalLength = new System.Windows.Forms.ComboBox();
             this.comboBox_IntervalType = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker_End = new DNA_Test.DateTimePicker_Custom();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -71,28 +69,6 @@
             this.button_Cancel.UseVisualStyleBackColor = true;
             this.button_Cancel.Click += new System.EventHandler(this.button_Cancel_Click);
             // 
-            // dateTimePicker_S2
-            // 
-            this.dateTimePicker_S2.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker_S2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker_S2.Location = new System.Drawing.Point(7, 121);
-            this.dateTimePicker_S2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dateTimePicker_S2.Name = "dateTimePicker_S2";
-            this.dateTimePicker_S2.Size = new System.Drawing.Size(336, 27);
-            this.dateTimePicker_S2.TabIndex = 1;
-            this.dateTimePicker_S2.ValueChanged += new System.EventHandler(this.dateTimePicker_Start_ValueChanged);
-            // 
-            // dateTimePicker_E2
-            // 
-            this.dateTimePicker_E2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker_E2.Location = new System.Drawing.Point(7, 192);
-            this.dateTimePicker_E2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dateTimePicker_E2.Name = "dateTimePicker_E2";
-            this.dateTimePicker_E2.Size = new System.Drawing.Size(336, 27);
-            this.dateTimePicker_E2.TabIndex = 2;
-            this.dateTimePicker_E2.ValueChanged += new System.EventHandler(this.dateTimePicker_End_ValueChanged);
-            this.dateTimePicker_E2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dateTimePicker_End_MouseUp);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -119,8 +95,6 @@
             this.groupBox1.Controls.Add(this.flowLayoutPanel1);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.dateTimePicker_E2);
-            this.groupBox1.Controls.Add(this.dateTimePicker_S2);
             this.groupBox1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(14, 14);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -131,11 +105,20 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling Options";
             // 
+            // dateTimePicker_End
+            // 
+            this.dateTimePicker_End.CalendarFont = new System.Drawing.Font("Arial", 10F);
+            this.dateTimePicker_End.Location = new System.Drawing.Point(6, 187);
+            this.dateTimePicker_End.Name = "dateTimePicker_End";
+            this.dateTimePicker_End.Size = new System.Drawing.Size(337, 27);
+            this.dateTimePicker_End.TabIndex = 13;
+            // 
             // dateTimePicker_Start
             // 
-            this.dateTimePicker_Start.Location = new System.Drawing.Point(140, 85);
+            this.dateTimePicker_Start.CalendarFont = new System.Drawing.Font("Arial", 10F);
+            this.dateTimePicker_Start.Location = new System.Drawing.Point(6, 115);
             this.dateTimePicker_Start.Name = "dateTimePicker_Start";
-            this.dateTimePicker_Start.Size = new System.Drawing.Size(200, 27);
+            this.dateTimePicker_Start.Size = new System.Drawing.Size(337, 27);
             this.dateTimePicker_Start.TabIndex = 4;
             // 
             // flowLayoutPanel2
@@ -222,13 +205,6 @@
             this.comboBox_IntervalType.TabIndex = 5;
             this.comboBox_IntervalType.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalType_SelectedValueChanged);
             // 
-            // dateTimePicker_End
-            // 
-            this.dateTimePicker_End.Location = new System.Drawing.Point(140, 155);
-            this.dateTimePicker_End.Name = "dateTimePicker_End";
-            this.dateTimePicker_End.Size = new System.Drawing.Size(200, 27);
-            this.dateTimePicker_End.TabIndex = 13;
-            // 
             // SchedulerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -260,8 +236,6 @@
         #endregion
         private System.Windows.Forms.Button button_Insert;
         private System.Windows.Forms.Button button_Cancel;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_S2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_E2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;

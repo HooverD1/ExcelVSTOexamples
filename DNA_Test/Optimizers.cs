@@ -11,20 +11,18 @@ namespace DNA_Test
 {
     public static class Optimizers
     {
-        public delegate Dictionary<string, dynamic> OptimizerFunction(DateTime[] dt, double[] db, Scheduler.Scheduler schedule);
+        public delegate OptimizationResult OptimizerFunction(double[] bucketedSums, Scheduler.Scheduler schedule);
 
         private static Random rando { get; set; } = new Random();
-        public static Dictionary<string, dynamic> ScheduleOptimizer(DateTime[] midpoints, double[] bucketSums, Scheduler.Scheduler schedule)
+        public static OptimizationResult ScheduleOptimizer(double[] bucketSums, Scheduler.Scheduler schedule)
         {
-            var result = new Dictionary<string, dynamic>();
+            double score;
             //NEEDS IMPLEMENTED -- RETURNING RANDOM FOR THE SAKE OF TESTING
             if (bucketSums.Count() <= 1)
-            {
-                result.Add("Score", 0);
-            }
-            Random rando = new Random();
-            result.Add("Score", rando.NextDouble());
-            return result;
+                score = 0;
+            else
+                score = rando.NextDouble();
+            return new OptimizationResult(score, bucketSums, schedule, "Normal", ScheduleOptimizer);
         }
     }
 }
