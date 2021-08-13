@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.Chart_FitDisplay = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.listBox_FitOptions = new System.Windows.Forms.ListBox();
             this.listBox_FitDisplayAxis = new System.Windows.Forms.ListBox();
@@ -41,17 +41,17 @@
             // 
             // Chart_FitDisplay
             // 
-            chartArea2.Name = "ChartArea1";
-            this.Chart_FitDisplay.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.Chart_FitDisplay.Legends.Add(legend2);
+            chartArea3.Name = "ChartArea1";
+            this.Chart_FitDisplay.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.Chart_FitDisplay.Legends.Add(legend3);
             this.Chart_FitDisplay.Location = new System.Drawing.Point(12, 12);
             this.Chart_FitDisplay.Name = "Chart_FitDisplay";
-            series2.ChartArea = "ChartArea1";
-            series2.IsVisibleInLegend = false;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.Chart_FitDisplay.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.IsVisibleInLegend = false;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.Chart_FitDisplay.Series.Add(series3);
             this.Chart_FitDisplay.Size = new System.Drawing.Size(1251, 388);
             this.Chart_FitDisplay.TabIndex = 0;
             this.Chart_FitDisplay.Text = "chart1";
@@ -64,6 +64,7 @@
             this.listBox_FitOptions.Name = "listBox_FitOptions";
             this.listBox_FitOptions.Size = new System.Drawing.Size(952, 132);
             this.listBox_FitOptions.TabIndex = 1;
+            this.listBox_FitOptions.SelectedIndexChanged += new System.EventHandler(this.listBox_FitOptions_SelectedIndexChanged);
             // 
             // listBox_FitDisplayAxis
             // 
