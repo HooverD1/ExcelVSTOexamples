@@ -76,7 +76,7 @@ namespace Primer
         public static void FakeData()
         {
             int datapoints = 100000;
-            Accord.Statistics.Distributions.Univariate.NormalDistribution normDist = new Accord.Statistics.Distributions.Univariate.NormalDistribution(10, 1);
+            //Accord.Statistics.Distributions.Univariate.NormalDistribution normDist = new Accord.Statistics.Distributions.Univariate.NormalDistribution(10, 1);
             Excel.Worksheet sheet = DNA_Test.MyAddin.MyApp.ActiveSheet;
             DateTime[,] dates = new DateTime[datapoints,1];
             double[,] values = new double[datapoints, 1];
@@ -84,7 +84,7 @@ namespace Primer
             for(int i = 0; i < datapoints; i++)
             {
                 dates[i,0] = DateTime.Today.AddDays(rando.Next(365*10));
-                values[i, 0] = normDist.Generate();
+                values[i, 0] = rando.NextDouble()*100;
             }
             sheet.Range[$"A1:A{datapoints}"].Value = dates;
             sheet.Range[$"A1:A{datapoints}"].NumberFormat = "MM/DD/YYYY";

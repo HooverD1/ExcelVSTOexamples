@@ -44,6 +44,7 @@ namespace DNA_Test
                 for (int iLen = 1; iLen <= Scheduler.Scheduler.GetMaximumReasonablePeriods(iType); iLen++)
                 {
                     scheduleWatch.Start();
+                    if(iLen == 40 && iType == Scheduler.Scheduler.Interval.Weekly) { }
                     Scheduler.Scheduler schedule = new Scheduler.Scheduler(iLen, iType, startDate, endDate);
                     scheduleWatch.Stop();
                     if (schedule.GetMidpoints().Length < 3)
@@ -72,12 +73,13 @@ namespace DNA_Test
                     throw new Exception("Data over too short a time period");
             }
             totalWatch.Stop();
-            MessageBox.Show($"Iterations: {iterationCount}\n" +
+            /*MessageBox.Show($"Iterations: {iterationCount}\n" +
                 $"Sort time: {sortWatch.ElapsedMilliseconds} ms \n" +
                 $"Scheduler time: {scheduleWatch.ElapsedMilliseconds} ms\n" +
                 $"Bucketing time: {bucketWatch.ElapsedMilliseconds} ms\n" +
                 $"Optimizer time: {optimizeWatch.ElapsedMilliseconds} ms\n" +
                 $"Total time: {totalWatch.ElapsedMilliseconds} ms");
+            */
             return Results;
         }
 
@@ -100,12 +102,19 @@ namespace DNA_Test
             {
                 //Assumes the data is ordered
                 //whileWatch.Start();
-                if (bucketIndex < midpoints - 1)      //This puts the last point, which is always the end date, into the last bucket
-                {                    
-                    while (DateTime.Compare(dates[v], schedule.GetEndpoints()[bucketIndex]) > 0 && bucketIndex < midpoints - 1)
-                        bucketIndex++;                    
+                if (bucketIndex < midpoints)      //This puts the last point, which is always the end date, into the last bucket
+                {
+                    DateTime dataDate = dates[v];
+                    DateTime endDate = schedule.GetEndpoints()[bucketIndex + 1];
+                    while (DateTime.Compare(dataDate, endDate) >= 0 && bucketIndex < midpoints - 1) //Second condition leaves the end date in the last bucket
+                    {
+                        //var test = DateTime.Compare(dataDate, endDate);
+                        endDate = schedule.GetEndpoints()[++bucketIndex + 1];
+                        //if (bucketIndex == bucketSum.Length - 1) { }
+                    }
                 }
                 //whileWatch.Stop();
+                
                 bucketSum[bucketIndex] += values[v];
             }
             //bucketWatch.Stop();

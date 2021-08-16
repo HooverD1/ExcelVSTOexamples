@@ -34,7 +34,7 @@ namespace DNA_Test
 
         public override string ToString()
         {
-            return $"Fit: {Math.Round(Score, 2)}; {DistributionUnderTest}";
+            return $"Schedule: {this.Schedule.GetIntervalLength()} {this.Schedule.GetIntervalTypeString()}, Fit: {Math.Round(Score, 2)}; {DistributionUnderTest}";
         }
     }
 }

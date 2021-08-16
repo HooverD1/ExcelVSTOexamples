@@ -29,9 +29,6 @@ namespace DNA_Test
             //The TimeSeries should always be the same -- the fit series is what changes when the selected listbox_FitOption changes
             //Does storing the bucketed sums against each result cost time/memory? -- I don't THINK so because it should only be a reference, but it depends how it's created
             //The bucketed sums could be split out into their own parameter...
-            TimeSeries = BuildTimeSeries(SelectedResults.First().BucketedSums);
-            this.Chart_FitDisplay.Series.Add(TimeSeries);
-            this.Chart_FitDisplay.Series.Add(FitSeries);
         }
 
         private OptimizationResult[] SelectResults(IEnumerable<OptimizationResult> fittedResults)
@@ -95,7 +92,11 @@ namespace DNA_Test
 
         private void listBox_FitOptions_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Chart_FitDisplay.Series.Clear();
+            TimeSeries = BuildTimeSeries(SelectedResults[listBox_FitOptions.SelectedIndex].BucketedSums);
             FitSeries = BuildFitSeries(SelectedResults[listBox_FitOptions.SelectedIndex]);
+            Chart_FitDisplay.Series.Add(TimeSeries);
+            Chart_FitDisplay.Series.Add(FitSeries);
         }
 
         private Series BuildFitSeries(OptimizationResult selectedResult)

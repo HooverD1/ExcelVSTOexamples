@@ -151,7 +151,7 @@ namespace DNA_Test.Scheduler
                     double periods = ((EndDate - StartDate).TotalDays + 1) / IntervalLength;
                     return Convert.ToInt32(Math.Ceiling(periods));
                 case Interval.Weekly:
-                    double week_periods = ((EndDate - StartDate).TotalDays + 1) / 7;
+                    double week_periods = ((EndDate - StartDate).TotalDays + 1) / 7 / IntervalLength;
                     return Convert.ToInt32(Math.Ceiling(week_periods));
                 case Interval.Monthly:
                     int years = EndDate.Year - StartDate.Year;
@@ -159,7 +159,7 @@ namespace DNA_Test.Scheduler
                     return (12 * years + months) / (int)IntervalLength + 1;
                 case Interval.Yearly:
                     int years2 = EndDate.Year - StartDate.Year + 1;
-                    return years2;
+                    return years2 / (int)IntervalLength;
                 default:
                     throw new Exception("Unknown interval type");
             }
