@@ -50,7 +50,7 @@ namespace DNA_Test
                     if (schedule.GetMidpoints().Length < 3)
                     {
                         break;
-                        //Once the interval is so long that it would put everything in < 3 buckets, checking longer lengths is not productive...
+                        //Once the interval is so long that it puts everything in one bucket, checking longer lengths is not productive...
                         //...Break the inner loop and move on to the next iType
                     }
                     

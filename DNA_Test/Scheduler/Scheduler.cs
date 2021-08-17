@@ -16,9 +16,9 @@ namespace DNA_Test.Scheduler
             Yearly
         }
 
-        private const int MaxDays = 13;    //1 - 6 & 8 - 13
+        private const int MaxDays = 365;    //1 - 6 & 8 - 13
         private const int MaxWeeks = 52;
-        private const int MaxMonths = 23;       //1 - 11 && 13 - 23
+        private const int MaxMonths = 36;       //1 - 11 && 13 - 23
         private const int MaxYears = 20;
 
         private Interval? IntervalType { get; set; } = null;

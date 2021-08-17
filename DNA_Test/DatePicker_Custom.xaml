@@ -5,9 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DNA_Test"
              mc:Ignorable="d" 
-             d:DesignHeight="25" Width="265">
-       
-    <Grid>
-        <DatePicker FontFamily="Arial" FontStyle="Normal" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="265"/>
-    </Grid>
+             d:DesignHeight="25" Width="337">
+
+    <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Width="337"/>
+    
 </UserControl>
