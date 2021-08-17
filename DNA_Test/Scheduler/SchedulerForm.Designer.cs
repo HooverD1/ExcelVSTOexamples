@@ -33,8 +33,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dateTimePicker_End = new DNA_Test.DateTimePicker_Custom();
+            this.elementHost2 = new System.Windows.Forms.Integration.ElementHost();
+            this.datePicker_End = new DNA_Test.DatePicker_Custom();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.datePicker_Start = new DNA_Test.DatePicker_Custom();
             this.dateTimePicker_Start = new DNA_Test.DateTimePicker_Custom();
+            this.dateTimePicker_End = new DNA_Test.DateTimePicker_Custom();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBox_Periods = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -89,8 +93,10 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dateTimePicker_End);
+            this.groupBox1.Controls.Add(this.elementHost2);
+            this.groupBox1.Controls.Add(this.elementHost1);
             this.groupBox1.Controls.Add(this.dateTimePicker_Start);
+            this.groupBox1.Controls.Add(this.dateTimePicker_End);
             this.groupBox1.Controls.Add(this.flowLayoutPanel2);
             this.groupBox1.Controls.Add(this.flowLayoutPanel1);
             this.groupBox1.Controls.Add(this.label2);
@@ -105,21 +111,39 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling Options";
             // 
-            // dateTimePicker_End
+            // elementHost2
             // 
-            this.dateTimePicker_End.CalendarFont = new System.Drawing.Font("Arial", 10F);
-            this.dateTimePicker_End.Location = new System.Drawing.Point(6, 187);
-            this.dateTimePicker_End.Name = "dateTimePicker_End";
-            this.dateTimePicker_End.Size = new System.Drawing.Size(337, 27);
-            this.dateTimePicker_End.TabIndex = 13;
+            this.elementHost2.Location = new System.Drawing.Point(7, 192);
+            this.elementHost2.Name = "elementHost2";
+            this.elementHost2.Size = new System.Drawing.Size(336, 36);
+            this.elementHost2.TabIndex = 15;
+            this.elementHost2.Text = "elementHost2";
+            this.elementHost2.Child = this.datePicker_End;
+            // 
+            // elementHost1
+            // 
+            this.elementHost1.Location = new System.Drawing.Point(7, 117);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(336, 36);
+            this.elementHost1.TabIndex = 14;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = this.datePicker_Start;
             // 
             // dateTimePicker_Start
             // 
             this.dateTimePicker_Start.CalendarFont = new System.Drawing.Font("Arial", 10F);
-            this.dateTimePicker_Start.Location = new System.Drawing.Point(6, 115);
+            this.dateTimePicker_Start.Location = new System.Drawing.Point(51, 159);
             this.dateTimePicker_Start.Name = "dateTimePicker_Start";
             this.dateTimePicker_Start.Size = new System.Drawing.Size(337, 27);
             this.dateTimePicker_Start.TabIndex = 4;
+            // 
+            // dateTimePicker_End
+            // 
+            this.dateTimePicker_End.CalendarFont = new System.Drawing.Font("Arial", 10F);
+            this.dateTimePicker_End.Location = new System.Drawing.Point(14, 266);
+            this.dateTimePicker_End.Name = "dateTimePicker_End";
+            this.dateTimePicker_End.Size = new System.Drawing.Size(337, 27);
+            this.dateTimePicker_End.TabIndex = 13;
             // 
             // flowLayoutPanel2
             // 
@@ -248,5 +272,9 @@
         private System.Windows.Forms.TextBox textBox_Periods;
         private DateTimePicker_Custom dateTimePicker_Start;
         private DateTimePicker_Custom dateTimePicker_End;
+        private System.Windows.Forms.Integration.ElementHost elementHost2;
+        private DatePicker_Custom datePicker_End;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private DatePicker_Custom datePicker_Start;
     }
 }
