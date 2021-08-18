@@ -7,36 +7,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Windows.Input;
 
 namespace DNA_Test.Scheduler
 {
     public partial class SchedulerForm : Form
     {
         private bool specifyDate { get; set; } = true;
+        private DatePicker DatePicker_Start { get; set; }
+        private DatePicker DatePicker_End { get; set; }
         public SchedulerForm()
         {
             //Auto-populate the form from the selection if pertinent
-            
             InitializeComponent();
-            
-            dateTimePicker_Start.Format = DateTimePickerFormat.Custom;
-            dateTimePicker_Start.CustomFormat = "MMM d, yyyy HH:mm:ss";
-            dateTimePicker_End.Format = DateTimePickerFormat.Custom;
-            dateTimePicker_End.CustomFormat = "MMM d, yyyy HH:mm:ss";
+
+            DatePicker_Start = datePicker_Custom1.Picker;
+            DatePicker_End = datePicker_Custom2.Picker;
+            //Need to set up events for the custom wpf datepicker
+            DatePicker_Start.SelectedDateChanged += DatePicker_Start_SelectedDateChanged;
+            DatePicker_End.SelectedDateChanged += DatePicker_End_SelectedDateChanged;
+            DatePicker_End.GotFocus += DatePicker_End_Focus;
+
             PopulateCombobox();
             
             if (!AutoPopulate())
             {
                 //Defaults
-                dateTimePicker_Start.Value = DateTime.Today;
+                DatePicker_Start.SelectedDate = DateTime.Today;
                 //dateTimePicker_End.Value = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
-                dateTimePicker_End.Value = DateTime.Today.AddDays(1);
+                DatePicker_End.SelectedDate = DateTime.Today.AddDays(1);
             }
             comboBox_IntervalLength.Text = "";
             comboBox_IntervalType.SelectedIndex = 0;
 
-            textBox_Periods.Text = (dateTimePicker_End.Value - dateTimePicker_Start.Value).TotalDays.ToString();
+            textBox_Periods.Text = (DatePicker_End.SelectedDate - DatePicker_Start.SelectedDate).Value.TotalDays.ToString();
         }
         public bool VerifySingleDimension()
         {
@@ -92,8 +98,8 @@ namespace DNA_Test.Scheduler
                 }
                 if (d1.ToOADate() != 0 && d2.ToOADate() != 0 && d2.ToOADate() >= d1.ToOADate())
                 {
-                    dateTimePicker_Start.Value = d1;
-                    dateTimePicker_End.Value = d2;
+                    DatePicker_Start.SelectedDate = d1;
+                    DatePicker_End.SelectedDate = d2;
                     return true;
                 }
                 else
@@ -132,18 +138,18 @@ namespace DNA_Test.Scheduler
         }        
         public void SelectStartDatetimePicker(DateTime dt)
         {
-            dateTimePicker_Start.Value = dt;
+            DatePicker_Start.SelectedDate = dt;
         }
         public void SelectEndDatetimePicker(DateTime dt)
         {
-            if(dt.ToOADate() < dateTimePicker_Start.Value.ToOADate())
+            if(dt.ToOADate() < (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).ToOADate())
             {
                 //if end date is before the start date -- privilege the start date by setting the end date equal to the start date
-                dateTimePicker_End.Value = dateTimePicker_Start.Value;
+                DatePicker_End.SelectedDate = DatePicker_Start.SelectedDate;
             }
             else
             {
-                dateTimePicker_End.Value = dt;
+                DatePicker_End.SelectedDate = dt;
             }
         }
         #endregion
@@ -154,8 +160,8 @@ namespace DNA_Test.Scheduler
             {
                 Excel.Range selection = MyAddin.MyApp.Selection;
                 Double.TryParse(comboBox_IntervalLength.Text, out double intervalLength);
-                DateTime startDate = dateTimePicker_Start.Value;
-                DateTime endDate = dateTimePicker_End.Value;
+                DateTime startDate = DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null");
+                DateTime endDate = DatePicker_End.SelectedDate ?? throw new Exception("End date is null");
                 Scheduler.Interval intervalType;
                 switch (comboBox_IntervalType.Text)
                 {
@@ -275,10 +281,10 @@ namespace DNA_Test.Scheduler
             else
                 throw new Exception("Radio button selection error");
 
-            if ((comboBox_IntervalType.Text == "Months" || comboBox_IntervalType.Text == "Years") && dateTimePicker_Start.Value.Day > 28)
+            if ((comboBox_IntervalType.Text == "Months" || comboBox_IntervalType.Text == "Years") && (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).Day > 28)
             {
-                DateTime startDate = dateTimePicker_Start.Value;
-                dateTimePicker_Start.Value = new DateTime(startDate.Year, startDate.Month, 28);
+                DateTime startDate = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null"));
+                DatePicker_Start.SelectedDate = new DateTime(startDate.Year, startDate.Month, 28);
             }
         }
 
@@ -302,16 +308,16 @@ namespace DNA_Test.Scheduler
             switch (comboBox_IntervalType.Text)
             {
                 case "Days":
-                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddDays(periods * intervalLength);
+                    DatePicker_End.SelectedDate = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).AddDays(periods * intervalLength);
                     break;
                 case "Weeks":
-                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddDays(periods * intervalLength * 7);
+                    DatePicker_End.SelectedDate = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).AddDays(periods * intervalLength * 7);
                     break;
                 case "Months":
-                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddMonths(periods * intervalLength);
+                    DatePicker_End.SelectedDate = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).AddMonths(periods * intervalLength);
                     break;
                 case "Years":
-                    dateTimePicker_End.Value = dateTimePicker_Start.Value.AddYears(periods * intervalLength);
+                    DatePicker_End.SelectedDate = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).AddYears(periods * intervalLength);
                     break;
                 default:
                     break;
@@ -320,12 +326,14 @@ namespace DNA_Test.Scheduler
 
         private void UpdatePeriods()
         {
+            if(DatePicker_Start.SelectedDate is null || DatePicker_End.SelectedDate is null)
+                return;
             //ASSUME END DATE IS TRUE
             if (comboBox_IntervalLength.Text == null)
                 return;
             if (!int.TryParse(comboBox_IntervalLength.Text, out int intervalLength))
                 return;
-            double totalDays = (dateTimePicker_End.Value - dateTimePicker_Start.Value).TotalDays;
+            double totalDays = (DatePicker_End.SelectedDate - DatePicker_Start.SelectedDate).Value.TotalDays;
             //Recalculate the Period combo value
             int period;
             switch (comboBox_IntervalType.Text)
@@ -348,8 +356,8 @@ namespace DNA_Test.Scheduler
                     DateTime checkDate;
                     for(int i = 0; i < 12000; i++)
                     {
-                        checkDate = dateTimePicker_Start.Value.AddMonths(i);
-                        if (checkDate.ToOADate() == dateTimePicker_End.Value.ToOADate())
+                        checkDate = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).AddMonths(i);
+                        if (checkDate.ToOADate() == (DatePicker_End.SelectedDate ?? throw new Exception("End date is null")).ToOADate())
                         {
                             if (i >= 1)
                                 textBox_Periods.Text = i.ToString();
@@ -357,7 +365,7 @@ namespace DNA_Test.Scheduler
                                 textBox_Periods.Text = "0";
                             break;
                         }
-                        else if (checkDate.ToOADate() > dateTimePicker_End.Value.ToOADate())
+                        else if (checkDate.ToOADate() > (DatePicker_End.SelectedDate ?? throw new Exception("End date is null")).ToOADate())
                         {
                             if (i >= 2)
                                 textBox_Periods.Text = (i - 1).ToString();
@@ -374,8 +382,8 @@ namespace DNA_Test.Scheduler
                     DateTime checkDate2;
                     for (int i = 0; i < 12000; i++)
                     {
-                        checkDate2 = dateTimePicker_Start.Value.AddYears(i);
-                        if (checkDate2.ToOADate() == dateTimePicker_End.Value.ToOADate())
+                        checkDate2 = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).AddYears(i);
+                        if (checkDate2.ToOADate() == (DatePicker_End.SelectedDate ?? throw new Exception("End date is null")).ToOADate())
                         {
                             if(i >= 1)
                                 textBox_Periods.Text = i.ToString();
@@ -383,7 +391,7 @@ namespace DNA_Test.Scheduler
                                 textBox_Periods.Text = "0";
                             break;
                         }
-                        else if (checkDate2.ToOADate() > dateTimePicker_End.Value.ToOADate())
+                        else if (checkDate2.ToOADate() > (DatePicker_End.SelectedDate ?? throw new Exception("End date is null")).ToOADate())
                         {
                             if (i >= 2)
                                 textBox_Periods.Text = (i - 1).ToString();
@@ -398,20 +406,20 @@ namespace DNA_Test.Scheduler
             }
         }
 
-        private void dateTimePicker_End_ValueChanged(object sender, EventArgs e)
+        private void DatePicker_End_SelectedDateChanged(object sender, EventArgs e)
         {
             if(specifyDate == true)
                 UpdatePeriods();
         }
 
-        private void dateTimePicker_Start_ValueChanged(object sender, EventArgs e)
+        private void DatePicker_Start_SelectedDateChanged(object sender, EventArgs e)
         {
             UpdateEndDate();
             //Verify that the selection is not past the 28th -- if so, move it to the 28th
-            if ((comboBox_IntervalType.Text == "Months" || comboBox_IntervalType.Text == "Years") && dateTimePicker_Start.Value.Day > 28)
+            if ((comboBox_IntervalType.Text == "Months" || comboBox_IntervalType.Text == "Years") && (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null")).Day > 28)
             {
-                DateTime startDate = dateTimePicker_Start.Value;
-                dateTimePicker_Start.Value = new DateTime(startDate.Year, startDate.Month, 28);
+                DateTime startDate = (DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null"));
+                DatePicker_Start.SelectedDate = new DateTime(startDate.Year, startDate.Month, 28);
             }
         }
 
@@ -427,38 +435,38 @@ namespace DNA_Test.Scheduler
             //Update the end date when the periods are manually changed
             if (!int.TryParse(textBox_Periods.Text, out int periods))
                 return;
-            DateTime startDate = dateTimePicker_Start.Value;
+            DateTime startDate = DatePicker_Start.SelectedDate ?? throw new Exception("Start date is null");
             if (comboBox_IntervalLength.Text == null)
                 return;
             if (!int.TryParse(comboBox_IntervalLength.Text, out int intervalLength))
                 return;
-            double totalDays = (dateTimePicker_End.Value - dateTimePicker_Start.Value).TotalDays;
+            double totalDays = (DatePicker_End.SelectedDate - DatePicker_Start.SelectedDate).Value.TotalDays;
             //Recalculate the Period combo value
             switch (comboBox_IntervalType.Text)
             {
                 case "Days":
-                    dateTimePicker_End.Value = startDate.AddDays(periods * intervalLength);
+                    DatePicker_End.SelectedDate = startDate.AddDays(periods * intervalLength);
                     break;
                 case "Weeks":
-                    dateTimePicker_End.Value = startDate.AddDays(periods * 7 * intervalLength);
+                    DatePicker_End.SelectedDate = startDate.AddDays(periods * 7 * intervalLength);
                     break;
                 case "Months":
-                    dateTimePicker_End.Value = startDate.AddMonths(periods * intervalLength);
+                    DatePicker_End.SelectedDate = startDate.AddMonths(periods * intervalLength);
                     break;
                 case "Years":
-                    dateTimePicker_End.Value = startDate.AddYears(periods * intervalLength);
+                    DatePicker_End.SelectedDate = startDate.AddYears(periods * intervalLength);
                     break;
                 default:
                     break;
             }
         }
 
-        private void textBox_Periods_MouseClick(object sender, MouseEventArgs e)
+        private void textBox_Periods_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             specifyDate = false;
         }
 
-        private void dateTimePicker_End_MouseUp(object sender, MouseEventArgs e)
+        private void DatePicker_End_Focus(object sender, EventArgs e)
         {
             specifyDate = true;
         }
@@ -469,6 +477,5 @@ namespace DNA_Test.Scheduler
             System.Diagnostics.Process.Start(indexPath);
         }
 
-        
     }
 }
