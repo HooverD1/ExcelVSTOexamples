@@ -7,6 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="25" Width="265">
 
-    <DatePicker Name="Picker" HorizontalAlignment="Left" VerticalAlignment="Top" Width="265"/>
+    <UserControl.Resources>
+        <Style x:Key="styleCalendar" TargetType="{x:Type Calendar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Calendar}">
+                        <Viewbox Height="265" Width="265">
+                            <CalendarItem x:Name="PART_CalendarItem"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"/>
+                        </Viewbox>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <DatePicker CalendarStyle="{StaticResource styleCalendar}" Name="Picker" HorizontalAlignment="Left" VerticalAlignment="Top" Width="265"/>
+    
     
 </UserControl>
