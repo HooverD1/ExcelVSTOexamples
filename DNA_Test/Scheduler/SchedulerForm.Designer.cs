@@ -28,8 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button_Insert = new System.Windows.Forms.Button();
-            this.button_Cancel = new System.Windows.Forms.Button();
+            this.button_InsertMidpoints = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -44,32 +43,22 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox_IntervalLength = new System.Windows.Forms.ComboBox();
             this.comboBox_IntervalType = new System.Windows.Forms.ComboBox();
+            this.button_InsertEndpoints = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button_Insert
+            // button_InsertMidpoints
             // 
-            this.button_Insert.Location = new System.Drawing.Point(14, 316);
-            this.button_Insert.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button_Insert.Name = "button_Insert";
-            this.button_Insert.Size = new System.Drawing.Size(197, 48);
-            this.button_Insert.TabIndex = 2;
-            this.button_Insert.Text = "Insert Midpoints";
-            this.button_Insert.UseVisualStyleBackColor = true;
-            this.button_Insert.Click += new System.EventHandler(this.button_Insert_Click);
-            // 
-            // button_Cancel
-            // 
-            this.button_Cancel.Location = new System.Drawing.Point(217, 316);
-            this.button_Cancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button_Cancel.Name = "button_Cancel";
-            this.button_Cancel.Size = new System.Drawing.Size(146, 48);
-            this.button_Cancel.TabIndex = 3;
-            this.button_Cancel.Text = "Cancel";
-            this.button_Cancel.UseVisualStyleBackColor = true;
-            this.button_Cancel.Click += new System.EventHandler(this.button_Cancel_Click);
+            this.button_InsertMidpoints.Location = new System.Drawing.Point(14, 316);
+            this.button_InsertMidpoints.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button_InsertMidpoints.Name = "button_InsertMidpoints";
+            this.button_InsertMidpoints.Size = new System.Drawing.Size(170, 48);
+            this.button_InsertMidpoints.TabIndex = 2;
+            this.button_InsertMidpoints.Text = "Insert Midpoints";
+            this.button_InsertMidpoints.UseVisualStyleBackColor = true;
+            this.button_InsertMidpoints.Click += new System.EventHandler(this.button_InsertMidpoints_Click);
             // 
             // label1
             // 
@@ -209,13 +198,24 @@
             this.comboBox_IntervalType.TabIndex = 5;
             this.comboBox_IntervalType.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalType_SelectedValueChanged);
             // 
+            // button_InsertEndpoints
+            // 
+            this.button_InsertEndpoints.Location = new System.Drawing.Point(194, 317);
+            this.button_InsertEndpoints.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button_InsertEndpoints.Name = "button_InsertEndpoints";
+            this.button_InsertEndpoints.Size = new System.Drawing.Size(170, 48);
+            this.button_InsertEndpoints.TabIndex = 3;
+            this.button_InsertEndpoints.Text = "Insert Endpoints";
+            this.button_InsertEndpoints.UseVisualStyleBackColor = true;
+            this.button_InsertEndpoints.Click += new System.EventHandler(this.button_InsertEndpoints_Click);
+            // 
             // SchedulerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(377, 378);
-            this.Controls.Add(this.button_Cancel);
-            this.Controls.Add(this.button_Insert);
+            this.Controls.Add(this.button_InsertEndpoints);
+            this.Controls.Add(this.button_InsertMidpoints);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -238,8 +238,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button button_Insert;
-        private System.Windows.Forms.Button button_Cancel;
+        private System.Windows.Forms.Button button_InsertMidpoints;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -254,5 +253,6 @@
         private DatePicker_Custom datePicker_Custom2;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         private DatePicker_Custom datePicker_Custom1;
+        private System.Windows.Forms.Button button_InsertEndpoints;
     }
 }
