@@ -12,8 +12,8 @@ namespace DNA_Test
         private OrdinaryLeastSquares ols = new OrdinaryLeastSquares();
         private SimpleLinearRegression slr { get; set; }
         private Random Rando = new Random();
-        private double[] xVals { get; set; }
-        private double[] yVals { get; set; }
+        public double[] xVals { get; set; }
+        public double[] yVals { get; set; }
 
         public Regression_SimpleLinear(double[] x, double[] y)
         {
@@ -47,6 +47,11 @@ namespace DNA_Test
         public double GetR2()
         {
             return slr.CoefficientOfDetermination(xVals, yVals);
+        }
+
+        public double GetPredictionError(double x)
+        {
+            return slr.GetPredictionStandardError(x, xVals, yVals);
         }
 
         public double GetMeanSquareError()

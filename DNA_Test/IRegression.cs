@@ -10,8 +10,11 @@ namespace DNA_Test
     {
         //Interface for whatever class ends up being used to hold the regression used for test
         //Some sort of access to parameters
+        double[] xVals { get; set; }
+        double[] yVals { get; set; }
         double GetValue(double dt);
         double GetR2();
         double GetMeanSquareError();
+        double GetPredictionError(double x);
     }
 }
