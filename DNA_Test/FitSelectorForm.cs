@@ -27,7 +27,7 @@ namespace DNA_Test
             
             //Load the fit options off the parameter
             this.SelectedResults = SelectResults(fittedResults);
-            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height;        //Overwrite the chart's default size
+            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
             TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
             PopulateFitOptions();
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
@@ -93,7 +93,7 @@ namespace DNA_Test
 
             //Do I have to remove/add or will it just update?
             flowLayoutPanel_Charts.Controls.Remove(timeSeries1);
-            timeSeries1 = new TimeSeriesChart(SelectedResults[listBox_FitOptions.SelectedIndex].BucketedSums);
+            timeSeries1 = new TimeSeriesChart(SelectedResults[listBox_FitOptions.SelectedIndex].BucketedSums, SelectedResults[listBox_FitOptions.SelectedIndex].RegressionUnderTest);
             flowLayoutPanel_Charts.Controls.Add(timeSeries1);
         }
 

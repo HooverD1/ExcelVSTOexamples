@@ -64,7 +64,9 @@ namespace Primer
                     values[r - 1] = dbl;
             }
             DNA_Test.Bucketer bucketer = new DNA_Test.Bucketer();
-            List<DNA_Test.Optimizers.OptimizerFunction> optimizers = new List<DNA_Test.Optimizers.OptimizerFunction> { DNA_Test.Optimizers.ScheduleOptimizer };
+            List<DNA_Test.Optimizers.OptimizerFunction> optimizers = new List<DNA_Test.Optimizers.OptimizerFunction> {
+                DNA_Test.Optimizers.SimpleLinear_ScheduleOptimizer
+            };
             List<DNA_Test.OptimizationResult> optimizationResults = bucketer.AutoBucket(dates, values, optimizers, true);
             //Hand off the results to the user selection form
             DNA_Test.FitSelectorForm fitSelector = new DNA_Test.FitSelectorForm(optimizationResults);

@@ -123,6 +123,7 @@
     <Compile Include="Scheduler\SchedulerForm.Designer.cs">
       <DependentUpon>SchedulerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Regression_SimpleLinear.cs" />
     <Compile Include="TimeSeriesChart.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -16,11 +16,9 @@ namespace DNA_Test
         public Scheduler.Scheduler Schedule { get; set; }
         public Optimizers.OptimizerFunction OptimizerUsed { get; set; }
         public string DistributionUnderTest { get; set; }
-        //
-        //Save regression? -- Need a type
-        public IRegression Regression { get; set; }
+        public IRegression RegressionUnderTest { get; set; }
         
-        public OptimizationResult(double score, double[] bucketedSums, Scheduler.Scheduler schedule, string distributionTested, Optimizers.OptimizerFunction optimizer)
+        public OptimizationResult(double score, double[] bucketedSums, Scheduler.Scheduler schedule, Optimizers.OptimizerFunction optimizer, IRegression regression)
         {
             this.Score = score;
             this.Schedule = schedule;
@@ -29,7 +27,10 @@ namespace DNA_Test
             {
                 BucketedSums.Add(schedule.GetMidpoints()[i], bucketedSums[i]);
             }
-            this.DistributionUnderTest = distributionTested;
+
+            /*  The regression type should be a parameter. OptimizationFunction(Data, Regression) = OptimizationResult
+             */
+            this.RegressionUnderTest = regression;
         }
 
         public override string ToString()

@@ -18,7 +18,7 @@ namespace DNA_Test
         private Series ErrorSeries_Lower { get; set; }  //The regression line - error band
         private PDF_Popup pdf_Popup { get; set; }
 
-        public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints) : base()
+        public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression) : base()
         {
             /*  Set the default xAxis
              *  Load the Chart series'
@@ -29,7 +29,7 @@ namespace DNA_Test
             this.ChartAreas.Add(chart);
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
             this.Series.Add(TimeSeries);
-            FitSeries = GenerateFitSeries();
+            FitSeries = GenerateFitSeries(fitRegression);
             this.Series.Add(FitSeries);
             ErrorSeries_Lower = GenerateErrorSeries_Lower();
             this.Series.Add(ErrorSeries_Lower);
@@ -47,10 +47,17 @@ namespace DNA_Test
             }
             return timeSeries;
         }
-        private Series GenerateFitSeries()
+        private Series GenerateFitSeries(IRegression fitRegression)
         {
             Series fitSeries = new Series();
-            fitSeries.ChartType = SeriesChartType.Point;
+            fitSeries.ChartType = SeriesChartType.Spline;
+            /*  Create a series from the regression fit to the data
+             */
+            foreach(DataPoint xPoint in TimeSeries.Points)
+            {
+                //DateTime xDate = DateTime.FromOADate(xPoint.XValue);        //Unsure if OADate is the form that datetime points are being stored as
+                fitSeries.Points.AddXY(xPoint.XValue, fitRegression.GetValue(xPoint.XValue));
+            }
             return fitSeries;
         }
         private Series GenerateErrorSeries_Lower()
