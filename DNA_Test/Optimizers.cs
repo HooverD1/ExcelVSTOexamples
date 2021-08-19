@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Accord.Statistics.Distributions;
-using Accord.Statistics.Distributions.Univariate;
-using Accord.Statistics.Testing;
 
 namespace DNA_Test
 {

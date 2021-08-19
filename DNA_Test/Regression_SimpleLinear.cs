@@ -48,5 +48,11 @@ namespace DNA_Test
         {
             return slr.CoefficientOfDetermination(xVals, yVals);
         }
+
+        public double GetMeanSquareError()
+        {
+            throw new NotImplementedException();
+            //return slr.GetStandardError(xVals, yVals);      //I don't think this is right
+        }
     }
 }

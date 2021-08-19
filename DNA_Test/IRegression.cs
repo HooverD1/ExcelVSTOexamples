@@ -12,5 +12,6 @@ namespace DNA_Test
         //Some sort of access to parameters
         double GetValue(double dt);
         double GetR2();
+        double GetMeanSquareError();
     }
 }
