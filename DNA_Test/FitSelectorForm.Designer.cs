@@ -28,22 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox_FitOptions = new System.Windows.Forms.ListBox();
             this.button_SelectFit = new System.Windows.Forms.Button();
             this.flowLayoutPanel_Charts = new System.Windows.Forms.FlowLayoutPanel();
             this.comboBox_DisplayCount = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel_Options = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel_Options.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // listBox_FitOptions
-            // 
-            this.listBox_FitOptions.FormattingEnabled = true;
-            this.listBox_FitOptions.ItemHeight = 16;
-            this.listBox_FitOptions.Location = new System.Drawing.Point(3, 3);
-            this.listBox_FitOptions.Name = "listBox_FitOptions";
-            this.listBox_FitOptions.Size = new System.Drawing.Size(253, 452);
-            this.listBox_FitOptions.TabIndex = 1;
             // 
             // button_SelectFit
             // 
@@ -65,7 +54,7 @@
             // comboBox_DisplayCount
             // 
             this.comboBox_DisplayCount.FormattingEnabled = true;
-            this.comboBox_DisplayCount.Location = new System.Drawing.Point(1127, 473);
+            this.comboBox_DisplayCount.Location = new System.Drawing.Point(1127, 477);
             this.comboBox_DisplayCount.Name = "comboBox_DisplayCount";
             this.comboBox_DisplayCount.Size = new System.Drawing.Size(253, 24);
             this.comboBox_DisplayCount.TabIndex = 6;
@@ -73,10 +62,9 @@
             // 
             // flowLayoutPanel_Options
             // 
-            this.flowLayoutPanel_Options.Controls.Add(this.listBox_FitOptions);
             this.flowLayoutPanel_Options.Location = new System.Drawing.Point(1124, 12);
             this.flowLayoutPanel_Options.Name = "flowLayoutPanel_Options";
-            this.flowLayoutPanel_Options.Size = new System.Drawing.Size(256, 462);
+            this.flowLayoutPanel_Options.Size = new System.Drawing.Size(256, 459);
             this.flowLayoutPanel_Options.TabIndex = 7;
             // 
             // FitSelectorForm
@@ -90,14 +78,12 @@
             this.Controls.Add(this.button_SelectFit);
             this.Enabled = false;
             this.Name = "FitSelectorForm";
-            this.Text = "FitSelectorForm";
-            this.flowLayoutPanel_Options.ResumeLayout(false);
+            this.Text = "Select Desired Fit";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.ListBox listBox_FitOptions;
         private System.Windows.Forms.Button button_SelectFit;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_Charts;
         private System.Windows.Forms.ComboBox comboBox_DisplayCount;

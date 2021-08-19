@@ -28,19 +28,14 @@ namespace DNA_Test
         public FitSelectorForm(List<OptimizationResult> fittedResults)
         {
             InitializeComponent();
-            this.comboBox_DisplayCount.Enabled = true;
             this.comboBox_DisplayCount.Items.Add("Display 1 Chart");
             this.comboBox_DisplayCount.Items.Add("Display 2 Charts");
             this.comboBox_DisplayCount.Items.Add("Display 3 Charts");
-            //Load the fit options off the parameter
             this.SelectedResults = SelectResults(fittedResults);
             listBox_fitOptions1.SelectedIndexChanged += listBox_FitOptions1_SelectedIndexChanged;
             listBox_fitOptions2.SelectedIndexChanged += listBox_FitOptions2_SelectedIndexChanged;
             listBox_fitOptions3.SelectedIndexChanged += listBox_FitOptions3_SelectedIndexChanged;
-            comboBox_DisplayCount.SelectedIndex = 0;
-            //The TimeSeries should always be the same -- the fit series is what changes when the selected listbox_FitOption changes
-            //Does storing the bucketed sums against each result cost time/memory? -- I don't THINK so because it should only be a reference, but it depends how it's created
-            //The bucketed sums could be split out into their own parameter...
+            comboBox_DisplayCount.SelectedIndex = 2;
         }
 
         private OptimizationResult[] SelectResults(IEnumerable<OptimizationResult> fittedResults)
@@ -70,13 +65,14 @@ namespace DNA_Test
             
         }
 
-        private void PopulateFitOptions(ListBox fitOptions)
+        private ListBox PopulateFitOptions(ListBox fitOptions)
         {
             fitOptions.Items.Clear();
             foreach (OptimizationResult result in SelectedResults)
                 fitOptions.Items.Add(result.ToString());
             if(fitOptions.Items.Count > 0)
                 fitOptions.SelectedIndex = 0;
+            return fitOptions;
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)
@@ -121,7 +117,7 @@ namespace DNA_Test
             else
             {
                 this.DisplayCount = comboBox_DisplayCount.SelectedIndex + 1;
-                switch (DisplayCount)
+                switch (comboBox_DisplayCount.SelectedIndex + 1)
                 {
                     case 1:
                         LoadOneChart();
@@ -143,6 +139,8 @@ namespace DNA_Test
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
             TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
             PopulateFitOptions(listBox_fitOptions1);
+            listBox_fitOptions1.Show();
+
             this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions1);
             listBox_fitOptions1.Height = this.flowLayoutPanel_Options.Height;
             listBox_fitOptions1.Width = this.flowLayoutPanel_Options.Width;
@@ -154,17 +152,19 @@ namespace DNA_Test
             this.flowLayoutPanel_Charts.Controls.Clear();
             this.flowLayoutPanel_Options.Controls.Clear();
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 2;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
-            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width / 2;
-            PopulateFitOptions(listBox_fitOptions1);
-            PopulateFitOptions(listBox_fitOptions2);
+            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
+            listBox_fitOptions1 = PopulateFitOptions(listBox_fitOptions1);
+            listBox_fitOptions2 = PopulateFitOptions(listBox_fitOptions2);
 
             this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions1);
             listBox_fitOptions1.Height = this.flowLayoutPanel_Options.Height / 2;
             listBox_fitOptions1.Width = this.flowLayoutPanel_Options.Width;
+            listBox_fitOptions1.Show();
 
             this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions2);
             listBox_fitOptions2.Height = this.flowLayoutPanel_Options.Height / 2;
             listBox_fitOptions2.Width = this.flowLayoutPanel_Options.Width;
+            listBox_fitOptions2.Show();
 
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries2);
@@ -174,10 +174,13 @@ namespace DNA_Test
         private void LoadThreeCharts()
         {
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 3;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
-            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width / 3;
-            PopulateFitOptions(listBox_fitOptions1);
-            PopulateFitOptions(listBox_fitOptions2);
-            PopulateFitOptions(listBox_fitOptions3);
+            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
+            listBox_fitOptions1 = PopulateFitOptions(listBox_fitOptions1);
+            listBox_fitOptions2 = PopulateFitOptions(listBox_fitOptions2);
+            listBox_fitOptions3 = PopulateFitOptions(listBox_fitOptions3);
+            listBox_fitOptions1.Show();
+            listBox_fitOptions2.Show();
+            listBox_fitOptions3.Show();
 
             this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions1);
             listBox_fitOptions1.Height = this.flowLayoutPanel_Options.Height / 3;
