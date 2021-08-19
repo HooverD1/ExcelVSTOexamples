@@ -112,6 +112,9 @@
     <Compile Include="MyAddin.cs" />
     <Compile Include="OptimizationResult.cs" />
     <Compile Include="Optimizers.cs" />
+    <Compile Include="PDF_Builder.cs" />
+    <Compile Include="PDF_Chart.cs" />
+    <Compile Include="PDF_Popup.cs" />
     <Compile Include="RefParser.cs" />
     <Compile Include="Scheduler\Scheduler.cs" />
     <Compile Include="Scheduler\SchedulerForm.cs">
@@ -119,6 +122,9 @@
     </Compile>
     <Compile Include="Scheduler\SchedulerForm.Designer.cs">
       <DependentUpon>SchedulerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSeriesChart.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="UDFs.cs" />
     <Compile Include="InflationTable.cs" />

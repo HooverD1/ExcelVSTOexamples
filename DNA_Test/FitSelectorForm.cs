@@ -14,6 +14,9 @@ namespace DNA_Test
     public partial class FitSelectorForm : Form
     {
         public OptimizationResult[] SelectedResults { get; set; }
+        private TimeSeriesChart timeSeries1 { get; set; }
+        private TimeSeriesChart timeSeries2 { get; set; }
+        private TimeSeriesChart timeSeries3 { get; set; }
         public Series TimeSeries { get; set; }
         public Series PdfSeries { get; set; }
         public Series FitSeries { get; set; }
@@ -21,10 +24,15 @@ namespace DNA_Test
         public FitSelectorForm(List<OptimizationResult> fittedResults)
         {
             InitializeComponent();
+            
             //Load the fit options off the parameter
-            this.Chart_FitDisplay.Series.Clear();
             this.SelectedResults = SelectResults(fittedResults);
+            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height;        //Overwrite the chart's default size
+            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
             PopulateFitOptions();
+            this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
+            timeSeries1.Show();
+            
             
             //The TimeSeries should always be the same -- the fit series is what changes when the selected listbox_FitOption changes
             //Does storing the bucketed sums against each result cost time/memory? -- I don't THINK so because it should only be a reference, but it depends how it's created
@@ -68,17 +76,6 @@ namespace DNA_Test
                 listBox_FitOptions.SelectedIndex = 0;
         }
 
-        private Series BuildTimeSeries(Dictionary<DateTime, double> bucketedSums)
-        {
-            Series timeSeries = new Series();
-            timeSeries.ChartType = SeriesChartType.Point;
-            foreach(KeyValuePair<DateTime, double> period in bucketedSums)
-            {
-                timeSeries.Points.AddXY(period.Key.ToOADate(), period.Value);
-            }
-            return timeSeries;
-        }
-
         private void button_Cancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -92,23 +89,13 @@ namespace DNA_Test
 
         private void listBox_FitOptions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Chart_FitDisplay.Series.Clear();
-            TimeSeries = BuildTimeSeries(SelectedResults[listBox_FitOptions.SelectedIndex].BucketedSums);
-            FitSeries = BuildFitSeries(SelectedResults[listBox_FitOptions.SelectedIndex]);
-            Chart_FitDisplay.Series.Add(TimeSeries);
-            Chart_FitDisplay.Series.Add(FitSeries);
+            //Replace the timeSeries# chart when the fit option changes
+
+            //Do I have to remove/add or will it just update?
+            flowLayoutPanel_Charts.Controls.Remove(timeSeries1);
+            timeSeries1 = new TimeSeriesChart(SelectedResults[listBox_FitOptions.SelectedIndex].BucketedSums);
+            flowLayoutPanel_Charts.Controls.Add(timeSeries1);
         }
 
-        private Series BuildFitSeries(OptimizationResult selectedResult)
-        {
-            Series fitSeries = new Series();
-            fitSeries.ChartType = SeriesChartType.Line;
-            foreach(DateTime dt in selectedResult.Schedule.GetMidpoints())
-            {
-                //Requires Regression implementation
-                //fitSeries.Points.AddXY(dt.ToOADate(), selectedResult.Regression.GetValue(dt));
-            }
-            return fitSeries;
-        }
     }
 }

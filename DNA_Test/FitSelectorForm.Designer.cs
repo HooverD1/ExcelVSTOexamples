@@ -28,33 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            this.Chart_FitDisplay = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.listBox_FitOptions = new System.Windows.Forms.ListBox();
             this.listBox_FitDisplayAxis = new System.Windows.Forms.ListBox();
             this.button_SelectFit = new System.Windows.Forms.Button();
             this.button_Cancel = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.Chart_FitDisplay)).BeginInit();
+            this.flowLayoutPanel_Charts = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
-            // 
-            // Chart_FitDisplay
-            // 
-            chartArea3.Name = "ChartArea1";
-            this.Chart_FitDisplay.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.Chart_FitDisplay.Legends.Add(legend3);
-            this.Chart_FitDisplay.Location = new System.Drawing.Point(12, 12);
-            this.Chart_FitDisplay.Name = "Chart_FitDisplay";
-            series3.ChartArea = "ChartArea1";
-            series3.IsVisibleInLegend = false;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.Chart_FitDisplay.Series.Add(series3);
-            this.Chart_FitDisplay.Size = new System.Drawing.Size(1251, 388);
-            this.Chart_FitDisplay.TabIndex = 0;
-            this.Chart_FitDisplay.Text = "chart1";
             // 
             // listBox_FitOptions
             // 
@@ -95,29 +74,34 @@
             this.button_Cancel.UseVisualStyleBackColor = true;
             this.button_Cancel.Click += new System.EventHandler(this.button_Cancel_Click);
             // 
+            // flowLayoutPanel_Charts
+            // 
+            this.flowLayoutPanel_Charts.Location = new System.Drawing.Point(12, 12);
+            this.flowLayoutPanel_Charts.Name = "flowLayoutPanel_Charts";
+            this.flowLayoutPanel_Charts.Size = new System.Drawing.Size(1251, 388);
+            this.flowLayoutPanel_Charts.TabIndex = 5;
+            // 
             // FitSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1392, 555);
+            this.Controls.Add(this.flowLayoutPanel_Charts);
             this.Controls.Add(this.button_Cancel);
             this.Controls.Add(this.button_SelectFit);
             this.Controls.Add(this.listBox_FitDisplayAxis);
             this.Controls.Add(this.listBox_FitOptions);
-            this.Controls.Add(this.Chart_FitDisplay);
             this.Name = "FitSelectorForm";
             this.Text = "FitSelectorForm";
-            ((System.ComponentModel.ISupportInitialize)(this.Chart_FitDisplay)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataVisualization.Charting.Chart Chart_FitDisplay;
         private System.Windows.Forms.ListBox listBox_FitOptions;
         private System.Windows.Forms.ListBox listBox_FitDisplayAxis;
         private System.Windows.Forms.Button button_SelectFit;
         private System.Windows.Forms.Button button_Cancel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_Charts;
     }
 }
