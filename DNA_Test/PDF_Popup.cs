@@ -27,6 +27,21 @@ namespace DNA_Test
             this.pdf_Height = xWidth * heightScalar;
             this.yMin = yMin;
             this.yMax = yMax;
+
+
+            
+        }
+
+        private void CreateBoxPlot()
+        {
+            Series testseries = new Series();
+            testseries.ChartType = SeriesChartType.BoxPlot;
+            double[] quartiles = new double[]
+            {
+                1,2,3,4,5
+            };
+            testseries.Points.Add(quartiles);
+
         }
 
         public Series GetSeries()

@@ -11,11 +11,11 @@ namespace DNA_Test
     {
         public static int default_chartHeight = 100;    //Overwritable defaults
         public static int default_chartWidth = 100;
-        private ChartArea chart { get; set; }        //The x-Axis -- potentially overwritten for non-uniform
-        private Series TimeSeries { get; set; } //The data (potentially bucketed)
-        private Series FitSeries { get; set; }  //The regression line
-        private Series ErrorSeries_Upper { get; set; }  //The regression line + error band
-        private Series ErrorSeries_Lower { get; set; }  //The regression line - error band
+        public ChartArea chartArea { get; set; }        //The x-Axis -- potentially overwritten for non-uniform
+        public Series TimeSeries { get; set; } //The data (potentially bucketed)
+        public Series FitSeries { get; set; }  //The regression line
+        public Series ErrorSeries_Upper { get; set; }  //The regression line + error band
+        public Series ErrorSeries_Lower { get; set; }  //The regression line - error band
         private PDF_Popup pdf_Popup { get; set; }
 
         public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression) : base()
@@ -23,10 +23,13 @@ namespace DNA_Test
             /*  Set the default xAxis
              *  Load the Chart series'
              */
+            
+            this.Click += OnChartClick;
             this.Height = default_chartHeight;
             this.Width = default_chartWidth;
-            chart = new ChartArea();
-            this.ChartAreas.Add(chart);
+            chartArea = new ChartArea();
+            this.ChartAreas.Add(chartArea);
+            this.EnableUserSelection();     //Has to come after chartArea
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
             this.Series.Add(TimeSeries);
             FitSeries = GenerateFitSeries(fitRegression);
@@ -35,6 +38,16 @@ namespace DNA_Test
             this.Series.Add(ErrorSeries_Lower);
             ErrorSeries_Upper = GenerateErrorSeries_Upper();
             this.Series.Add(ErrorSeries_Upper);
+        }
+
+        private void EnableUserSelection()
+        {
+            this.chartArea.CursorX.IsUserEnabled = true;
+            this.chartArea.CursorY.IsUserEnabled = true;
+            this.chartArea.CursorX.IsUserSelectionEnabled = true;
+            this.chartArea.CursorY.IsUserSelectionEnabled = true;
+            this.chartArea.CursorX.Interval = 0.01;
+            this.chartArea.CursorY.Interval = 0.01;
         }
 
         private Series GenerateTimeSeries(Dictionary<DateTime, double> timeSeriesDataPoints)
@@ -71,6 +84,20 @@ namespace DNA_Test
             Series errorSeries = new Series();
             errorSeries.ChartType = SeriesChartType.Point;
             return errorSeries;
+        }
+
+        private void OnChartClick(object sender, EventArgs e)
+        {
+            //Select the nearest timeseries datapoint
+            double cursorX = this.chartArea.CursorX.Position;
+            double cursorY = this.chartArea.CursorY.Position;
+            SelectedPoint sp = ChartUtilities.SelectDataPointNearToXY(cursorX, cursorY, TimeSeries);
+            if (sp == null)
+                return;
+            else
+            {
+                sp.LoadDataLabel();
+            }
         }
     }
 }

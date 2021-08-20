@@ -40,16 +40,19 @@ namespace DNA_Test
             listBox_fitOptions1.SelectedIndexChanged += listBox_FitOptions1_SelectedIndexChanged;
             listBox_fitOptions2.SelectedIndexChanged += listBox_FitOptions2_SelectedIndexChanged;
             listBox_fitOptions3.SelectedIndexChanged += listBox_FitOptions3_SelectedIndexChanged;
+
             checkBox_timeSeries1.CheckedChanged += checkBox_timeSeries1_Checked_Changed;
             checkBox_timeSeries2.CheckedChanged += checkBox_timeSeries2_Checked_Changed;
             checkBox_timeSeries3.CheckedChanged += checkBox_timeSeries3_Checked_Changed;
-
+            
             this.comboBox_DisplayCount.Items.Add("Display 1 Chart");
             this.comboBox_DisplayCount.Items.Add("Display 2 Charts");
             this.comboBox_DisplayCount.Items.Add("Display 3 Charts");
             this.SelectedResults = SelectResults(fittedResults);
             comboBox_DisplayCount.SelectedIndex = 2;
         }
+
+        
 
         private OptimizationResult[] SelectResults(IEnumerable<OptimizationResult> fittedResults)
         {

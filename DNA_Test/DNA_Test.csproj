@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bucketer.cs" />
+    <Compile Include="ChartUtilities.cs" />
     <Compile Include="DatePicker_Custom.xaml.cs">
       <DependentUpon>DatePicker_Custom.xaml</DependentUpon>
     </Compile>
@@ -124,6 +125,7 @@
       <DependentUpon>SchedulerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Regression_SimpleLinear.cs" />
+    <Compile Include="SelectedPoint.cs" />
     <Compile Include="TimeSeriesChart.cs">
       <SubType>Component</SubType>
     </Compile>
