@@ -88,15 +88,31 @@ namespace DNA_Test
             return fitOptions;
         }
 
-        private void button_Cancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void button_SelectFit_Click(object sender, EventArgs e)
         {
-            //What happens here?
-            
+            OptimizationResult selectedResult;
+            if (checkBox_timeSeries1.Checked)
+            {
+                int selInd = listBox_fitOptions1.SelectedIndex;
+                selectedResult = SelectedResults[selInd];
+            }
+            else if (checkBox_timeSeries2.Checked)
+            {
+                int selInd = listBox_fitOptions2.SelectedIndex;
+                selectedResult = SelectedResults[selInd];
+            }
+            else if (checkBox_timeSeries3.Checked)
+            {
+                int selInd = listBox_fitOptions3.SelectedIndex;
+                selectedResult = SelectedResults[selInd];
+            }
+            else
+            {
+                throw new Exception("No series selected");
+            }
+
+            //WHAT TO DO WITH THE RESULT?
+            MessageBox.Show($"Selected {selectedResult.ToString()}");
         }
 
         private void listBox_FitOptions1_SelectedIndexChanged(object sender, EventArgs e)
