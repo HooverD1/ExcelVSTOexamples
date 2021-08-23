@@ -42,6 +42,8 @@ namespace DNA_Test
 
         private void EnableUserSelection()
         {
+            if (this.chartArea == null)
+                throw new Exception("Define chartArea first.");
             this.chartArea.CursorX.IsUserEnabled = true;
             this.chartArea.CursorY.IsUserEnabled = true;
             this.chartArea.CursorX.IsUserSelectionEnabled = true;
@@ -53,7 +55,8 @@ namespace DNA_Test
         private Series GenerateTimeSeries(Dictionary<DateTime, double> timeSeriesDataPoints)
         {
             Series timeSeries = new Series();
-            timeSeries.ChartType = SeriesChartType.Point;
+            timeSeries.ChartType = SeriesChartType.Line;
+            timeSeries.MarkerStyle = MarkerStyle.Circle;
             foreach(KeyValuePair<DateTime, double> datapoint in timeSeriesDataPoints)
             {
                 timeSeries.Points.AddXY(datapoint.Key, datapoint.Value);

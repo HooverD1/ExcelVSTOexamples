@@ -50,6 +50,9 @@ namespace DNA_Test
             this.comboBox_DisplayCount.Items.Add("Display 3 Charts");
             this.SelectedResults = SelectResults(fittedResults);
             comboBox_DisplayCount.SelectedIndex = 2;
+
+            TestForm1 tf1 = new TestForm1();
+            tf1.Show();
         }
 
         

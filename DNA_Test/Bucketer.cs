@@ -36,13 +36,35 @@ namespace DNA_Test
             }
             sortWatch.Stop();
             DateTime startDate = dates.First();
-            DateTime endDate = dates.Last();
+            DateTime endDate;
             //Take dates and paired values, determine the best fit with the input fitting function??, return a tuple of bucket midpoints and paired bucket sums
             int iterationCount = 0;
             foreach (Scheduler.Scheduler.Interval iType in (DNA_Test.Scheduler.Scheduler.Interval[])Enum.GetValues(typeof(Scheduler.Scheduler.Interval)))
             {
                 for (int iLen = 1; iLen <= Scheduler.Scheduler.GetMaximumReasonablePeriods(iType); iLen++)
                 {
+                    switch (iType)
+                    {
+                        case Scheduler.Scheduler.Interval.Daily:
+                            if (iLen == 7)
+                                continue;
+                            endDate = dates.Last().AddDays(1);
+                            break;
+                        case Scheduler.Scheduler.Interval.Weekly:
+                            endDate = dates.Last().AddDays(1);
+                            break;
+                        case Scheduler.Scheduler.Interval.Monthly:
+                            if (iLen == 12)
+                                continue;
+                            endDate = dates.Last().AddDays(1);
+                            break;
+                        case Scheduler.Scheduler.Interval.Yearly:
+                            endDate = dates.Last().AddDays(1);
+                            break;
+                        default:
+                            throw new Exception("Unknown interval type");
+                    }
+                    
                     scheduleWatch.Start();
                     if(iLen == 40 && iType == Scheduler.Scheduler.Interval.Weekly) { }
                     Scheduler.Scheduler schedule = new Scheduler.Scheduler(iLen, iType, startDate, endDate);
@@ -113,7 +135,18 @@ namespace DNA_Test
                         //if (bucketIndex == bucketSum.Length - 1) { }
                     }
                 }
-                //whileWatch.Stop();
+                //If daily: This is loading the last day and the day before into the same bucket.
+                //If the chosen dates are at midnight.. 
+                //  |  m1  |  m2  |  m3  | lines at midnight; m = midpoint
+                //  s                    e s = start, e = end
+                //  d1     d2     d3     d4
+                // d1 --> m1, d2 --> m2, d3 --> m3, d4 --> m3
+                // Should the end date be pushed 1 more intervalLength out?
+                // I tried this, and now the last point is sometimes very low.
+                // When it's days and there's no real width to the bucket, it works to push out.
+                // When it's months and it's only the last day that could be extra in the last bucket, pushing out isolates that day in its own bucket
+                // What to do here?
+                // Always push 1 day?
                 
                 bucketSum[bucketIndex] += values[v];
             }
