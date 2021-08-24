@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoxPlot.cs" />
+    <Compile Include="BoxPlotSeries.cs" />
     <Compile Include="Bucketer.cs" />
     <Compile Include="ChartUtilities.cs" />
     <Compile Include="DatePicker_Custom.xaml.cs">
@@ -127,12 +128,6 @@
     </Compile>
     <Compile Include="Regression_SimpleLinear.cs" />
     <Compile Include="SelectedPoint.cs" />
-    <Compile Include="TestForm1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestForm1.Designer.cs">
-      <DependentUpon>TestForm1.cs</DependentUpon>
-    </Compile>
     <Compile Include="TimeSeriesChart.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -154,9 +149,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Scheduler\SchedulerForm.resx">
       <DependentUpon>SchedulerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestForm1.resx">
-      <DependentUpon>TestForm1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

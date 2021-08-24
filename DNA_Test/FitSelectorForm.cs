@@ -51,8 +51,6 @@ namespace DNA_Test
             this.SelectedResults = SelectResults(fittedResults);
             comboBox_DisplayCount.SelectedIndex = 0;
 
-            TestForm1 tf1 = new TestForm1();
-            tf1.Show();
         }        
 
         private OptimizationResult[] SelectResults(IEnumerable<OptimizationResult> fittedResults)
