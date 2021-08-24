@@ -13,7 +13,7 @@ namespace DNA_Test
         double[] xVals { get; set; }
         double[] yVals { get; set; }
         double GetValue(double dt);
-        double GetR2();
+        double Score();
         double GetMeanSquareError();
         double GetPredictionError(double x);
     }

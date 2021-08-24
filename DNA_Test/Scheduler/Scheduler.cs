@@ -38,7 +38,7 @@ namespace DNA_Test.Scheduler
             //This should not form the end date..
             DateTime actualEndDate = StartDate;
             DateTime givenEndDate = DateTime.FromOADate(endDate);
-            while (DateTime.Compare(actualEndDate, givenEndDate) < 0)
+            while (DateTime.Compare(actualEndDate, givenEndDate) <= 0)
             {
                 switch (intervalType)
                 {

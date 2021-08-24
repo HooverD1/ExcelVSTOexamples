@@ -54,17 +54,10 @@ namespace DNA_Test
                                 continue;
                             break;
                     }
-                    
                     scheduleWatch.Start();
-                    if(iLen == 40 && iType == Scheduler.Scheduler.Interval.Weekly) { }
                     Scheduler.Scheduler schedule = new Scheduler.Scheduler(iLen, iType, startDate, endDate);
                     scheduleWatch.Stop();
-                    if (schedule.GetMidpoints().Length < 3)
-                    {
-                        break;
-                        //Once the interval is so long that it puts everything in one bucket, checking longer lengths is not productive...
-                        //...Break the inner loop and move on to the next iType
-                    }
+                    if (schedule.GetMidpoints().Length < 3) break;  //Enforce a minimum of three buckets
                     
                     bucketWatch.Start();
                     double[] bucketSums = BucketToSchedule(dates, values, schedule);

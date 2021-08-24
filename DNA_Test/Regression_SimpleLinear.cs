@@ -49,6 +49,21 @@ namespace DNA_Test
             return slr.CoefficientOfDetermination(xVals, yVals);
         }
 
+        public double GetAdjustedR2()
+        {
+            double r2 = slr.CoefficientOfDetermination(xVals, yVals);
+            double tl = 1 - r2;
+            double tr = yVals.Count() - 1;
+            double bottom = yVals.Count() - 1 - 1;
+            double adj_r2 = 1 - ((tl * tr) / bottom);
+            return adj_r2;
+        }
+
+        public double Score()
+        {
+            return GetAdjustedR2();
+        }
+
         public double GetPredictionError(double x)
         {
             return slr.GetPredictionStandardError(x, xVals, yVals);

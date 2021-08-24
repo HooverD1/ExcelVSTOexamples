@@ -16,7 +16,7 @@ namespace DNA_Test
             if (bucketSums.Count() <= 1)
                 score = 0;
             else
-                score = regression.GetR2();
+                score = regression.Score();
             return new OptimizationResult(score, bucketSums, schedule, SimpleLinear_ScheduleOptimizer, regression);
         }
     }

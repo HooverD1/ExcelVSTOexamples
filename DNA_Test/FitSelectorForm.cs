@@ -18,9 +18,9 @@ namespace DNA_Test
         private TimeSeriesChart timeSeries1 { get; set; }
         private TimeSeriesChart timeSeries2 { get; set; }
         private TimeSeriesChart timeSeries3 { get; set; }
-        private ListBox listBox_fitOptions1 { get; set; } = new ListBox();
-        private ListBox listBox_fitOptions2 { get; set; } = new ListBox();
-        private ListBox listBox_fitOptions3 { get; set; } = new ListBox();
+        private TreeView fitOptions1 { get; set; } = new TreeView();
+        private TreeView fitOptions2 { get; set; } = new TreeView();
+        private TreeView fitOptions3 { get; set; } = new TreeView();
         private FlowLayoutPanel flowLayoutPanel_Check1 = new FlowLayoutPanel();
         private FlowLayoutPanel flowLayoutPanel_Check2 = new FlowLayoutPanel();
         private FlowLayoutPanel flowLayoutPanel_Check3 = new FlowLayoutPanel();
@@ -37,25 +37,23 @@ namespace DNA_Test
             InitializeComponent();
 
             this.button_SelectFit.Enabled = false;  //Disable until the user has selected a fit
-            listBox_fitOptions1.SelectedIndexChanged += listBox_FitOptions1_SelectedIndexChanged;
-            listBox_fitOptions2.SelectedIndexChanged += listBox_FitOptions2_SelectedIndexChanged;
-            listBox_fitOptions3.SelectedIndexChanged += listBox_FitOptions3_SelectedIndexChanged;
+            fitOptions1.AfterSelect += fitOptions1_SelectedIndexChanged;
+            fitOptions2.AfterSelect += fitOptions2_SelectedIndexChanged;
+            //fitOptions3.AfterSelect += fitOptions3_SelectedIndexChanged;
 
             checkBox_timeSeries1.CheckedChanged += checkBox_timeSeries1_Checked_Changed;
             checkBox_timeSeries2.CheckedChanged += checkBox_timeSeries2_Checked_Changed;
-            checkBox_timeSeries3.CheckedChanged += checkBox_timeSeries3_Checked_Changed;
+            //checkBox_timeSeries3.CheckedChanged += checkBox_timeSeries3_Checked_Changed;
             
             this.comboBox_DisplayCount.Items.Add("Display 1 Chart");
             this.comboBox_DisplayCount.Items.Add("Display 2 Charts");
-            this.comboBox_DisplayCount.Items.Add("Display 3 Charts");
+            //this.comboBox_DisplayCount.Items.Add("Display 3 Charts");
             this.SelectedResults = SelectResults(fittedResults);
-            comboBox_DisplayCount.SelectedIndex = 2;
+            comboBox_DisplayCount.SelectedIndex = 0;
 
             TestForm1 tf1 = new TestForm1();
             tf1.Show();
-        }
-
-        
+        }        
 
         private OptimizationResult[] SelectResults(IEnumerable<OptimizationResult> fittedResults)
         {
@@ -84,13 +82,13 @@ namespace DNA_Test
             
         }
 
-        private ListBox PopulateFitOptions(ListBox fitOptions)
+        private TreeView PopulateFitOptions(TreeView fitOptions)
         {
-            fitOptions.Items.Clear();
+            fitOptions.Nodes.Clear();
             foreach (OptimizationResult result in SelectedResults)
-                fitOptions.Items.Add(result.ToString());
-            if(fitOptions.Items.Count > 0)
-                fitOptions.SelectedIndex = 0;
+                fitOptions.Nodes.Add(result.ToString());
+            if (fitOptions.Nodes.Count > 0)
+                fitOptions.SelectedNode = fitOptions.Nodes[0];
             return fitOptions;
         }
 
@@ -99,17 +97,17 @@ namespace DNA_Test
             OptimizationResult selectedResult;
             if (checkBox_timeSeries1.Checked)
             {
-                int selInd = listBox_fitOptions1.SelectedIndex;
+                int selInd = fitOptions1.SelectedNode.Index;
                 selectedResult = SelectedResults[selInd];
             }
             else if (checkBox_timeSeries2.Checked)
             {
-                int selInd = listBox_fitOptions2.SelectedIndex;
+                int selInd = fitOptions2.SelectedNode.Index;
                 selectedResult = SelectedResults[selInd];
             }
             else if (checkBox_timeSeries3.Checked)
             {
-                int selInd = listBox_fitOptions3.SelectedIndex;
+                int selInd = fitOptions3.SelectedNode.Index;
                 selectedResult = SelectedResults[selInd];
             }
             else
@@ -121,43 +119,25 @@ namespace DNA_Test
             MessageBox.Show($"Selected {selectedResult.ToString()}");
         }
 
-        private void listBox_FitOptions1_SelectedIndexChanged(object sender, EventArgs e)
+        private void fitOptions1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            flowLayoutPanel_Charts.Controls.Remove(timeSeries1);
-            flowLayoutPanel_Charts.Controls.Remove(timeSeries2);
-            flowLayoutPanel_Charts.Controls.Remove(timeSeries3);
-            timeSeries1 = new TimeSeriesChart(SelectedResults[listBox_fitOptions1.SelectedIndex].BucketedSums, SelectedResults[listBox_fitOptions1.SelectedIndex].RegressionUnderTest);
-            flowLayoutPanel_Charts.Controls.Add(timeSeries1);
-            if(DisplayCount >= 2)
-                flowLayoutPanel_Charts.Controls.Add(timeSeries2);
-            if(DisplayCount == 3)
-                flowLayoutPanel_Charts.Controls.Add(timeSeries3);
+            NodeChanged(fitOptions1);
         }
 
-        private void listBox_FitOptions2_SelectedIndexChanged(object sender, EventArgs e)
+        private void fitOptions2_SelectedIndexChanged(object sender, EventArgs e)
         {
+            NodeChanged(fitOptions2);
+        }
+
+        private void NodeChanged(TreeView fitOptions)
+        {
+            TreeNode node = fitOptions.SelectedNode;
             flowLayoutPanel_Charts.Controls.Remove(timeSeries1);
             flowLayoutPanel_Charts.Controls.Remove(timeSeries2);
-            flowLayoutPanel_Charts.Controls.Remove(timeSeries3);
-            timeSeries2 = new TimeSeriesChart(SelectedResults[listBox_fitOptions2.SelectedIndex].BucketedSums, SelectedResults[listBox_fitOptions2.SelectedIndex].RegressionUnderTest);
+            timeSeries1 = new TimeSeriesChart(SelectedResults[fitOptions1.SelectedNode.Index].BucketedSums, SelectedResults[fitOptions1.SelectedNode.Index].RegressionUnderTest);
             flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             if (DisplayCount >= 2)
                 flowLayoutPanel_Charts.Controls.Add(timeSeries2);
-            if (DisplayCount == 3)
-                flowLayoutPanel_Charts.Controls.Add(timeSeries3);
-        }
-
-        private void listBox_FitOptions3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            flowLayoutPanel_Charts.Controls.Remove(timeSeries1);
-            flowLayoutPanel_Charts.Controls.Remove(timeSeries2);
-            flowLayoutPanel_Charts.Controls.Remove(timeSeries3);
-            timeSeries3 = new TimeSeriesChart(SelectedResults[listBox_fitOptions3.SelectedIndex].BucketedSums, SelectedResults[listBox_fitOptions3.SelectedIndex].RegressionUnderTest);
-            flowLayoutPanel_Charts.Controls.Add(timeSeries1);
-            if (DisplayCount >= 2)
-                flowLayoutPanel_Charts.Controls.Add(timeSeries2);
-            if (DisplayCount == 3)
-                flowLayoutPanel_Charts.Controls.Add(timeSeries3);
         }
 
         private void checkBox_timeSeries1_Checked_Changed(object sender, EventArgs e)
@@ -253,12 +233,13 @@ namespace DNA_Test
             this.flowLayoutPanel_Options.Controls.Clear();
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
             TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
-            PopulateFitOptions(listBox_fitOptions1);
-            listBox_fitOptions1.Show();
+            PopulateFitOptions(fitOptions1);
+            NodeChanged(fitOptions1);
+            fitOptions1.Show();
 
-            this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions1);
-            listBox_fitOptions1.Height = this.flowLayoutPanel_Options.Height;
-            listBox_fitOptions1.Width = this.flowLayoutPanel_Options.Width;
+            this.flowLayoutPanel_Options.Controls.Add(fitOptions1);
+            fitOptions1.Height = this.flowLayoutPanel_Options.Height;
+            fitOptions1.Width = this.flowLayoutPanel_Options.Width;
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             timeSeries1.Show();
         }
@@ -276,18 +257,20 @@ namespace DNA_Test
             this.flowLayoutPanel_Options.Controls.Clear();
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 2 - 2;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
             TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
-            listBox_fitOptions1 = PopulateFitOptions(listBox_fitOptions1);
-            listBox_fitOptions2 = PopulateFitOptions(listBox_fitOptions2);
-            listBox_fitOptions1.Show();
-            listBox_fitOptions2.Show();
+            fitOptions1 = PopulateFitOptions(fitOptions1);
+            NodeChanged(fitOptions1);
+            fitOptions2 = PopulateFitOptions(fitOptions2);
+            NodeChanged(fitOptions2);
+            fitOptions1.Show();
+            fitOptions2.Show();
 
-            this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions1);
-            listBox_fitOptions1.Height = this.flowLayoutPanel_Options.Height / 2 - 2;
-            listBox_fitOptions1.Width = this.flowLayoutPanel_Options.Width;
+            this.flowLayoutPanel_Options.Controls.Add(fitOptions1);
+            fitOptions1.Height = this.flowLayoutPanel_Options.Height / 2 - 2;
+            fitOptions1.Width = this.flowLayoutPanel_Options.Width;
 
-            this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions2);
-            listBox_fitOptions2.Height = this.flowLayoutPanel_Options.Height / 2 - 2;
-            listBox_fitOptions2.Width = this.flowLayoutPanel_Options.Width;
+            this.flowLayoutPanel_Options.Controls.Add(fitOptions2);
+            fitOptions2.Height = this.flowLayoutPanel_Options.Height / 2 - 2;
+            fitOptions2.Width = this.flowLayoutPanel_Options.Width;
 
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries2);
@@ -318,12 +301,12 @@ namespace DNA_Test
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 3 - 2;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
             TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
 
-            listBox_fitOptions1 = PopulateFitOptions(listBox_fitOptions1);
-            listBox_fitOptions2 = PopulateFitOptions(listBox_fitOptions2);
-            listBox_fitOptions3 = PopulateFitOptions(listBox_fitOptions3);
-            listBox_fitOptions1.Show();
-            listBox_fitOptions2.Show();
-            listBox_fitOptions3.Show();
+            fitOptions1 = PopulateFitOptions(fitOptions1);
+            fitOptions2 = PopulateFitOptions(fitOptions2);
+            fitOptions3 = PopulateFitOptions(fitOptions3);
+            fitOptions1.Show();
+            fitOptions2.Show();
+            fitOptions3.Show();
 
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             timeSeries1.Show();
@@ -332,17 +315,17 @@ namespace DNA_Test
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries3);
             timeSeries3.Show();
 
-            this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions1);
-            listBox_fitOptions1.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
-            listBox_fitOptions1.Width = this.flowLayoutPanel_Options.Width;
+            this.flowLayoutPanel_Options.Controls.Add(fitOptions1);
+            fitOptions1.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
+            fitOptions1.Width = this.flowLayoutPanel_Options.Width;
 
-            this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions2);
-            listBox_fitOptions2.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
-            listBox_fitOptions2.Width = this.flowLayoutPanel_Options.Width;
+            this.flowLayoutPanel_Options.Controls.Add(fitOptions2);
+            fitOptions2.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
+            fitOptions2.Width = this.flowLayoutPanel_Options.Width;
 
-            this.flowLayoutPanel_Options.Controls.Add(listBox_fitOptions3);
-            listBox_fitOptions3.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
-            listBox_fitOptions3.Width = this.flowLayoutPanel_Options.Width;
+            this.flowLayoutPanel_Options.Controls.Add(fitOptions3);
+            fitOptions3.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
+            fitOptions3.Width = this.flowLayoutPanel_Options.Width;
 
             //flowLayoutPanel_Checkboxes.Padding = new Padding(0, 0, 0, timeSeries1.Height);
             this.flowLayoutPanel_Check1.Height = timeSeries1.Height;
