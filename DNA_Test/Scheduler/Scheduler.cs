@@ -35,7 +35,30 @@ namespace DNA_Test.Scheduler
         {
             //What if the user wants it to be midnight?
             StartDate = DateTime.FromOADate(startDate);
-            EndDate = DateTime.FromOADate(endDate);
+            //This should not form the end date..
+            DateTime actualEndDate = StartDate;
+            DateTime givenEndDate = DateTime.FromOADate(endDate);
+            while (DateTime.Compare(actualEndDate, givenEndDate) < 0)
+            {
+                switch (intervalType)
+                {
+                    case Scheduler.Interval.Daily:
+                        actualEndDate = actualEndDate.AddDays(intervalLength);
+                        break;
+                    case Interval.Weekly:
+                        actualEndDate = actualEndDate.AddDays(intervalLength * 7);
+                        break;
+                    case Interval.Monthly:
+                        actualEndDate = actualEndDate.AddMonths(Convert.ToInt32(intervalLength));
+                        break;
+                    case Interval.Yearly:
+                        actualEndDate = actualEndDate.AddYears(Convert.ToInt32(intervalLength));
+                        break;
+                    default:
+                        throw new Exception("Unknown interval type");
+                }
+            }
+            EndDate = actualEndDate;
             this.IntervalLength = intervalLength;
             this.IntervalType = intervalType;
             if(IntervalType != Interval.Daily && intervalLength % 1 != 0)

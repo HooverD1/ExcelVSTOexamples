@@ -36,7 +36,7 @@ namespace DNA_Test
             }
             sortWatch.Stop();
             DateTime startDate = dates.First();
-            DateTime endDate;
+            DateTime endDate = dates.Last();        //Scheduler will adjust the end date to a value that works.
             //Take dates and paired values, determine the best fit with the input fitting function??, return a tuple of bucket midpoints and paired bucket sums
             int iterationCount = 0;
             foreach (Scheduler.Scheduler.Interval iType in (DNA_Test.Scheduler.Scheduler.Interval[])Enum.GetValues(typeof(Scheduler.Scheduler.Interval)))
@@ -48,21 +48,11 @@ namespace DNA_Test
                         case Scheduler.Scheduler.Interval.Daily:
                             if (iLen == 7)
                                 continue;
-                            endDate = dates.Last().AddDays(1);
-                            break;
-                        case Scheduler.Scheduler.Interval.Weekly:
-                            endDate = dates.Last().AddDays(1);
                             break;
                         case Scheduler.Scheduler.Interval.Monthly:
                             if (iLen == 12)
                                 continue;
-                            endDate = dates.Last().AddDays(1);
                             break;
-                        case Scheduler.Scheduler.Interval.Yearly:
-                            endDate = dates.Last().AddDays(1);
-                            break;
-                        default:
-                            throw new Exception("Unknown interval type");
                     }
                     
                     scheduleWatch.Start();

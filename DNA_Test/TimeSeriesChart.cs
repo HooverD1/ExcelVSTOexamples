@@ -63,7 +63,7 @@ namespace DNA_Test
             }
             return timeSeries;
         }
-        private Series GenerateFitSeries(IRegression fitRegression)
+        private Series GenerateFitSeries(IRegression fitRegression)     //Feed this the regression used to fit the time series
         {
             Series fitSeries = new Series();
             fitSeries.ChartType = SeriesChartType.Spline;
