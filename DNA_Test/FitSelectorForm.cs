@@ -83,11 +83,45 @@ namespace DNA_Test
         private TreeView PopulateFitOptions(TreeView fitOptions)
         {
             fitOptions.Nodes.Clear();
-            foreach (OptimizationResult result in SelectedResults)
-                fitOptions.Nodes.Add(result.ToString());
+            //Need a list of distinct schedules to iterate
+            IEnumerable<Scheduler.Scheduler> allSchedules = from OptimizationResult or in SelectedResults select or.Schedule;
+            IEnumerable < Scheduler.Scheduler > distinctSchedules = GetDistinctSchedules(allSchedules);
+
+            foreach (Scheduler.Scheduler schedule in distinctSchedules)
+            {
+                IEnumerable<TreeNode> childNodes = from OptimizationResult or in SelectedResults
+                                             where or.Schedule.IsIntervalEqual(schedule)
+                                             select new TreeNode(or.RegressionUnderTest.ToString());
+
+                //Need to find all the results with the same bucketing scheme, but different regressions
+                TreeNode parent_node = new TreeNode(schedule.ToIntervalString(), childNodes.ToArray());
+                
+                fitOptions.Nodes.Add(parent_node);
+            }
             if (fitOptions.Nodes.Count > 0)
-                fitOptions.SelectedNode = fitOptions.Nodes[0];
+                fitOptions.SelectedNode = fitOptions.Nodes[0].Nodes[0];
             return fitOptions;
+        }
+
+        private IEnumerable<Scheduler.Scheduler> GetDistinctSchedules(IEnumerable<Scheduler.Scheduler> schedules)
+        {
+            List<Scheduler.Scheduler> distinctSchedules = new List<Scheduler.Scheduler>();
+            foreach (Scheduler.Scheduler s1 in schedules)
+            {
+                //Remove repeated schedules from the list
+                bool isOnList = false;
+                foreach (Scheduler.Scheduler s2 in distinctSchedules)
+                {
+                    if (s1.IsIntervalEqual(s2))
+                    {
+                        isOnList = true;
+                        break;
+                    }
+                }
+                if (!isOnList)
+                    distinctSchedules.Add(s1);
+            }
+            return distinctSchedules;
         }
 
         private void button_SelectFit_Click(object sender, EventArgs e)
@@ -119,20 +153,33 @@ namespace DNA_Test
 
         private void fitOptions1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            NodeChanged(fitOptions1);
+            NodeChanged(fitOptions1, 1);
         }
 
         private void fitOptions2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            NodeChanged(fitOptions2);
+            NodeChanged(fitOptions2, 2);
         }
 
-        private void NodeChanged(TreeView fitOptions)
+        private void NodeChanged(TreeView fitOptions, int chartIndex)
         {
             TreeNode node = fitOptions.SelectedNode;
+            if (node.Nodes.Count > 0)       //Don't load off parent nodes
+                return;
             flowLayoutPanel_Charts.Controls.Remove(timeSeries1);
             flowLayoutPanel_Charts.Controls.Remove(timeSeries2);
-            timeSeries1 = new TimeSeriesChart(SelectedResults[fitOptions1.SelectedNode.Index].BucketedSums, SelectedResults[fitOptions1.SelectedNode.Index].RegressionUnderTest);
+            string parentText = fitOptions.SelectedNode.Parent.Text;
+            string selectedText = fitOptions.SelectedNode.Text;
+            OptimizationResult selectedResult = (from OptimizationResult or in SelectedResults
+                                 where or.Schedule.ToIntervalString() == parentText && or.RegressionUnderTest.ToString() == selectedText
+                                 select or).First();
+            if (chartIndex == 1)
+                timeSeries1 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest);
+            else if (chartIndex == 2)
+                timeSeries2 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest);
+            else
+                throw new Exception("Unexpected TimeSeriesChart index");
+
             flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             if (DisplayCount >= 2)
                 flowLayoutPanel_Charts.Controls.Add(timeSeries2);
@@ -232,7 +279,7 @@ namespace DNA_Test
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
             TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
             PopulateFitOptions(fitOptions1);
-            NodeChanged(fitOptions1);
+            NodeChanged(fitOptions1, 1);
             fitOptions1.Show();
 
             this.flowLayoutPanel_Options.Controls.Add(fitOptions1);
@@ -256,9 +303,9 @@ namespace DNA_Test
             TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 2 - 2;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
             TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
             fitOptions1 = PopulateFitOptions(fitOptions1);
-            NodeChanged(fitOptions1);
+            NodeChanged(fitOptions1, 1);
             fitOptions2 = PopulateFitOptions(fitOptions2);
-            NodeChanged(fitOptions2);
+            NodeChanged(fitOptions2, 2);
             fitOptions1.Show();
             fitOptions2.Show();
 

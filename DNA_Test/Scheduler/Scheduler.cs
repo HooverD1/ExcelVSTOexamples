@@ -69,13 +69,6 @@ namespace DNA_Test.Scheduler
             {
                 throw new Exception("Start date occurs on or after end date");
             }
-            //Took this out because it can be handled through the form.
-            //if (!(startDate - Math.Floor(startDate) > 0 || endDate - Math.Floor(endDate) > 0))
-            //{   //If neither specify a time, set the start to midnight and the stop to one tick before midnight.
-            //    EndDate = EndDate.AddHours(11);
-            //    EndDate = EndDate.AddMinutes(59);
-            //    EndDate = EndDate.AddSeconds(59);
-            //}
         }
 
         public DateTime[] GetMidpoints()
@@ -159,6 +152,11 @@ namespace DNA_Test.Scheduler
             }
             sb.Length -= 1;     //Remove the final comma
             return sb.ToString();
+        }
+
+        public string ToIntervalString()
+        {
+            return $"{this.IntervalType.ToString()} Interval: {this.IntervalLength}";
         }
 
         private int GetNumberOfEndpoints()      //Daily
@@ -313,6 +311,18 @@ namespace DNA_Test.Scheduler
                 default:
                     throw new Exception("Unknown interval type.");
             }
+        }
+
+        public bool IsIntervalEqual(Scheduler schedule)
+        {
+            if(this.IntervalLength == schedule.IntervalLength)
+            {
+                if(this.IntervalType == schedule.IntervalType)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

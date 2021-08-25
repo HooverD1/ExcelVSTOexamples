@@ -74,5 +74,10 @@ namespace DNA_Test
             throw new NotImplementedException();
             //return slr.GetStandardError(xVals, yVals);      //I don't think this is right
         }
+
+        public override string ToString()
+        {
+            return $"SLR: {Math.Round(slr.Slope, 1)}x + {Math.Round(slr.Intercept, 1)}";
+        }
     }
 }

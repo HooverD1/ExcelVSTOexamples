@@ -16,5 +16,6 @@ namespace DNA_Test
         double Score();
         double GetMeanSquareError();
         double GetPredictionError(double x);
+        string ToString();
     }
 }

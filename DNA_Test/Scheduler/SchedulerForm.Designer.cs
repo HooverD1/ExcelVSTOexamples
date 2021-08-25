@@ -225,7 +225,7 @@
             this.MinimizeBox = false;
             this.Name = "SchedulerForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Create a Schedule";
+            this.Text = "ROSE: Insert a Time Series";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.SchedulerForm_HelpButtonClicked);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
