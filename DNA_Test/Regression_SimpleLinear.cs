@@ -70,10 +70,21 @@ namespace DNA_Test
             return slr.GetPredictionStandardError(x, xVals, yVals);
         }
 
-        public Accord.DoubleRange GetRegressionConfidenceInterval(double x, double alpha)
+        public Accord.DoubleRange GetConfidenceInterval(double x, double alpha)
         {
             var ci = slr.GetConfidenceInterval(x, xVals, yVals, alpha);
             return ci;
+        }
+
+        public Accord.DoubleRange GetPredictionInterval(double x, double alpha)
+        {
+            var pi = slr.GetConfidenceInterval(x, xVals, yVals, alpha);
+            return pi;
+        }
+
+        public double GetValueAtX(double x)
+        {
+            return slr.Transform(x);
         }
 
         public double GetMeanSquareError()

@@ -15,9 +15,11 @@ namespace DNA_Test
         public ChartArea chartArea { get; set; }        //The x-Axis -- potentially overwritten for non-uniform
         public Series TimeSeries { get; set; } //The data (potentially bucketed)
         public Series FitSeries { get; set; }  //The regression line
-        public Series ErrorSeries_Upper { get; set; }  //The regression line + error band
-        public Series ErrorSeries_Lower { get; set; }  //The regression line - error band
+        public Series ErrorSeries_CI_Upper { get; set; }  //The regression line + error band
+        public Series ErrorSeries_CI_Lower { get; set; }  //The regression line - error band
+        public BoxPlotSeries BoxPlot_Series { get; set; }
         private PDF_Popup pdf_Popup { get; set; }
+        private double predictAt { get; set; }
 
         public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression) : base()
         {
@@ -31,14 +33,23 @@ namespace DNA_Test
             chartArea = new ChartArea();
             this.ChartAreas.Add(chartArea);
             this.EnableUserSelection();     //Has to come after chartArea
+
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
             this.Series.Add(TimeSeries);
+
+            this.predictAt = (from DataPoint dp in TimeSeries.Points select dp.XValue).Average();
+            BoxPlot_Series = GenerateBoxPlotSeries(fitRegression, predictAt);
+            this.Series.Add(BoxPlot_Series);
+
             FitSeries = GenerateFitSeries(fitRegression);
             this.Series.Add(FitSeries);
-            ErrorSeries_Lower = GenerateErrorSeries_Lower(fitRegression);
-            this.Series.Add(ErrorSeries_Lower);
-            ErrorSeries_Upper = GenerateErrorSeries_Upper(fitRegression);
-            this.Series.Add(ErrorSeries_Upper);
+            
+            ErrorSeries_CI_Lower = GenerateErrorSeries_Lower(fitRegression);
+            this.Series.Add(ErrorSeries_CI_Lower);
+            ErrorSeries_CI_Upper = GenerateErrorSeries_Upper(fitRegression);
+            this.Series.Add(ErrorSeries_CI_Upper);
+            
+            
         }
 
         private void EnableUserSelection()
@@ -93,7 +104,7 @@ namespace DNA_Test
             for (int i = 0; i <= 100; i++)
             {
                 double xVal = minX + (i * ((maxX - minX) / 100));
-                double yVal = fitRegression.GetRegressionConfidenceInterval(xVal, 0.95).Min;
+                double yVal = fitRegression.GetConfidenceInterval(xVal, 0.95).Min;
                 DataPoint newDP = new DataPoint(xVal, yVal);
                 errorSeries.Points.Add(newDP);
             }
@@ -109,12 +120,26 @@ namespace DNA_Test
             for (int i = 0; i <= 100; i++)
             {
                 double xVal = minX + (i*((maxX-minX)/100));
-                double yVal = fitRegression.GetRegressionConfidenceInterval(xVal, 0.95).Max;
+                double yVal = fitRegression.GetConfidenceInterval(xVal, 0.95).Max;
                 DataPoint newDP = new DataPoint(xVal, yVal);
                 errorSeries.Points.Add(newDP);
             }
             errorSeries.Color = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Gray);
             return errorSeries;
+        }
+        private BoxPlotSeries GenerateBoxPlotSeries(IRegression fitRegression, double xValue)
+        {
+            BoxPlotSeries boxPlotSeries = new BoxPlotSeries();
+            double min = fitRegression.GetConfidenceInterval(xValue, alpha).Min;
+            double max = fitRegression.GetConfidenceInterval(xValue, alpha).Max;
+            double q2 = fitRegression.GetValue(xValue);
+            double q1 = min + (q2 - min) / 2;
+            double q3 = q2 + (max - q2) / 2;
+            BoxPlot boxPlot = new BoxPlot(min, q1, q2, q3, max);
+            boxPlotSeries.Points.Add(boxPlot.GetBoxPlot(xValue));
+            boxPlotSeries.Color = System.Drawing.Color.Black;
+            boxPlotSeries.BorderWidth = 3;
+            return boxPlotSeries;
         }
 
         private void OnChartClick(object sender, EventArgs e)
