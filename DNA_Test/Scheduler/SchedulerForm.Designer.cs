@@ -54,7 +54,7 @@
             this.button_InsertMidpoints.Location = new System.Drawing.Point(14, 316);
             this.button_InsertMidpoints.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_InsertMidpoints.Name = "button_InsertMidpoints";
-            this.button_InsertMidpoints.Size = new System.Drawing.Size(170, 48);
+            this.button_InsertMidpoints.Size = new System.Drawing.Size(150, 48);
             this.button_InsertMidpoints.TabIndex = 2;
             this.button_InsertMidpoints.Text = "Insert Midpoints";
             this.button_InsertMidpoints.UseVisualStyleBackColor = true;
@@ -91,7 +91,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox1.Size = new System.Drawing.Size(350, 294);
+            this.groupBox1.Size = new System.Drawing.Size(307, 294);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling Options";
@@ -100,7 +100,7 @@
             // 
             this.elementHost2.Location = new System.Drawing.Point(6, 187);
             this.elementHost2.Name = "elementHost2";
-            this.elementHost2.Size = new System.Drawing.Size(334, 27);
+            this.elementHost2.Size = new System.Drawing.Size(289, 27);
             this.elementHost2.TabIndex = 15;
             this.elementHost2.Text = "elementHost2";
             this.elementHost2.Child = this.datePicker_Custom2;
@@ -109,7 +109,7 @@
             // 
             this.elementHost1.Location = new System.Drawing.Point(6, 115);
             this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(334, 27);
+            this.elementHost1.Size = new System.Drawing.Size(289, 27);
             this.elementHost1.TabIndex = 14;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.datePicker_Custom1;
@@ -125,16 +125,17 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(7, 236);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(336, 49);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(288, 49);
             this.flowLayoutPanel2.TabIndex = 12;
             // 
             // textBox_Periods
             // 
-            this.textBox_Periods.Location = new System.Drawing.Point(221, 4);
+            this.textBox_Periods.Location = new System.Drawing.Point(224, 4);
             this.textBox_Periods.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_Periods.Name = "textBox_Periods";
-            this.textBox_Periods.Size = new System.Drawing.Size(112, 27);
+            this.textBox_Periods.Size = new System.Drawing.Size(61, 27);
             this.textBox_Periods.TabIndex = 9;
+            this.textBox_Periods.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox_Periods.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox_Periods_MouseClick);
             this.textBox_Periods.TextChanged += new System.EventHandler(this.textBox_Periods_TextChanged);
             // 
@@ -143,7 +144,7 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(145, 8);
+            this.label4.Location = new System.Drawing.Point(148, 8);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 19);
             this.label4.TabIndex = 7;
@@ -160,7 +161,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 25);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(336, 49);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(288, 49);
             this.flowLayoutPanel1.TabIndex = 9;
             // 
             // label3
@@ -182,7 +183,7 @@
             this.comboBox_IntervalLength.Location = new System.Drawing.Point(60, 4);
             this.comboBox_IntervalLength.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.comboBox_IntervalLength.Name = "comboBox_IntervalLength";
-            this.comboBox_IntervalLength.Size = new System.Drawing.Size(73, 27);
+            this.comboBox_IntervalLength.Size = new System.Drawing.Size(49, 27);
             this.comboBox_IntervalLength.TabIndex = 8;
             this.comboBox_IntervalLength.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalLength_SelectedValueChanged);
             // 
@@ -191,19 +192,19 @@
             this.comboBox_IntervalType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.comboBox_IntervalType.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_IntervalType.FormattingEnabled = true;
-            this.comboBox_IntervalType.Location = new System.Drawing.Point(139, 4);
+            this.comboBox_IntervalType.Location = new System.Drawing.Point(115, 4);
             this.comboBox_IntervalType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.comboBox_IntervalType.Name = "comboBox_IntervalType";
-            this.comboBox_IntervalType.Size = new System.Drawing.Size(136, 27);
+            this.comboBox_IntervalType.Size = new System.Drawing.Size(91, 27);
             this.comboBox_IntervalType.TabIndex = 5;
             this.comboBox_IntervalType.SelectedValueChanged += new System.EventHandler(this.comboBox_IntervalType_SelectedValueChanged);
             // 
             // button_InsertEndpoints
             // 
-            this.button_InsertEndpoints.Location = new System.Drawing.Point(194, 317);
+            this.button_InsertEndpoints.Location = new System.Drawing.Point(171, 317);
             this.button_InsertEndpoints.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_InsertEndpoints.Name = "button_InsertEndpoints";
-            this.button_InsertEndpoints.Size = new System.Drawing.Size(170, 48);
+            this.button_InsertEndpoints.Size = new System.Drawing.Size(150, 48);
             this.button_InsertEndpoints.TabIndex = 3;
             this.button_InsertEndpoints.Text = "Insert Endpoints";
             this.button_InsertEndpoints.UseVisualStyleBackColor = true;
@@ -213,7 +214,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 378);
+            this.ClientSize = new System.Drawing.Size(335, 378);
             this.Controls.Add(this.button_InsertEndpoints);
             this.Controls.Add(this.button_InsertMidpoints);
             this.Controls.Add(this.groupBox1);

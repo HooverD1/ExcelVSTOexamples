@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DNA_Test"
              mc:Ignorable="d" 
-             d:DesignHeight="25" Width="265">
+             d:DesignHeight="25" Width="230">
 
     <UserControl.Resources>
         <Style x:Key="styleCalendar" TargetType="{x:Type Calendar}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Calendar}">
-                        <Viewbox Height="265" Width="265">
+                        <Viewbox Height="230" Width="230">
                             <CalendarItem x:Name="PART_CalendarItem"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
@@ -24,7 +24,7 @@
         </Style>
     </UserControl.Resources>
 
-    <DatePicker CalendarStyle="{StaticResource styleCalendar}" Name="Picker" HorizontalAlignment="Left" VerticalAlignment="Top" Width="265"/>
+    <DatePicker CalendarStyle="{StaticResource styleCalendar}" Name="Picker" HorizontalAlignment="Left" VerticalAlignment="Top" Width="230"/>
     
     
 </UserControl>
