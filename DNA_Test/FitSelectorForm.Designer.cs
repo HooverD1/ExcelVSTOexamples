@@ -39,7 +39,7 @@
             // 
             this.button_SelectFit.Location = new System.Drawing.Point(1127, 549);
             this.button_SelectFit.Name = "button_SelectFit";
-            this.button_SelectFit.Size = new System.Drawing.Size(253, 36);
+            this.button_SelectFit.Size = new System.Drawing.Size(316, 36);
             this.button_SelectFit.TabIndex = 3;
             this.button_SelectFit.Text = "Select Fit";
             this.button_SelectFit.UseVisualStyleBackColor = true;
@@ -65,7 +65,7 @@
             // 
             this.flowLayoutPanel_Options.Location = new System.Drawing.Point(1124, 12);
             this.flowLayoutPanel_Options.Name = "flowLayoutPanel_Options";
-            this.flowLayoutPanel_Options.Size = new System.Drawing.Size(256, 531);
+            this.flowLayoutPanel_Options.Size = new System.Drawing.Size(319, 531);
             this.flowLayoutPanel_Options.TabIndex = 7;
             // 
             // flowLayoutPanel_Checkboxes
@@ -79,7 +79,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1392, 593);
+            this.ClientSize = new System.Drawing.Size(1455, 593);
             this.Controls.Add(this.flowLayoutPanel_Checkboxes);
             this.Controls.Add(this.flowLayoutPanel_Options);
             this.Controls.Add(this.comboBox_DisplayCount);

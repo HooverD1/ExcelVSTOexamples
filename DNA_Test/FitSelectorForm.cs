@@ -100,6 +100,7 @@ namespace DNA_Test
             }
             if (fitOptions.Nodes.Count > 0)
                 fitOptions.SelectedNode = fitOptions.Nodes[0].Nodes[0];
+            fitOptions.ExpandAll();
             return fitOptions;
         }
 

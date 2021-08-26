@@ -16,6 +16,7 @@ namespace DNA_Test
         double Score();
         double GetMeanSquareError();
         double GetPredictionError(double x);
+        Accord.DoubleRange GetRegressionConfidenceInterval(double x, double alpha);
         string ToString();
     }
 }

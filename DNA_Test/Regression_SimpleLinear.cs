@@ -66,7 +66,14 @@ namespace DNA_Test
 
         public double GetPredictionError(double x)
         {
+            
             return slr.GetPredictionStandardError(x, xVals, yVals);
+        }
+
+        public Accord.DoubleRange GetRegressionConfidenceInterval(double x, double alpha)
+        {
+            var ci = slr.GetConfidenceInterval(x, xVals, yVals, alpha);
+            return ci;
         }
 
         public double GetMeanSquareError()
@@ -77,7 +84,12 @@ namespace DNA_Test
 
         public override string ToString()
         {
-            return $"SLR: {Math.Round(slr.Slope, 1)}x + {Math.Round(slr.Intercept, 1)}";
+            string intercept;
+            if (slr.Intercept < 0)
+                intercept = $"- {-1 * Math.Round(slr.Intercept, 1)}";
+            else
+                intercept = $"+ {Math.Round(slr.Intercept, 1)}";
+            return $"(Score: {Math.Round(this.Score(), 2)}) SLR: {Math.Round(slr.Slope, 1)}x {intercept}";
         }
     }
 }
