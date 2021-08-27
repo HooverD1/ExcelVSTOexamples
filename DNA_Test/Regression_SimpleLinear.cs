@@ -11,9 +11,8 @@ namespace DNA_Test
     {
         private OrdinaryLeastSquares ols = new OrdinaryLeastSquares();
         private SimpleLinearRegression slr { get; set; }
-        private Random Rando = new Random();
-        public double[] xVals { get; set; }
-        public double[] yVals { get; set; }
+        private double[] xVals { get; set; }
+        private double[] yVals { get; set; }
 
         public Regression_SimpleLinear(double[] x, double[] y)
         {
@@ -33,9 +32,7 @@ namespace DNA_Test
         {
             double[] x = new double[dates.Length];
             for (int i = 0; i < dates.Length; i++)
-            {
                 x[i] = dates[i].ToOADate();
-            }
             return x;
         }
 

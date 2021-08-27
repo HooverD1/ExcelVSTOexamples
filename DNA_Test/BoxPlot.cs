@@ -44,7 +44,11 @@ namespace DNA_Test
 
         public DataPoint GetBoxPlot(double xValue)
         {
-            return new DataPoint(xValue, this.GetData());
+            double[] data = this.GetData();
+            DataPoint pt = new DataPoint(xValue, data);
+            pt.ToolTip = $"Mean {this.Mean}\nMin {data[0]}\nMax {data[1]}\n25%tile {data[2]}\n50%tile {data[4]}\n75%tile {data[3]}";
+            pt.Tag = "test3";
+            return pt;
         }
 
         

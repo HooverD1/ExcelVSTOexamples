@@ -65,8 +65,8 @@ namespace DNA_Test
                 throw new Exception("Define chartArea first.");
             this.chartArea.CursorX.IsUserEnabled = true;
             this.chartArea.CursorY.IsUserEnabled = true;
-            this.chartArea.CursorX.IsUserSelectionEnabled = true;
-            this.chartArea.CursorY.IsUserSelectionEnabled = true;
+            //this.chartArea.CursorX.IsUserSelectionEnabled = true;
+            //this.chartArea.CursorY.IsUserSelectionEnabled = true;
             this.chartArea.CursorX.Interval = 0.01;
             this.chartArea.CursorY.Interval = 0.01;
         }
@@ -78,7 +78,9 @@ namespace DNA_Test
             timeSeries.MarkerStyle = MarkerStyle.Circle;
             foreach(KeyValuePair<DateTime, double> datapoint in timeSeriesDataPoints)
             {
-                timeSeries.Points.AddXY(datapoint.Key, datapoint.Value);
+                DataPoint dp = new DataPoint(datapoint.Key.ToOADate(), datapoint.Value);
+                dp.ToolTip = $"({datapoint.Key.ToShortDateString()}, {datapoint.Value})";
+                timeSeries.Points.Add(dp);
             }
             timeSeries.MarkerBorderColor = System.Drawing.Color.Black;
             timeSeries.MarkerSize = 12;     
