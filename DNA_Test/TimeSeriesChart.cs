@@ -18,6 +18,7 @@ namespace DNA_Test
         public Series ErrorSeries_CI_Upper { get; set; }  //The regression line + error band
         public Series ErrorSeries_CI_Lower { get; set; }  //The regression line - error band
         public BoxPlotSeries BoxPlot_Series { get; set; }
+        public Series MeanSeries { get; set; }
         private PDF_Popup pdf_Popup { get; set; }
         private double predictAt { get; set; }
 
@@ -35,21 +36,27 @@ namespace DNA_Test
             this.EnableUserSelection();     //Has to come after chartArea
 
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
-            this.Series.Add(TimeSeries);
-
             this.predictAt = (from DataPoint dp in TimeSeries.Points select dp.XValue).Average();
             BoxPlot_Series = GenerateBoxPlotSeries(fitRegression, predictAt);
-            this.Series.Add(BoxPlot_Series);
-
             FitSeries = GenerateFitSeries(fitRegression);
+            ErrorSeries_CI_Lower = GenerateErrorSeries_Lower(fitRegression);
+            ErrorSeries_CI_Upper = GenerateErrorSeries_Upper(fitRegression);
+
+            this.Series.Add(ErrorSeries_CI_Lower);
+            this.Series.Add(ErrorSeries_CI_Upper);
+            this.Series.Add(BoxPlot_Series);
+            this.Series.Add(TimeSeries);
             this.Series.Add(FitSeries);
             
-            ErrorSeries_CI_Lower = GenerateErrorSeries_Lower(fitRegression);
-            this.Series.Add(ErrorSeries_CI_Lower);
-            ErrorSeries_CI_Upper = GenerateErrorSeries_Upper(fitRegression);
-            this.Series.Add(ErrorSeries_CI_Upper);
-            
-            
+
+            this.BorderlineDashStyle = ChartDashStyle.Solid;
+            this.BorderlineColor = System.Drawing.Color.Black;
+            this.BorderlineWidth = 2;
+            this.chartArea.AxisX.MajorTickMark.Enabled = false;
+            this.chartArea.AxisY.MajorTickMark.Enabled = false;
+            this.chartArea.BorderDashStyle = ChartDashStyle.Solid;
+            this.chartArea.BorderColor = System.Drawing.Color.Black;
+            this.chartArea.BorderWidth = 2;
         }
 
         private void EnableUserSelection()
@@ -92,7 +99,7 @@ namespace DNA_Test
                 fitSeries.Points.AddXY(xPoint.XValue, fitRegression.GetValue(xPoint.XValue));
             }
             fitSeries.BorderWidth = 3;
-            fitSeries.Color = System.Drawing.Color.Orange;
+            fitSeries.Color = System.Drawing.Color.Red;
             return fitSeries;
         }
         private Series GenerateErrorSeries_Lower(IRegression fitRegression)
@@ -135,10 +142,14 @@ namespace DNA_Test
             double q2 = fitRegression.GetValue(xValue);
             double q1 = min + (q2 - min) / 2;
             double q3 = q2 + (max - q2) / 2;
-            BoxPlot boxPlot = new BoxPlot(min, q1, q2, q3, max);
+            BoxPlot boxPlot = new BoxPlot(min, q1, q2, q3, max, q2);
             boxPlotSeries.Points.Add(boxPlot.GetBoxPlot(xValue));
-            boxPlotSeries.Color = System.Drawing.Color.Black;
-            boxPlotSeries.BorderWidth = 3;
+            boxPlotSeries.Color = System.Drawing.Color.Orange;
+            boxPlotSeries.BorderColor = System.Drawing.Color.Black;
+            boxPlotSeries.BorderWidth = 2;
+            //this.chartArea.Position = new ElementPosition((float)0.2, (float)0.2, (float)0.8 * this.Width, (float)0.8 * this.Height);
+            int ppw = Convert.ToInt32(500 / TimeSeries.Points.Count());
+            boxPlotSeries["PixelPointWidth"] = ppw.ToString();
             return boxPlotSeries;
         }
 

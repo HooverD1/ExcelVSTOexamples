@@ -277,8 +277,8 @@ namespace DNA_Test
             this.flowLayoutPanel_Checkboxes.Controls.Clear();
             this.flowLayoutPanel_Charts.Controls.Clear();
             this.flowLayoutPanel_Options.Controls.Clear();
-            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
-            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
+            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height - 3;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
+            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width - 3;
             PopulateFitOptions(fitOptions1);
             NodeChanged(fitOptions1, 1);
             fitOptions1.Show();

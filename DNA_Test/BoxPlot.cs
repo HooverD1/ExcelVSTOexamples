@@ -15,14 +15,16 @@ namespace DNA_Test
         private double Q2 { get; set; }
         private double Q3 { get; set; }
         private double Max { get; set; }
+        private double Mean { get; set; }
 
-        public BoxPlot(double minimum, double lower_quartile, double median, double upper_quartile, double maximum)
+        public BoxPlot(double minimum, double lower_quartile, double median, double upper_quartile, double maximum, double mean)
         {
             this.Min = minimum;
             this.Q1 = lower_quartile;
             this.Q2 = median;
             this.Q3 = upper_quartile;
             this.Max = maximum;
+            this.Mean = mean;
         }
 
         public BoxPlot(double[] datapoints)
@@ -32,16 +34,17 @@ namespace DNA_Test
             Q2 = Measures.Median(datapoints);
             Q3 = Measures.UpperQuartile(datapoints);
             Max = datapoints.Max();
+            Mean = datapoints.Mean();
         }
 
-        private double[] GetQuartiles()
+        private double[] GetData()
         {
             return new double[] { Min, Max, Q1, Q3, Q2 };
         }
 
         public DataPoint GetBoxPlot(double xValue)
         {
-            return new DataPoint(xValue, this.GetQuartiles());
+            return new DataPoint(xValue, this.GetData());
         }
 
         

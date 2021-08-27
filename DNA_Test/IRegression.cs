@@ -14,8 +14,6 @@ namespace DNA_Test
         double[] yVals { get; set; }
         double GetValue(double dt);
         double Score();
-        double GetMeanSquareError();
-        double GetPredictionError(double x);
         Accord.DoubleRange GetConfidenceInterval(double x, double alpha);
         Accord.DoubleRange GetPredictionInterval(double x, double alpha);
         string ToString();

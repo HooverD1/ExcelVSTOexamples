@@ -61,12 +61,11 @@ namespace DNA_Test
 
         public double Score()
         {
-            return GetAdjustedR2();
+            return GetPredictionError(xVals.Average());
         }
 
         public double GetPredictionError(double x)
         {
-            
             return slr.GetPredictionStandardError(x, xVals, yVals);
         }
 
@@ -85,12 +84,6 @@ namespace DNA_Test
         public double GetValueAtX(double x)
         {
             return slr.Transform(x);
-        }
-
-        public double GetMeanSquareError()
-        {
-            throw new NotImplementedException();
-            //return slr.GetStandardError(xVals, yVals);      //I don't think this is right
         }
 
         public override string ToString()

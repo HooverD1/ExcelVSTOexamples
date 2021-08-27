@@ -14,11 +14,14 @@ namespace DNA_Test
             this.ChartType = SeriesChartType.BoxPlot;
             foreach (Tuple<double, double[]> point in boxPlotPoints)
             {
-                BoxPlot boxPlot = new BoxPlot(point.Item2[0], point.Item2[1], point.Item2[2], point.Item2[3], point.Item2[4]);
+                BoxPlot boxPlot = new BoxPlot(point.Item2[0], point.Item2[1], point.Item2[2], point.Item2[3], point.Item2[4], point.Item2[5]);
                 this.Points.Add(boxPlot.GetBoxPlot(point.Item1));
             }
         }
-        public BoxPlotSeries() { }
+        public BoxPlotSeries()
+        {
+            this.ChartType = SeriesChartType.BoxPlot;
+        }
 
         public void Add(double x, BoxPlot boxPlot)
         {
