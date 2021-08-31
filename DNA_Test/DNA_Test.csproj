@@ -115,8 +115,6 @@
     <Compile Include="MyAddin.cs" />
     <Compile Include="OptimizationResult.cs" />
     <Compile Include="Optimizers.cs" />
-    <Compile Include="PDF_Builder.cs" />
-    <Compile Include="PDF_Chart.cs" />
     <Compile Include="PDF_Popup.cs" />
     <Compile Include="RefParser.cs" />
     <Compile Include="Scheduler\Scheduler.cs" />
