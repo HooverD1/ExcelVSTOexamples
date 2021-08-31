@@ -40,7 +40,6 @@ namespace DNA_Test
 
         public Series GetSeries(IUnivariateDistribution pdfDistribution)
         {
-            
             Series popUpSeries = new Series();
             popUpSeries.ChartType = SeriesChartType.Spline;
             popUpSeries.Name = "PopUpSeries";
