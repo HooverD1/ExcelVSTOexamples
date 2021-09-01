@@ -27,9 +27,9 @@ namespace DNA_Test
         private CheckBox checkBox_timeSeries1 { get; set; } = new CheckBox();
         private CheckBox checkBox_timeSeries2 { get; set; } = new CheckBox();
         private CheckBox checkBox_timeSeries3 { get; set; } = new CheckBox();
-        public Series TimeSeries { get; set; }
-        public Series PdfSeries { get; set; }
-        public Series FitSeries { get; set; }
+        //public Series TimeSeries { get; set; }
+        //public Series PdfSeries { get; set; }
+        //public Series FitSeries { get; set; }
         private int DisplayCount { get; set; }
         
         public FitSelectorForm(List<OptimizationResult> fittedResults)
@@ -50,7 +50,7 @@ namespace DNA_Test
             //this.comboBox_DisplayCount.Items.Add("Display 3 Charts");
             this.SelectedResults = SelectResults(fittedResults);
             comboBox_DisplayCount.SelectedIndex = 0;
-
+            comboBox_PredictAt.SelectedIndex = 0;
         }        
 
         private OptimizationResult[] SelectResults(IEnumerable<OptimizationResult> fittedResults)
@@ -175,9 +175,9 @@ namespace DNA_Test
                                  where or.Schedule.ToIntervalString() == parentText && or.RegressionUnderTest.ToString() == selectedText
                                  select or).First();
             if (chartIndex == 1)
-                timeSeries1 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest);
+                timeSeries1 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.Schedule, selectedResult.RegressionUnderTest);
             else if (chartIndex == 2)
-                timeSeries2 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest);
+                timeSeries2 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.Schedule, selectedResult.RegressionUnderTest);
             else
                 throw new Exception("Unexpected TimeSeriesChart index");
 
@@ -387,5 +387,54 @@ namespace DNA_Test
             this.flowLayoutPanel_Check3.Controls.Add(this.checkBox_timeSeries3);
         }
 
+        private void comboBox_PredictAt_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if(comboBox_PredictAt.Text == "Predict at Value")
+            {
+                textBox_PredictAt.Enabled = true;
+                if (!Double.TryParse(textBox_PredictAt.Text, out double value))
+                    return;
+                if(timeSeries1 != null)
+                    timeSeries1.UpdateBoxPlotSeries(value);
+                if(timeSeries2 != null)
+                    timeSeries1.UpdateBoxPlotSeries(value);
+            }
+            else if(comboBox_PredictAt.Text == "Predict at Mean")
+            {
+                textBox_PredictAt.Enabled = false;
+                if (timeSeries1 != null)
+                    timeSeries1.UpdateBoxPlotSeries(timeSeries1.GetTimeSeriesMean_X());
+                if(timeSeries2 != null)
+                    timeSeries2.UpdateBoxPlotSeries(timeSeries2.GetTimeSeriesMean_X());
+            }
+            else if(comboBox_PredictAt.Text == "Predict at Next Interval")
+            {
+                textBox_PredictAt.Enabled = false;
+                if(timeSeries1 != null)
+                    timeSeries1.UpdateBoxPlotSeries(timeSeries1.GetTimeSeriesNextInterval().ToOADate());
+                if(timeSeries2 != null)
+                    timeSeries2.UpdateBoxPlotSeries(timeSeries2.GetTimeSeriesNextInterval().ToOADate());
+            }
+            else
+            {
+                throw new Exception("Unhandled exception");
+            }
+        }
+
+        private void textBox_PredictAt_TextChanged(object sender, EventArgs e)
+        {
+            //This textbox should be changed to a datepicker to avoid formatting mistakes and partial entry chaos
+            if (!DateTime.TryParse(textBox_PredictAt.Text, out DateTime date))
+                return;     //Nonsense in the box
+            if (date.CompareTo(DateTime.Today.AddYears(-100)) < 0)       //Dates before 100 years ago should be disregarded
+                return;
+            if (date.CompareTo(DateTime.Today.AddYears(100)) > 0)          //Dates after 100 years from now should be disregarded
+                return;
+            else if (comboBox_PredictAt.Text == "Predict at Value")
+            {
+                timeSeries1.UpdateBoxPlotSeries(date.ToOADate());
+                timeSeries2.UpdateBoxPlotSeries(date.ToOADate());
+            }
+        }
     }
 }

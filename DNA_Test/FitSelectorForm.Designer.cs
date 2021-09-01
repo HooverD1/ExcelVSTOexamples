@@ -33,6 +33,8 @@
             this.comboBox_DisplayCount = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel_Options = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel_Checkboxes = new System.Windows.Forms.FlowLayoutPanel();
+            this.comboBox_PredictAt = new System.Windows.Forms.ComboBox();
+            this.textBox_PredictAt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_SelectFit
@@ -75,11 +77,35 @@
             this.flowLayoutPanel_Checkboxes.Size = new System.Drawing.Size(26, 531);
             this.flowLayoutPanel_Checkboxes.TabIndex = 0;
             // 
+            // comboBox_PredictAt
+            // 
+            this.comboBox_PredictAt.FormattingEnabled = true;
+            this.comboBox_PredictAt.Items.AddRange(new object[] {
+            "Predict at Mean",
+            "Predict at Next Interval",
+            "Predict at Value"});
+            this.comboBox_PredictAt.Location = new System.Drawing.Point(128, 559);
+            this.comboBox_PredictAt.Name = "comboBox_PredictAt";
+            this.comboBox_PredictAt.Size = new System.Drawing.Size(178, 24);
+            this.comboBox_PredictAt.TabIndex = 8;
+            this.comboBox_PredictAt.SelectedValueChanged += new System.EventHandler(this.comboBox_PredictAt_SelectedValueChanged);
+            // 
+            // textBox_PredictAt
+            // 
+            this.textBox_PredictAt.Enabled = false;
+            this.textBox_PredictAt.Location = new System.Drawing.Point(312, 559);
+            this.textBox_PredictAt.Name = "textBox_PredictAt";
+            this.textBox_PredictAt.Size = new System.Drawing.Size(139, 22);
+            this.textBox_PredictAt.TabIndex = 9;
+            this.textBox_PredictAt.TextChanged += new System.EventHandler(this.textBox_PredictAt_TextChanged);
+            // 
             // FitSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1455, 593);
+            this.Controls.Add(this.textBox_PredictAt);
+            this.Controls.Add(this.comboBox_PredictAt);
             this.Controls.Add(this.flowLayoutPanel_Checkboxes);
             this.Controls.Add(this.flowLayoutPanel_Options);
             this.Controls.Add(this.comboBox_DisplayCount);
@@ -88,6 +114,7 @@
             this.Name = "FitSelectorForm";
             this.Text = "Select Desired Fit";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -97,5 +124,7 @@
         private System.Windows.Forms.ComboBox comboBox_DisplayCount;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_Options;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_Checkboxes;
+        private System.Windows.Forms.ComboBox comboBox_PredictAt;
+        private System.Windows.Forms.TextBox textBox_PredictAt;
     }
 }
