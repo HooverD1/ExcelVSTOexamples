@@ -201,7 +201,7 @@ namespace DNA_Test
                     double xMax = this.chartArea.AxisX.Maximum;
                     double xWidth = xMax - xMin;
                     PDF_Popup pdfPopUp = new PDF_Popup(sp.datapoint.XValue, xWidth, this.chartArea.AxisY.Minimum, this.chartArea.AxisY.Maximum);
-                    this.PDF_Series = pdfPopUp.GetSeries(new NormalDistribution(sp.datapoint.YValues[2], sp.datapoint.YValues[2] / 3));
+                    this.PDF_Series = pdfPopUp.GetSeries(new NormalDistribution(sp.datapoint.YValues[4], sp.datapoint.YValues[4] / 3));
                     this.Series.Add(PDF_Series);
                     this.Series.Remove(this.BoxPlot_Series.LabelSeries);
                 }
