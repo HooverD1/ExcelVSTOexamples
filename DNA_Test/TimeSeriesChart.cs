@@ -44,21 +44,26 @@ namespace DNA_Test
             chartArea.Position = new ElementPosition(0, 0, 100, 100);
             chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
             this.EnableUserSelection();     //Has to come after chartArea
+
+            //These series go where they need to go
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
-            FitAxesToSeries();     //Override the unreadable default x-axis values with the timeseries min/max
-            FitSeries = GenerateFitSeries();
-            ScaleAxesToFitSeries();
-            this.predictAt = (from DataPoint dp in TimeSeries.Points select dp.XValue).Average();
             BoxPlot_Series = GenerateBoxPlotSeries(fitRegression, predictAt);
+            SetAxis_X();
+
+            //These series adapt to what is in the time series and box plot series
+            FitSeries = GenerateFitSeries();
             ErrorSeries_CI_Lower = GenerateErrorSeries_Lower();
             ErrorSeries_CI_Upper = GenerateErrorSeries_Upper();
-                       
-            this.Series.Add(ErrorSeries_CI_Lower);
-            this.Series.Add(ErrorSeries_CI_Upper);
-            this.Series.Add(BoxPlot_Series.PrimarySeries);
-            this.Series.Add(BoxPlot_Series.LabelSeries);
+            SetAxis_Y();
+
             this.Series.Add(TimeSeries);
             this.Series.Add(FitSeries);
+            this.Series.Add(BoxPlot_Series.PrimarySeries);
+            this.Series.Add(BoxPlot_Series.LabelSeries);
+            this.Series.Add(ErrorSeries_CI_Lower);
+            this.Series.Add(ErrorSeries_CI_Upper);
+
+            FixSeriesOrdering();
 
             this.BorderlineDashStyle = ChartDashStyle.Solid;
             this.BorderlineColor = System.Drawing.Color.Black;
@@ -158,63 +163,106 @@ namespace DNA_Test
             errorSeries.Color = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Gray);
             return errorSeries;
         }
-        public void FitAxesToSeries()
+
+        private void SetAxis_X()
         {
             double maxTimePoint = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Max();
             double minTimePoint = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Min();
-            if(Double.IsNaN(this.chartArea.AxisX.Minimum) || Double.IsNaN(this.chartArea.AxisX.Maximum))
-            {
-                //No bounds set yet - set to the time series min/max and return
-                this.chartArea.AxisX.Minimum = minTimePoint;
-                this.chartArea.AxisX.Maximum = maxTimePoint;
-                return;
-            }
-            double oldMin = this.chartArea.AxisX.Minimum;
-            double oldMax = this.chartArea.AxisX.Maximum;
-            //Alter the x-axis to fit in predictors outside of the schedule duration
+
             double maxBoxPoint = (from DataPoint dp in this.BoxPlot_Series.PrimarySeries.Points select dp.XValue).Max();
-            double maxPoint = Math.Max(maxBoxPoint, maxTimePoint);
-            this.chartArea.AxisX.Maximum = maxPoint;
-
             double minBoxPoint = (from DataPoint dp in this.BoxPlot_Series.PrimarySeries.Points select dp.XValue).Min();
-            double minPoint = Math.Min(minBoxPoint, minTimePoint);
+
+            double maxPoint = Math.Max(maxTimePoint, maxBoxPoint);
+            double minPoint = Math.Min(minTimePoint, minBoxPoint);
+
             this.chartArea.AxisX.Minimum = minPoint;
-
-            if(oldMin != minPoint || oldMax != maxPoint)
-            {
-                //Redraw the fit and error series to extend them to the new max/min points
-                this.Series.Remove(FitSeries);
-                FitSeries = GenerateFitSeries();
-                this.Series.Add(FitSeries);
-
-                this.Series.Remove(ErrorSeries_CI_Lower);
-                this.Series.Remove(ErrorSeries_CI_Upper);
-                ErrorSeries_CI_Lower = GenerateErrorSeries_Lower();
-                ErrorSeries_CI_Upper = GenerateErrorSeries_Upper();
-                this.Series.Add(ErrorSeries_CI_Lower);
-                this.Series.Add(ErrorSeries_CI_Upper);
-
-                ScaleAxesToFitSeries();
-            }
-                
+            this.chartArea.AxisX.Maximum = maxPoint;
         }
-
-        private void UpdateYAxis()
+        private void SetAxis_Y()
         {
+            DataPoint[] errorUpper = (from DataPoint dp in this.ErrorSeries_CI_Upper.Points select dp).ToArray();
+            DataPoint[] errorLower = (from DataPoint dp in this.ErrorSeries_CI_Lower.Points select dp).ToArray();
+            double[] errorSum = new double[errorUpper.Length];
+            for(int i=0; i<errorUpper.Length; i++)
+            {
+                errorSum[i] = errorLower[i].YValues[0] + errorUpper[i].YValues[0];
+            }
 
+            double maxErrorPoint = errorSum.Max();
+            double minErrorpoint = (from DataPoint dp in errorLower select dp.YValues[0]).Min();
+
+            double maxTimePoint = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Max();
+            double minTimePoint = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Min();
+
+            double minPoint = Math.Min(minTimePoint, minErrorpoint);
+            double maxPoint = Math.Max(maxTimePoint, maxErrorPoint);
+
+            this.chartArea.AxisY.Minimum = minPoint;
+            this.chartArea.AxisY.Maximum = maxPoint;
         }
 
+        //public void FitAxesToSeries()
+        //{
+        //    double maxTimePoint = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Max();
+        //    double minTimePoint = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Min();
+        //    if(Double.IsNaN(this.chartArea.AxisX.Minimum) || Double.IsNaN(this.chartArea.AxisX.Maximum))
+        //    {
+        //        //No bounds set yet - set to the time series min/max and return
+        //        this.chartArea.AxisX.Minimum = minTimePoint;
+        //        this.chartArea.AxisX.Maximum = maxTimePoint;
+        //        return;
+        //    }
+
+        //    //Fix the axis for boxplots if they exist
+        //    if (this.BoxPlot_Series == null)
+        //        return;
+
+        //    //Alter the x-axis to fit in predictors outside of the schedule duration
+        //    double maxBoxPoint = (from DataPoint dp in this.BoxPlot_Series.PrimarySeries.Points select dp.XValue).Max();
+        //    double maxPoint = Math.Max(maxBoxPoint, maxTimePoint);
+        //    this.chartArea.AxisX.Maximum = maxPoint;
+
+        //    double minBoxPoint = (from DataPoint dp in this.BoxPlot_Series.PrimarySeries.Points select dp.XValue).Min();
+        //    double minPoint = Math.Min(minBoxPoint, minTimePoint);
+        //    this.chartArea.AxisX.Minimum = minPoint;
+            
+        //    //Redraw the fit and error series to extend them to the new max/min points
+        //    this.Series.Remove(FitSeries);
+        //    FitSeries = GenerateFitSeries();
+        //    this.Series.Add(FitSeries);
+
+        //    this.Series.Remove(ErrorSeries_CI_Lower);
+        //    this.Series.Remove(ErrorSeries_CI_Upper);
+        //    ErrorSeries_CI_Lower = GenerateErrorSeries_Lower();
+        //    ErrorSeries_CI_Upper = GenerateErrorSeries_Upper();
+        //    this.Series.Add(ErrorSeries_CI_Lower);
+        //    this.Series.Add(ErrorSeries_CI_Upper);
+
+        //    ScaleAxesToFitSeries();
+                
+        //}
+        
         public void UpdateBoxPlotSeries(double predictAt)
         {
-            this.Series.Remove(BoxPlot_Series.PrimarySeries);
-            this.Series.Remove(BoxPlot_Series.LabelSeries);
-            this.Series.Remove(PDF_Series);
+            if (BoxPlot_Series != null && BoxPlot_Series.PrimarySeries != null)
+            {
+                this.Series.Remove(BoxPlot_Series.PrimarySeries);
+            }
+            if (BoxPlot_Series != null && BoxPlot_Series.LabelSeries != null)
+            {
+                this.Series.Remove(BoxPlot_Series.LabelSeries);
+            }
+            if (PDF_Series != null)
+            {
+                this.Series.Remove(PDF_Series);
+            }
 
             this.BoxPlot_Series = GenerateBoxPlotSeries(this.FitRegression, predictAt);
             this.Series.Add(BoxPlot_Series.PrimarySeries);
             this.Series.Add(BoxPlot_Series.LabelSeries);
 
-            FitAxesToSeries();
+            //SetAxis_X();
+            //SetAxis_Y();
             FixSeriesOrdering();
         }
         private BoxPlotSeries GenerateBoxPlotSeries(IRegression fitRegression, double xValue)
@@ -279,29 +327,29 @@ namespace DNA_Test
             }
         }
 
-        private void ScaleAxesToFitSeries()
-        {
-            IEnumerable<double> xVals = from DataPoint x in this.FitSeries.Points select x.XValue;
-            IEnumerable<double> yVals = from DataPoint y in this.FitSeries.Points select y.YValues[0];
+        //private void ScaleAxesToFitSeries()
+        //{
+        //    IEnumerable<double> xVals = from DataPoint x in this.FitSeries.Points select x.XValue;
+        //    IEnumerable<double> yVals = from DataPoint y in this.FitSeries.Points select y.YValues[0];
 
-            double minX = this.chartArea.AxisX.Minimum;//xVals.Min();
-            double maxX = this.chartArea.AxisX.Maximum;//xVals.Max();
+        //    double minX = this.chartArea.AxisX.Minimum;//xVals.Min();
+        //    double maxX = this.chartArea.AxisX.Maximum;//xVals.Max();
             
-            double minY = yVals.Min();
-            double maxY = yVals.Max();
-            //Search the fitseries for minimum
-            DataPoint yLow = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == minY select pt).First();
-            double plotMinY = FitRegression.GetConfidenceInterval(yLow.XValue, alpha).Min;
-            DataPoint yHigh = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == maxY select pt).First();
-            double plotMaxY = FitRegression.GetConfidenceInterval(yHigh.XValue, alpha).Max;
-            double yRange = plotMaxY - plotMinY;
+        //    double minY = yVals.Min();
+        //    double maxY = yVals.Max();
+        //    //Search the fitseries for minimum
+        //    DataPoint yLow = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == minY select pt).First();
+        //    double plotMinY = FitRegression.GetConfidenceInterval(yLow.XValue, alpha).Min;
+        //    DataPoint yHigh = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == maxY select pt).First();
+        //    double plotMaxY = FitRegression.GetConfidenceInterval(yHigh.XValue, alpha).Max;
+        //    double yRange = plotMaxY - plotMinY;
 
-            this.chartArea.AxisX.Minimum = minX;
-            this.chartArea.AxisX.Maximum = maxX;
+        //    this.chartArea.AxisX.Minimum = minX;
+        //    this.chartArea.AxisX.Maximum = maxX;
 
-            this.chartArea.AxisY.Minimum = plotMinY - (yRange * 0.1);   //Pad 50% of the range above and below
-            this.chartArea.AxisY.Maximum = plotMaxY + (yRange * 0.1);
-        }
+        //    this.chartArea.AxisY.Minimum = plotMinY - (yRange * 0.1);   //Pad 50% of the range above and below
+        //    this.chartArea.AxisY.Maximum = plotMaxY + (yRange * 0.1);
+        //}
 
         public double Get_X_Coords_Per_Pixel()
         {
@@ -331,11 +379,11 @@ namespace DNA_Test
             else
                 throw new Exception("No points in TimeSeries");
         }
-        public DateTime GetTimeSeriesNextInterval()
+        public DateTime GetNextInterval()
         {
             if (Schedule == null)
                 throw new Exception("No schedule found");
-            if (!Schedule.GetEndpoints().Any())
+            if (!Schedule.GetMidpoints().Any())
                 throw new Exception("Failed to create endpoints");
 
             double intLength = Schedule.GetIntervalLength();
@@ -345,13 +393,13 @@ namespace DNA_Test
             switch (intType)
             {
                 case Scheduler.Scheduler.Interval.Daily:
-                    return endDate.AddDays(intLength);
+                    return DateTime.FromOADate((endDate.AddDays(intLength).ToOADate() + endDate.ToOADate())/2);
                 case Scheduler.Scheduler.Interval.Weekly:
-                    return endDate.AddDays(intLength * 7);
+                    return DateTime.FromOADate((endDate.AddDays(intLength * 7).ToOADate() + endDate.ToOADate())/2);
                 case Scheduler.Scheduler.Interval.Monthly:
-                    return endDate.AddMonths(Convert.ToInt32(intLength));
+                    return DateTime.FromOADate((endDate.AddMonths(Convert.ToInt32(intLength)).ToOADate() + endDate.ToOADate())/2);
                 case Scheduler.Scheduler.Interval.Yearly:
-                    return endDate.AddYears(Convert.ToInt32(intLength));
+                    return DateTime.FromOADate((endDate.AddYears(Convert.ToInt32(intLength)).ToOADate() + endDate.ToOADate())/2);
                 default:
                     throw new Exception("Unexpected Interval Type");
             }

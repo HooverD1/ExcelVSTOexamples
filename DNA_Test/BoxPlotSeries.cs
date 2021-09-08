@@ -42,7 +42,7 @@ namespace DNA_Test
 
         public void SetWidth(int points)
         {
-            PrimarySeries["PixelPointWidth"] = Convert.ToInt32(500 / points).ToString();
+            PrimarySeries["PixelPointWidth"] = Convert.ToInt32(250 / points).ToString();
         }
 
         public void Add(double x, BoxPlot boxPlot)
@@ -50,16 +50,22 @@ namespace DNA_Test
             //Add boxPlot at x-value x
             DataPoint plotPoint = boxPlot.GetBoxPlot(x);
             PrimarySeries.Points.Add(plotPoint);
-            DataPoint minimum = new DataPoint(TransformX(x, true), TransformY(plotPoint.YValues[0]));
-            minimum.Label = "min";
-            DataPoint q1 = new DataPoint(TransformX(x, false), TransformY(plotPoint.YValues[2]));
-            q1.Label = "q1";
-            DataPoint q2 = new DataPoint(TransformX(x, true), TransformY(plotPoint.YValues[4]));
-            q2.Label = "q2";
-            DataPoint q3 = new DataPoint(TransformX(x, false), TransformY(plotPoint.YValues[3]));
-            q3.Label = "q3";
-            DataPoint maximum = new DataPoint(TransformX(x, true), TransformY(plotPoint.YValues[1]));
-            maximum.Label = "max";
+            string valueString;
+            valueString = "Min: " + Math.Round(plotPoint.YValues[0]).ToString();
+            DataPoint minimum = new DataPoint(TransformX(x, valueString.Length, true), TransformY(plotPoint.YValues[0]));
+            minimum.Label = valueString;
+            valueString = "Q1: " + Math.Round(plotPoint.YValues[2]).ToString();
+            DataPoint q1 = new DataPoint(TransformX(x, valueString.Length, false), TransformY(plotPoint.YValues[2]));
+            q1.Label = valueString;
+            valueString = "Median: " + Math.Round(plotPoint.YValues[4]).ToString();
+            DataPoint q2 = new DataPoint(TransformX(x, valueString.Length, true), TransformY(plotPoint.YValues[4]));
+            q2.Label = valueString;
+            valueString = "Q3: " + Math.Round(plotPoint.YValues[3]).ToString();
+            DataPoint q3 = new DataPoint(TransformX(x, valueString.Length, false), TransformY(plotPoint.YValues[3]));
+            q3.Label = valueString;
+            valueString = "Max: " + Math.Round(plotPoint.YValues[1]).ToString();
+            DataPoint maximum = new DataPoint(TransformX(x, valueString.Length, true), TransformY(plotPoint.YValues[1]));
+            maximum.Label = valueString;
             LabelSeries.Points.Add(minimum);
             LabelSeries.Points.Add(q1);
             LabelSeries.Points.Add(q2);
@@ -67,7 +73,12 @@ namespace DNA_Test
             LabelSeries.Points.Add(maximum);
         }
 
-        private double TransformX(double x, bool isDisplayedOnLeft)
+        private int GetLengthOfValue(double value)
+        {
+            return value.ToString().Length;
+        }
+
+        private double TransformX(double x, int length, bool isDisplayedOnLeft)
         {
             //Have to move from PixelPointWidth --> x-coords
             //How far in x-coords is one pixel?
@@ -76,9 +87,9 @@ namespace DNA_Test
                 throw new Exception("PixelPointWidth cannot be converted to integer. Make sure to set width before adding points.");
             double offset_pix = width / 2;
             if (isDisplayedOnLeft)
-                return x - (offset_pix * xPerPixel) - (20 * xPerPixel);     //Additional offset to move the label outside the boxplot
+                return x - (offset_pix * xPerPixel) - (4 * length * xPerPixel);     //Additional offset to move the label outside the boxplot
             else
-                return x + (offset_pix * xPerPixel) + (20 * xPerPixel);
+                return x + (offset_pix * xPerPixel) + (4 * length * xPerPixel);
         }
         private double TransformY(double y)
         {

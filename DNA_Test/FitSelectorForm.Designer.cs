@@ -88,7 +88,7 @@
             this.comboBox_PredictAt.Name = "comboBox_PredictAt";
             this.comboBox_PredictAt.Size = new System.Drawing.Size(178, 24);
             this.comboBox_PredictAt.TabIndex = 8;
-            this.comboBox_PredictAt.SelectedValueChanged += new System.EventHandler(this.comboBox_PredictAt_SelectedValueChanged);
+            //this.comboBox_PredictAt.SelectedValueChanged += new System.EventHandler(this.comboBox_PredictAt_SelectedValueChanged);
             // 
             // textBox_PredictAt
             // 
@@ -97,7 +97,7 @@
             this.textBox_PredictAt.Name = "textBox_PredictAt";
             this.textBox_PredictAt.Size = new System.Drawing.Size(139, 22);
             this.textBox_PredictAt.TabIndex = 9;
-            this.textBox_PredictAt.TextChanged += new System.EventHandler(this.textBox_PredictAt_TextChanged);
+            //this.textBox_PredictAt.TextChanged += new System.EventHandler(this.textBox_PredictAt_TextChanged);
             // 
             // FitSelectorForm
             // 

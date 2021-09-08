@@ -58,7 +58,7 @@ namespace DNA_Test
 
         public double Score()
         {
-            return GetPredictionError(xVals.Average());
+            return GetR2();
         }
 
         public double GetPredictionError(double x)
