@@ -279,11 +279,6 @@ namespace DNA_Test.Scheduler
             return IntervalLength;
         }
 
-        public Interval GetIntervalType()
-        {
-            return IntervalType ?? throw new Exception("IntervalType is null");
-        }
-
         public string GetIntervalTypeString()
         {
             switch (IntervalType)
