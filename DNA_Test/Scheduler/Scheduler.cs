@@ -274,6 +274,42 @@ namespace DNA_Test.Scheduler
             return new Tuple<double, Interval>(intervalLength, intervalType);
         }
 
+        public DateTime GetNextMidpoint()
+        {
+            DateTime endDate = this.GetEndpoints().Last();
+            switch (IntervalType)
+            {
+                case Interval.Daily:
+                    return DateTime.FromOADate((endDate.AddDays(IntervalLength).ToOADate() + endDate.ToOADate())/2);
+                case Interval.Weekly:
+                    return DateTime.FromOADate((endDate.AddDays(IntervalLength * 7).ToOADate() + endDate.ToOADate())/2);
+                case Interval.Monthly:
+                    return DateTime.FromOADate((endDate.AddMonths(Convert.ToInt32(IntervalLength)).ToOADate() + endDate.ToOADate())/2);
+                case Interval.Yearly:
+                    return DateTime.FromOADate((endDate.AddYears(Convert.ToInt32(IntervalLength)).ToOADate() + endDate.ToOADate())/2);
+                default:
+                    throw new Exception("Unknown enum (GetNextInterval())");
+            }
+        }
+
+        public DateTime GetNextEndpoint()
+        {
+            DateTime endDate = this.GetEndpoints().Last();
+            switch (IntervalType)
+            {
+                case Interval.Daily:
+                    return endDate.AddDays(IntervalLength);
+                case Interval.Weekly:
+                    return endDate.AddDays(IntervalLength * 7);
+                case Interval.Monthly:
+                    return endDate.AddMonths(Convert.ToInt32(IntervalLength));
+                case Interval.Yearly:
+                    return endDate.AddYears(Convert.ToInt32(IntervalLength));
+                default:
+                    throw new Exception("Unknown enum (GetNextInterval())");
+            }
+        }
+
         public double GetIntervalLength()
         {
             return IntervalLength;

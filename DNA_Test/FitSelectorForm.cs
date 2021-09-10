@@ -50,7 +50,9 @@ namespace DNA_Test
             //this.comboBox_DisplayCount.Items.Add("Display 3 Charts");
             this.SelectedResults = SelectResults(fittedResults);
             comboBox_DisplayCount.SelectedIndex = 0;
-
+            comboBox_PredictAt.SelectedIndex = 1;
+            timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
+            
         }        
 
         private OptimizationResult[] SelectResults(IEnumerable<OptimizationResult> fittedResults)
@@ -175,9 +177,9 @@ namespace DNA_Test
                                  where or.Schedule.ToIntervalString() == parentText && or.RegressionUnderTest.ToString() == selectedText
                                  select or).First();
             if (chartIndex == 1)
-                timeSeries1 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest);
+                timeSeries1 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest, selectedResult.Schedule, comboBox_PredictAt.SelectedIndex);
             else if (chartIndex == 2)
-                timeSeries2 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest);
+                timeSeries2 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest, selectedResult.Schedule, comboBox_PredictAt.SelectedIndex);
             else
                 throw new Exception("Unexpected TimeSeriesChart index");
 
@@ -387,5 +389,23 @@ namespace DNA_Test
             this.flowLayoutPanel_Check3.Controls.Add(this.checkBox_timeSeries3);
         }
 
+        private void comboBox_PredictAt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //0 = Predict at next interval
+            //1 = Predict at mean
+            //2 = Predict at value
+            switch (comboBox_PredictAt.SelectedIndex)
+            {
+                case 0:
+                    this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtNextInterval);
+                    
+                    break;
+                case 1:
+                    this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
+                    break;
+                case 2:
+                    break;
+            }
+        }
     }
 }

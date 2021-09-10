@@ -12,6 +12,7 @@ namespace DNA_Test
 {
     public class TimeSeriesChart : Chart
     {
+        private Scheduler.Scheduler Schedule { get; set; }
         private Point MouseCoords { get; set; }      
         private const double alpha = 0.95;
         public static int default_chartHeight = 100;    //Overwritable defaults
@@ -27,11 +28,12 @@ namespace DNA_Test
         private double predictAt { get; set; }
         private IRegression FitRegression { get; set; }
 
-        public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression) : base()
+        public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression, Scheduler.Scheduler schedule, int predictAtIndex) : base()
         {
             /*  Set the default xAxis
              *  Load the Chart series'
              */
+            this.Schedule = schedule;
             this.FitRegression = fitRegression;
             this.MouseMove += OnMouseMoved;
             this.Click += OnChartClick;
@@ -43,19 +45,7 @@ namespace DNA_Test
             chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
             this.EnableUserSelection();     //Has to come after chartArea
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
-            FitSeries = GenerateFitSeries(fitRegression);
-            ScaleAxesToFitSeries();
-            this.predictAt = (from DataPoint dp in TimeSeries.Points select dp.XValue).Average();
-            BoxPlot_Series = GenerateBoxPlotSeries(fitRegression, predictAt);
-            ErrorSeries_CI_Lower = GenerateErrorSeries_Lower(fitRegression);
-            ErrorSeries_CI_Upper = GenerateErrorSeries_Upper(fitRegression);
-                       
-            this.Series.Add(ErrorSeries_CI_Lower);
-            this.Series.Add(ErrorSeries_CI_Upper);
-            this.Series.Add(BoxPlot_Series.PrimarySeries);
-            this.Series.Add(BoxPlot_Series.LabelSeries);
             this.Series.Add(TimeSeries);
-            this.Series.Add(FitSeries);
 
             this.BorderlineDashStyle = ChartDashStyle.Solid;
             this.BorderlineColor = System.Drawing.Color.Black;
@@ -65,6 +55,12 @@ namespace DNA_Test
             this.chartArea.BorderDashStyle = ChartDashStyle.Solid;
             this.chartArea.BorderColor = System.Drawing.Color.Black;
             this.chartArea.BorderWidth = 2;
+
+            this.SetAxes(TimeSeries.Points.First().XValue, TimeSeries.Points.Last().XValue);
+            if (predictAtIndex == 0)
+                this.UpdateBoxPlotSeries(Prediction.AtNextInterval);
+            if (predictAtIndex == 1)
+                this.UpdateBoxPlotSeries(Prediction.AtMean);
         }
 
         private void EnableUserSelection()
@@ -100,15 +96,17 @@ namespace DNA_Test
         }
         private Series GenerateFitSeries(IRegression fitRegression)     //Feed this the regression used to fit the time series
         {
+            //Assumes axis max & min have been set correctly. Fills in 100 fit points
             Series fitSeries = new Series();
             fitSeries.Name = "FitSeries";
             fitSeries.ChartType = SeriesChartType.Spline;
             /*  Create a series from the regression fit to the data
              */
-            foreach(DataPoint xPoint in TimeSeries.Points)
+            double step = (chartArea.AxisX.Maximum - chartArea.AxisX.Minimum) / 100;
+            for(int i=0; i <=100; i++)
             {
-                //DateTime xDate = DateTime.FromOADate(xPoint.XValue);        //Unsure if OADate is the form that datetime points are being stored as
-                fitSeries.Points.AddXY(xPoint.XValue, fitRegression.GetValue(xPoint.XValue));
+                double xVal = chartArea.AxisX.Minimum + (step * i);
+                fitSeries.Points.AddXY(xVal, fitRegression.GetValue(xVal));
             }
             fitSeries.BorderWidth = 3;
             fitSeries.Color = System.Drawing.Color.Red;
@@ -119,11 +117,12 @@ namespace DNA_Test
             Series errorSeries = new Series();
             errorSeries.Name = "ErrorSeries_CI_Lower";
             errorSeries.ChartType = SeriesChartType.StackedArea;
-            double minX = (from DataPoint point in TimeSeries.Points select point.XValue).Min();
-            double maxX = (from DataPoint point in TimeSeries.Points select point.XValue).Max();
+            double minX = this.chartArea.AxisX.Minimum;
+            double maxX = this.chartArea.AxisX.Maximum;
+            double step = (maxX - minX) / 100;
             for (int i = 0; i <= 100; i++)
             {
-                double xVal = minX + (i * ((maxX - minX) / 100));
+                double xVal = minX + (i * step);
                 double yVal = fitRegression.GetConfidenceInterval(xVal, 0.95).Min;
                 DataPoint newDP = new DataPoint(xVal, yVal);
                 errorSeries.Points.Add(newDP);
@@ -136,8 +135,9 @@ namespace DNA_Test
             Series errorSeries = new Series();
             errorSeries.Name = "ErrorSeries_CI_Upper";
             errorSeries.ChartType = SeriesChartType.StackedArea;
-            double minX = (from DataPoint point in TimeSeries.Points select point.XValue).Min();
-            double maxX = (from DataPoint point in TimeSeries.Points select point.XValue).Max();
+            double minX = this.chartArea.AxisX.Minimum;
+            double maxX = this.chartArea.AxisX.Maximum;
+            double step = (maxX - minX) / 100;
             for (int i = 0; i <= 100; i++)
             {
                 double xVal = minX + (i*((maxX-minX)/100));
@@ -149,6 +149,73 @@ namespace DNA_Test
             }
             errorSeries.Color = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Gray);
             return errorSeries;
+        }
+
+        private void FixSeriesOrder()
+        {
+            //Re-order the series so they appear correctly.
+            Queue<Series> mySeries = new Queue<Series>();
+            if (this.Series.IndexOf("ErrorSeries_CI_Lower") != -1)
+                mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Lower"));
+            if (this.Series.IndexOf("ErrorSeries_CI_Upper") != -1)
+                mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Upper"));
+            if (this.Series.IndexOf("BoxPlotSeries_BoxPlots") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_BoxPlots"));
+            if (this.Series.IndexOf("BoxPlotSeries_Labels") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Labels"));
+            if (this.Series.IndexOf("TimeSeries") != -1)
+                mySeries.Enqueue(this.Series.FindByName("TimeSeries"));
+            if (this.Series.IndexOf("FitSeries") != -1)
+                mySeries.Enqueue(this.Series.FindByName("FitSeries"));
+            this.Series.Clear();
+            while (mySeries.Any())
+            {
+                this.Series.Add(mySeries.Dequeue());
+            }
+        }
+
+        public enum Prediction
+        {
+            AtNextInterval,
+            AtMean
+        }
+        public void UpdateBoxPlotSeries(Prediction prediction)
+        {
+            double xValue;
+            switch (prediction)
+            {
+                case Prediction.AtNextInterval:
+                    //Need to pull the scheduler in as a property and get the next
+                    xValue = this.Schedule.GetNextMidpoint().ToOADate();
+                    SetAxes(this.TimeSeries.Points.First().XValue, this.Schedule.GetNextEndpoint().ToOADate());
+                    break;
+                case Prediction.AtMean:
+                    xValue = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Average();
+                    SetAxes(this.TimeSeries.Points.First().XValue, this.Schedule.GetMidpoints().Last().ToOADate());
+                    break;
+                default:
+                    throw new Exception("Unknown enum");
+            }
+            
+            UpdateBoxPlotSeries(xValue);
+
+        }
+        public void UpdateBoxPlotSeries(double xValue)
+        {
+            if (BoxPlot_Series != null)
+            {
+                if (Series.Contains(BoxPlot_Series.PrimarySeries))
+                    this.Series.Remove(BoxPlot_Series.PrimarySeries);
+                if (Series.Contains(BoxPlot_Series.LabelSeries))
+                    this.Series.Remove(BoxPlot_Series.LabelSeries);
+            }
+            this.BoxPlot_Series = GenerateBoxPlotSeries(this.FitRegression, xValue);
+            this.Series.Add(this.BoxPlot_Series.PrimarySeries);
+            this.Series.Add(this.BoxPlot_Series.LabelSeries);
+
+            //Adapt min/max -- next interval max is endpoint. boxplot goes to midpoint.
+            //Redraw fit, error
+            ScaleToAxes();
         }
         private BoxPlotSeries GenerateBoxPlotSeries(IRegression fitRegression, double xValue)
         {
@@ -192,7 +259,7 @@ namespace DNA_Test
                 //Load the pop-up PDF
                 if (this.Series.Contains(PDF_Series))
                 {
-                    this.Series.Remove(this.PDF_Series);
+                    this.Series.Add(this.PDF_Series);
                     this.Series.Add(this.BoxPlot_Series.LabelSeries);
                 }
                 else
@@ -212,18 +279,40 @@ namespace DNA_Test
             }
         }
 
-        private void ScaleAxesToFitSeries()
+        public void SetAxes(double xMin, double xMax)
         {
-            IEnumerable<double> xVals = from DataPoint x in this.FitSeries.Points select x.XValue;
-            IEnumerable<double> yVals = from DataPoint y in this.FitSeries.Points select y.YValues[0];
+            this.chartArea.AxisX.Minimum = xMin;
+            this.chartArea.AxisX.Maximum = xMax;
+        }
 
-            double minX = xVals.Min();
-            double maxX = xVals.Max();
+        private void ScaleToAxes()
+        {
+            //You have been given the x min and x max.
+            //Derive the y min and y max
+            //Redraw fit & error for the new axes
+            if (this.Series.Contains(this.ErrorSeries_CI_Lower))
+                this.Series.Remove(this.ErrorSeries_CI_Lower);
+            this.ErrorSeries_CI_Lower = GenerateErrorSeries_Lower(FitRegression);
+            this.Series.Add(this.ErrorSeries_CI_Lower);
+
+            if (this.Series.Contains(this.ErrorSeries_CI_Upper))
+                this.Series.Remove(this.ErrorSeries_CI_Upper);
+            this.ErrorSeries_CI_Upper = GenerateErrorSeries_Upper(FitRegression);
+            this.Series.Add(this.ErrorSeries_CI_Upper);
+
+            if (this.Series.Contains(this.FitSeries))
+                this.Series.Remove(this.FitSeries);
+            this.FitSeries = GenerateFitSeries(FitRegression);
+            this.Series.Add(this.FitSeries);
+
+            double minX = this.chartArea.AxisX.Minimum;
+            double maxX = this.chartArea.AxisX.Maximum;
             
-            double minY = yVals.Min();
-            double maxY = yVals.Max();
-            //Search the fitseries for minimum
-            DataPoint yLow = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == minY select pt).First();
+            //Search the fitseries for minimum & maximum
+            IEnumerable<double> yPoints = from DataPoint pt in this.FitSeries.Points select pt.YValues[0];
+            double minY = yPoints.Min();
+            double maxY = yPoints.Max();
+            DataPoint yLow = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == maxY select pt).First();
             double plotMinY = FitRegression.GetConfidenceInterval(yLow.XValue, alpha).Min;
             DataPoint yHigh = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == maxY select pt).First();
             double plotMaxY = FitRegression.GetConfidenceInterval(yHigh.XValue, alpha).Max;
@@ -234,6 +323,7 @@ namespace DNA_Test
 
             this.chartArea.AxisY.Minimum = plotMinY - (yRange * 0.1);   //Pad 50% of the range above and below
             this.chartArea.AxisY.Maximum = plotMaxY + (yRange * 0.1);
+            FixSeriesOrder();
         }
 
         public double Get_X_Coords_Per_Pixel()
