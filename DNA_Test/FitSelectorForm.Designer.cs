@@ -34,6 +34,8 @@
             this.flowLayoutPanel_Options = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel_Checkboxes = new System.Windows.Forms.FlowLayoutPanel();
             this.comboBox_PredictAt = new System.Windows.Forms.ComboBox();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.datePicker_PredictAt = new DNA_Test.DatePicker_Custom();
             this.SuspendLayout();
             // 
             // button_SelectFit
@@ -89,11 +91,21 @@
             this.comboBox_PredictAt.TabIndex = 8;
             this.comboBox_PredictAt.SelectedIndexChanged += new System.EventHandler(this.comboBox_PredictAt_SelectedIndexChanged);
             // 
+            // elementHost1
+            // 
+            this.elementHost1.Location = new System.Drawing.Point(222, 557);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(283, 24);
+            this.elementHost1.TabIndex = 9;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = this.datePicker_PredictAt;
+            // 
             // FitSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1455, 593);
+            this.Controls.Add(this.elementHost1);
             this.Controls.Add(this.comboBox_PredictAt);
             this.Controls.Add(this.flowLayoutPanel_Checkboxes);
             this.Controls.Add(this.flowLayoutPanel_Options);
@@ -113,5 +125,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_Options;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_Checkboxes;
         private System.Windows.Forms.ComboBox comboBox_PredictAt;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private DatePicker_Custom datePicker_PredictAt;
     }
 }

@@ -36,6 +36,9 @@ namespace DNA_Test
         {
             InitializeComponent();
 
+            this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;        //Default to hidden
+            this.datePicker_PredictAt.Picker.SelectedDateChanged += DatePicker_Changed;
+
             this.button_SelectFit.Enabled = false;  //Disable until the user has selected a fit
             fitOptions1.AfterSelect += fitOptions1_SelectedIndexChanged;
             fitOptions2.AfterSelect += fitOptions2_SelectedIndexChanged;
@@ -408,12 +411,19 @@ namespace DNA_Test
             switch (comboBox_PredictAt.SelectedIndex)
             {
                 case 0:
+                    this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;
                     this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtNextInterval);
                     break;
                 case 1:
+                    this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;
                     this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
                     break;
                 case 2:
+                    
+                    this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Visible;
+                    if (this.datePicker_PredictAt.Picker.SelectedDate == null)
+                        return;
+                    this.timeSeries1.UpdateBoxPlotSeries(((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
                     break;
             }
         }
@@ -421,5 +431,10 @@ namespace DNA_Test
         {
             UpdateBoxPlots();
         }
+        private void DatePicker_Changed(object sender, EventArgs e)
+        {
+            UpdateBoxPlots();
+        }
+
     }
 }
