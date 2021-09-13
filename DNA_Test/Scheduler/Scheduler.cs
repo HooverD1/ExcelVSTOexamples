@@ -188,7 +188,7 @@ namespace DNA_Test.Scheduler
 
         private int GetNumberOfMidpoints()
         {
-            return GetNumberOfEndpoints() - 1;
+            return GetEndpoints().Length - 1;
         }
 
         private Tuple<double, Interval> MatchPoints(DateTime[] midpoints)
@@ -359,6 +359,35 @@ namespace DNA_Test.Scheduler
                 }
             }
             return false;
+        }
+
+        public void ShiftDurationByIntervals(int intervalShift)
+        {
+            if(intervalShift > 0)
+            {
+                //Endpoints
+                List<DateTime> newEndPoints = this.Endpoints.ToList();
+                List<DateTime> newMidPoints = this.Midpoints.ToList();
+                for(int i=0; i<intervalShift; i++)
+                {
+                    newEndPoints.Add(GetNextEndpoint());
+                    this.Endpoints = newEndPoints.ToArray();
+                }
+                this.EndDate = this.Endpoints.Last();
+            }
+            else if(intervalShift < 0)
+            {
+                //Endpoints
+                DateTime[] newEndPoints = new DateTime[Endpoints.Length + intervalShift];
+                for(int i=0; i<Endpoints.Length+intervalShift; i++)
+                {
+                    newEndPoints[i] = Endpoints[i];
+                }
+                Endpoints = newEndPoints;
+                this.EndDate = this.Endpoints.Last();
+            }
+            this.Midpoints = null;
+            this.Midpoints = GetMidpoints();
         }
     }
 }

@@ -56,11 +56,25 @@ namespace DNA_Test
                     }
                     scheduleWatch.Start();
                     Scheduler.Scheduler schedule = new Scheduler.Scheduler(iLen, iType, startDate, endDate);
+                    //If schedule end date (after construction) is greater than the last datapoint's date, shift the schedule back a period.
+                    //schedule.ShiftDurationByIntervals(-1);
                     scheduleWatch.Stop();
                     if (schedule.GetMidpoints().Length < 3) break;  //Enforce a minimum of three buckets
                     
                     bucketWatch.Start();
                     double[] bucketSums = BucketToSchedule(dates, values, schedule);
+
+                    if (dates.Last().CompareTo(schedule.GetEndpoints().Last()) < 0)
+                    {
+                        double[] buckets = new double[bucketSums.Length - 1];
+                        for(int i = 0; i < buckets.Length; i++)
+                        {
+                            buckets[i] = bucketSums[i];
+                        }
+                        bucketSums = buckets;
+                        schedule.ShiftDurationByIntervals(-1);
+                    }
+                    //Need to truncate the buckets and schedule if the last period is not full..
                     bucketWatch.Stop();
                     iterationCount++;
                     optimizeWatch.Start();
@@ -138,7 +152,6 @@ namespace DNA_Test
             //MessageBox.Show($"Bucket Watch: {bucketWatch.ElapsedMilliseconds} ms");
             return bucketSum;
         }
-
-        
+                
     }
 }
