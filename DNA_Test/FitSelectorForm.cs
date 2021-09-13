@@ -157,11 +157,13 @@ namespace DNA_Test
         private void fitOptions1_SelectedIndexChanged(object sender, EventArgs e)
         {
             NodeChanged(fitOptions1, 1);
+            UpdateBoxPlot(timeSeries1);
         }
 
         private void fitOptions2_SelectedIndexChanged(object sender, EventArgs e)
         {
             NodeChanged(fitOptions2, 2);
+            UpdateBoxPlot(timeSeries2);
         }
 
         private void NodeChanged(TreeView fitOptions, int chartIndex)
@@ -186,6 +188,7 @@ namespace DNA_Test
             flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             if (DisplayCount >= 2)
                 flowLayoutPanel_Charts.Controls.Add(timeSeries2);
+            //UPDATE BOX PLOTS HERE
         }
 
         private void checkBox_timeSeries1_Checked_Changed(object sender, EventArgs e)
@@ -389,7 +392,15 @@ namespace DNA_Test
             this.flowLayoutPanel_Check3.Controls.Add(this.checkBox_timeSeries3);
         }
 
-        private void comboBox_PredictAt_SelectedIndexChanged(object sender, EventArgs e)
+        private void UpdateBoxPlots()
+        {
+            if (timeSeries1 != null)
+                UpdateBoxPlot(timeSeries1);
+            if (timeSeries2 != null)
+                UpdateBoxPlot(timeSeries2);
+        }
+
+        private void UpdateBoxPlot(TimeSeriesChart ts)
         {
             //0 = Predict at next interval
             //1 = Predict at mean
@@ -398,7 +409,6 @@ namespace DNA_Test
             {
                 case 0:
                     this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtNextInterval);
-                    
                     break;
                 case 1:
                     this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
@@ -406,6 +416,10 @@ namespace DNA_Test
                 case 2:
                     break;
             }
+        }
+        private void comboBox_PredictAt_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateBoxPlots();
         }
     }
 }
