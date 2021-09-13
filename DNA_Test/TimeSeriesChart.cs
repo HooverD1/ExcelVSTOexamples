@@ -304,25 +304,26 @@ namespace DNA_Test
                 this.Series.Remove(this.FitSeries);
             this.FitSeries = GenerateFitSeries(FitRegression);
             this.Series.Add(this.FitSeries);
-
-            double minX = this.chartArea.AxisX.Minimum;
-            double maxX = this.chartArea.AxisX.Maximum;
             
             //Search the fitseries for minimum & maximum
-            IEnumerable<double> yPoints = from DataPoint pt in this.FitSeries.Points select pt.YValues[0];
-            double minY = yPoints.Min();
-            double maxY = yPoints.Max();
-            DataPoint yLow = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == maxY select pt).First();
-            double plotMinY = FitRegression.GetConfidenceInterval(yLow.XValue, alpha).Min;
-            DataPoint yHigh = (from DataPoint pt in this.FitSeries.Points where pt.YValues[0] == maxY select pt).First();
-            double plotMaxY = FitRegression.GetConfidenceInterval(yHigh.XValue, alpha).Max;
-            double yRange = plotMaxY - plotMinY;
+            double[] upperPoints = (from DataPoint pt in this.ErrorSeries_CI_Upper.Points select pt.YValues[0]).ToArray();
+            double[] lowerPoints = (from DataPoint pt in this.ErrorSeries_CI_Lower.Points select pt.YValues[0]).ToArray();
+            double tempMaxY = double.MinValue;
+            int maxIndex = -1;
+            for (int i=0; i <= 100; i++)
+            {   //Add up the stacks & account for negative lowerPoints
+                double actualY = lowerPoints[i] + upperPoints[i];
+                if (actualY > tempMaxY)
+                {
+                    tempMaxY = actualY;
+                    maxIndex = i;
+                }
+            }
+            double maxY = upperPoints[maxIndex] + lowerPoints[maxIndex];
+            double minY = lowerPoints.Min();
 
-            this.chartArea.AxisX.Minimum = minX;
-            this.chartArea.AxisX.Maximum = maxX;
-
-            this.chartArea.AxisY.Minimum = plotMinY - (yRange * 0.1);   //Pad 50% of the range above and below
-            this.chartArea.AxisY.Maximum = plotMaxY + (yRange * 0.1);
+            this.chartArea.AxisY.Minimum = minY - (upperPoints[maxIndex] * 0.1);    //Pad 10% of the range (yHigh represents the range)
+            this.chartArea.AxisY.Maximum = maxY + (upperPoints[maxIndex] * 0.1);      //Add them due to how yHigh's y-value is calculated for a stacked area
             FixSeriesOrder();
         }
 
