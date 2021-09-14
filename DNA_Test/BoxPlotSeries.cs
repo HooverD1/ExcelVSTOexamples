@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.DataVisualization.Charting;
 
+
 namespace DNA_Test
 {
     public class BoxPlotSeries
@@ -38,6 +39,7 @@ namespace DNA_Test
             PrimarySeries.Name = "BoxPlotSeries_BoxPlots";
             PrimarySeries.ChartType = SeriesChartType.BoxPlot;
             PrimarySeries.Color = System.Drawing.Color.Orange;
+            
             PrimarySeries.BorderColor = System.Drawing.Color.Black;
             PrimarySeries.BorderWidth = 2;
 
@@ -46,11 +48,12 @@ namespace DNA_Test
             MeanSeries.ChartType = SeriesChartType.Point;
             MeanSeries.MarkerStyle = MarkerStyle.Square;
             MeanSeries.MarkerColor = System.Drawing.Color.Black;
+            MeanSeries.MarkerSize = 10;
         }
 
         public void SetWidth(int points)
         {
-            PrimarySeries["PixelPointWidth"] = Convert.ToInt32(250 / points).ToString();
+            PrimarySeries["PixelPointWidth"] = "20";
         }
 
         public void Add(double x, BoxPlot boxPlot, double mean)
@@ -82,6 +85,17 @@ namespace DNA_Test
             LabelSeries.Points.Add(maximum);
 
 
+        }
+
+        public void SetBoxPlotColor_OnFitSeries()
+        {
+            if (Parent.FitSeries != null)
+            {
+                int red = Parent.FitSeries.Color.R + (256 - Parent.FitSeries.Color.R) / 2;
+                int green = Parent.FitSeries.Color.G + (256 - Parent.FitSeries.Color.G) / 2;
+                int blue = Parent.FitSeries.Color.B + (256 - Parent.FitSeries.Color.B) / 2;
+                PrimarySeries.Color = System.Drawing.Color.FromArgb(red, green, blue);
+            }
         }
 
         private int GetLengthOfValue(double value)

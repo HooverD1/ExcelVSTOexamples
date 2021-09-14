@@ -9,10 +9,7 @@ namespace DNA_Test
 {
     public static class ChartUtilities
     {
-        
-
-
-        
+    
 
         //private static double GetDistance(DataPoint dp1, DataPoint dp2)
         //{

@@ -158,15 +158,16 @@ namespace DNA_Test
                 mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Lower"));
             if (this.Series.IndexOf("ErrorSeries_CI_Upper") != -1)
                 mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Upper"));
-            if (this.Series.IndexOf("BoxPlotSeries_BoxPlots") != -1)
-                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_BoxPlots"));
             if (this.Series.IndexOf("TimeSeries") != -1)
                 mySeries.Enqueue(this.Series.FindByName("TimeSeries"));
+            if (this.Series.IndexOf("BoxPlotSeries_BoxPlots") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_BoxPlots"));
             if (this.Series.IndexOf("FitSeries") != -1)
                 mySeries.Enqueue(this.Series.FindByName("FitSeries"));
             if (this.Series.IndexOf("BoxPlotSeries_Labels") != -1)
                 mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Labels"));
-
+            if (this.Series.IndexOf("BoxPlotSeries_Means") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Means"));
             this.Series.Clear();
             while (mySeries.Any())
             {
@@ -208,10 +209,14 @@ namespace DNA_Test
                     this.Series.Remove(BoxPlot_Series.PrimarySeries);
                 if (Series.Contains(BoxPlot_Series.LabelSeries))
                     this.Series.Remove(BoxPlot_Series.LabelSeries);
+                if (Series.Contains(BoxPlot_Series.MeanSeries))
+                    this.Series.Remove(BoxPlot_Series.MeanSeries);
             }
             this.BoxPlot_Series = GenerateBoxPlotSeries(this.FitRegression, xValue);
+            this.BoxPlot_Series.SetBoxPlotColor_OnFitSeries();
             this.Series.Add(this.BoxPlot_Series.PrimarySeries);
             this.Series.Add(this.BoxPlot_Series.LabelSeries);
+            this.Series.Add(this.BoxPlot_Series.MeanSeries);
 
             //Adapt min/max -- next interval max is endpoint. boxplot goes to midpoint.
             //Redraw fit, error

@@ -54,7 +54,7 @@ namespace DNA_Test
             this.SelectedResults = SelectResults(fittedResults);
             comboBox_DisplayCount.SelectedIndex = 0;
             comboBox_PredictAt.SelectedIndex = 1;
-            timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
+            //timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
             
         }        
 
