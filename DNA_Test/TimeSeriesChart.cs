@@ -14,7 +14,7 @@ namespace DNA_Test
     {
         private Scheduler.Scheduler Schedule { get; set; }
         private Point MouseCoords { get; set; }      
-        private const double alpha = 0.95;
+        private const double alpha = 0.98;
         public static int default_chartHeight = 100;    //Overwritable defaults
         public static int default_chartWidth = 100;
         public ChartArea chartArea { get; set; }        //The x-Axis -- potentially overwritten for non-uniform
@@ -24,7 +24,6 @@ namespace DNA_Test
         public Series ErrorSeries_CI_Lower { get; set; }  //The regression line - error band
         public Series PDF_Series { get; set; }
         public BoxPlotSeries BoxPlot_Series { get; set; }
-        public Series MeanSeries { get; set; }
         private double predictAt { get; set; }
         private IRegression FitRegression { get; set; }
 
@@ -123,7 +122,7 @@ namespace DNA_Test
             for (int i = 0; i <= 100; i++)
             {
                 double xVal = minX + (i * step);
-                double yVal = fitRegression.GetConfidenceInterval(xVal, 0.95).Min;
+                double yVal = fitRegression.GetConfidenceInterval(xVal, alpha).Min;
                 DataPoint newDP = new DataPoint(xVal, yVal);
                 errorSeries.Points.Add(newDP);
             }
@@ -161,12 +160,13 @@ namespace DNA_Test
                 mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Upper"));
             if (this.Series.IndexOf("BoxPlotSeries_BoxPlots") != -1)
                 mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_BoxPlots"));
-            if (this.Series.IndexOf("BoxPlotSeries_Labels") != -1)
-                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Labels"));
             if (this.Series.IndexOf("TimeSeries") != -1)
                 mySeries.Enqueue(this.Series.FindByName("TimeSeries"));
             if (this.Series.IndexOf("FitSeries") != -1)
                 mySeries.Enqueue(this.Series.FindByName("FitSeries"));
+            if (this.Series.IndexOf("BoxPlotSeries_Labels") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Labels"));
+
             this.Series.Clear();
             while (mySeries.Any())
             {
@@ -227,7 +227,7 @@ namespace DNA_Test
             double q3 = q2 + (max - q2) / 2;
             BoxPlot boxPlot = new BoxPlot(min, q1, q2, q3, max, q2);
             boxPlotSeries.SetWidth(TimeSeries.Points.Count());
-            boxPlotSeries.Add(xValue, boxPlot);
+            boxPlotSeries.Add(xValue, boxPlot, FitRegression.GetValue(xValue));
             return boxPlotSeries;
         }
 

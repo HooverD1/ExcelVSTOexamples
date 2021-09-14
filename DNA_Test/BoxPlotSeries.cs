@@ -12,6 +12,7 @@ namespace DNA_Test
         private TimeSeriesChart Parent { get; set; }
         public Series PrimarySeries { get; }
         public Series LabelSeries { get; }
+        public Series MeanSeries { get; }
 
         //public BoxPlotSeries(Tuple<double, double[]>[] boxPlotPoints)
         //{   //To build from data
@@ -32,12 +33,19 @@ namespace DNA_Test
             LabelSeries.MarkerStyle = MarkerStyle.None;
             LabelSeries.MarkerColor = System.Drawing.Color.FromArgb(0, 0, 0, 0);
             LabelSeries.SmartLabelStyle.Enabled = true;
+
             PrimarySeries = new Series();
             PrimarySeries.Name = "BoxPlotSeries_BoxPlots";
             PrimarySeries.ChartType = SeriesChartType.BoxPlot;
             PrimarySeries.Color = System.Drawing.Color.Orange;
             PrimarySeries.BorderColor = System.Drawing.Color.Black;
             PrimarySeries.BorderWidth = 2;
+
+            MeanSeries = new Series();
+            MeanSeries.Name = "BoxPlotSeries_Means";
+            MeanSeries.ChartType = SeriesChartType.Point;
+            MeanSeries.MarkerStyle = MarkerStyle.Square;
+            MeanSeries.MarkerColor = System.Drawing.Color.Black;
         }
 
         public void SetWidth(int points)
@@ -45,11 +53,12 @@ namespace DNA_Test
             PrimarySeries["PixelPointWidth"] = Convert.ToInt32(250 / points).ToString();
         }
 
-        public void Add(double x, BoxPlot boxPlot)
+        public void Add(double x, BoxPlot boxPlot, double mean)
         {
             //Add boxPlot at x-value x
             DataPoint plotPoint = boxPlot.GetBoxPlot(x);
             PrimarySeries.Points.Add(plotPoint);
+            MeanSeries.Points.AddXY(x, mean);
             string valueString;
             valueString = "Min: " + Math.Round(plotPoint.YValues[0]).ToString();
             DataPoint minimum = new DataPoint(TransformX(x, valueString.Length, true), TransformY(plotPoint.YValues[0]));
@@ -71,6 +80,8 @@ namespace DNA_Test
             LabelSeries.Points.Add(q2);
             LabelSeries.Points.Add(q3);
             LabelSeries.Points.Add(maximum);
+
+
         }
 
         private int GetLengthOfValue(double value)
