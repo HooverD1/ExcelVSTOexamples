@@ -28,13 +28,7 @@ namespace DNA_Test
         public BoxPlotSeries(TimeSeriesChart parent)
         {
             this.Parent = parent;
-            LabelSeries = new Series();
-            LabelSeries.Name = "BoxPlotSeries_Labels";
-            LabelSeries.ChartType = SeriesChartType.Point;
-            LabelSeries.MarkerStyle = MarkerStyle.None;
-            LabelSeries.MarkerColor = System.Drawing.Color.FromArgb(0, 0, 0, 0);
-            LabelSeries.SmartLabelStyle.Enabled = true;
-
+            
             PrimarySeries = new Series();
             PrimarySeries.Name = "BoxPlotSeries_BoxPlots";
             PrimarySeries.ChartType = SeriesChartType.BoxPlot;
@@ -49,6 +43,14 @@ namespace DNA_Test
             MeanSeries.MarkerStyle = MarkerStyle.Square;
             MeanSeries.MarkerColor = System.Drawing.Color.Black;
             MeanSeries.MarkerSize = 10;
+
+            LabelSeries = new Series();
+            LabelSeries.Name = "BoxPlotSeries_Labels";
+            LabelSeries.ChartType = SeriesChartType.Point;
+            LabelSeries.MarkerStyle = MarkerStyle.None;
+            LabelSeries.MarkerColor = System.Drawing.Color.Black;
+            LabelSeries.SmartLabelStyle.Enabled = true;
+
         }
 
         public void SetWidth(int points)

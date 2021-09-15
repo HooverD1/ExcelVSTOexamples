@@ -191,7 +191,7 @@ namespace DNA_Test
             flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             if (DisplayCount >= 2)
                 flowLayoutPanel_Charts.Controls.Add(timeSeries2);
-            //UPDATE BOX PLOTS HERE
+            
         }
 
         private void checkBox_timeSeries1_Checked_Changed(object sender, EventArgs e)
@@ -259,12 +259,11 @@ namespace DNA_Test
                 {
                     case 1:
                         LoadOneChart();
+                        UpdateBoxPlots();
                         break;
                     case 2:
                         LoadTwoCharts();
-                        break;
-                    case 3:
-                        LoadThreeCharts();
+                        UpdateBoxPlots();
                         break;
                     default:
                         throw new Exception("Unexpected amount of charts");
