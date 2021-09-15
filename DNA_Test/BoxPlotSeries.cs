@@ -30,14 +30,15 @@ namespace DNA_Test
             this.Parent = parent;
             
             PrimarySeries = new Series();
+            PrimarySeries.XValueType = ChartValueType.Date;
             PrimarySeries.Name = "BoxPlotSeries_BoxPlots";
             PrimarySeries.ChartType = SeriesChartType.BoxPlot;
-            PrimarySeries.Color = System.Drawing.Color.Orange;
-            
             PrimarySeries.BorderColor = System.Drawing.Color.Black;
             PrimarySeries.BorderWidth = 2;
+            PrimarySeries["BoxPlotShowMedian"] = "false";
 
             MeanSeries = new Series();
+            MeanSeries.XValueType = ChartValueType.Date;
             MeanSeries.Name = "BoxPlotSeries_Means";
             MeanSeries.ChartType = SeriesChartType.Point;
             MeanSeries.MarkerStyle = MarkerStyle.Square;
@@ -45,11 +46,12 @@ namespace DNA_Test
             MeanSeries.MarkerSize = 10;
 
             LabelSeries = new Series();
+            LabelSeries.XValueType = ChartValueType.Date;
             LabelSeries.Name = "BoxPlotSeries_Labels";
             LabelSeries.ChartType = SeriesChartType.Point;
             LabelSeries.MarkerStyle = MarkerStyle.None;
-            LabelSeries.MarkerColor = System.Drawing.Color.Black;
-            LabelSeries.SmartLabelStyle.Enabled = true;
+            LabelSeries.MarkerColor = System.Drawing.Color.FromArgb(0, 0, 0, 0);
+            LabelSeries.SmartLabelStyle.Enabled = false;
 
         }
 

@@ -315,6 +315,11 @@ namespace DNA_Test.Scheduler
             return IntervalLength;
         }
 
+        public Interval? GetIntervalType()
+        {
+            return IntervalType;
+        }
+
         public string GetIntervalTypeString()
         {
             switch (IntervalType)

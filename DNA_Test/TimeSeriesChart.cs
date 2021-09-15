@@ -42,7 +42,11 @@ namespace DNA_Test
             this.ChartAreas.Add(chartArea);
             chartArea.Position = new ElementPosition(0, 0, 100, 100);
             chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
+            SetupXAxisGridlines();
+            //chartArea.AxisX.MajorTickMark.IntervalType = DateTimeIntervalType.
+
             this.EnableUserSelection();     //Has to come after chartArea
+
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
             this.Series.Add(TimeSeries);
 
@@ -54,6 +58,9 @@ namespace DNA_Test
             this.chartArea.BorderDashStyle = ChartDashStyle.Solid;
             this.chartArea.BorderColor = System.Drawing.Color.Black;
             this.chartArea.BorderWidth = 2;
+            
+
+            this.chartArea.AxisY.LabelStyle.Format = "{0:n0}";
 
             this.SetAxes(TimeSeries.Points.First().XValue, TimeSeries.Points.Last().XValue);
             if (predictAtIndex == 0)
@@ -62,14 +69,37 @@ namespace DNA_Test
                 this.UpdateBoxPlotSeries(Prediction.AtMean);
         }
 
+        private void SetupXAxisGridlines()
+        {
+            switch (Schedule.GetIntervalType())
+            {
+                case Scheduler.Scheduler.Interval.Yearly:
+                    this.chartArea.AxisX.IntervalType = DateTimeIntervalType.Years;
+                    this.chartArea.AxisX.Interval = 1;
+                    break;
+                case Scheduler.Scheduler.Interval.Monthly:
+                    this.chartArea.AxisX.IntervalType = DateTimeIntervalType.Months;
+                    this.chartArea.AxisX.Interval = Schedule.GetIntervalLength();
+                    break;
+                case Scheduler.Scheduler.Interval.Weekly:
+                    this.chartArea.AxisX.IntervalType = DateTimeIntervalType.Weeks;
+                    this.chartArea.AxisX.Interval = Schedule.GetIntervalLength();
+                    break;
+                case Scheduler.Scheduler.Interval.Daily:
+                    this.chartArea.AxisX.IntervalType = DateTimeIntervalType.Days;
+                    this.chartArea.AxisX.Interval = Schedule.GetIntervalLength();
+                    break;
+                default:
+                    throw new Exception("Unknown interval type");
+            }
+        }
+
         private void EnableUserSelection()
         {
             if (this.chartArea == null)
                 throw new Exception("Define chartArea first.");
             this.chartArea.CursorX.IsUserEnabled = true;
             this.chartArea.CursorY.IsUserEnabled = true;
-            //this.chartArea.CursorX.IsUserSelectionEnabled = true;
-            //this.chartArea.CursorY.IsUserSelectionEnabled = true;
             this.chartArea.CursorX.Interval = 0.01;
             this.chartArea.CursorY.Interval = 0.01;
         }
@@ -77,6 +107,7 @@ namespace DNA_Test
         private Series GenerateTimeSeries(Dictionary<DateTime, double> timeSeriesDataPoints)
         {
             Series timeSeries = new Series();
+            timeSeries.XValueType = ChartValueType.Date;
             timeSeries.Name = "TimeSeries";
             timeSeries.ChartType = SeriesChartType.Line;
             timeSeries.MarkerStyle = MarkerStyle.Circle;
@@ -97,6 +128,7 @@ namespace DNA_Test
         {
             //Assumes axis max & min have been set correctly. Fills in 100 fit points
             Series fitSeries = new Series();
+            fitSeries.XValueType = ChartValueType.Date;
             fitSeries.Name = "FitSeries";
             fitSeries.ChartType = SeriesChartType.Spline;
             /*  Create a series from the regression fit to the data
@@ -114,6 +146,7 @@ namespace DNA_Test
         private Series GenerateErrorSeries_Lower(IRegression fitRegression)
         {
             Series errorSeries = new Series();
+            errorSeries.XValueType = ChartValueType.Date;
             errorSeries.Name = "ErrorSeries_CI_Lower";
             errorSeries.ChartType = SeriesChartType.StackedArea;
             double minX = this.chartArea.AxisX.Minimum;
@@ -132,6 +165,7 @@ namespace DNA_Test
         private Series GenerateErrorSeries_Upper(IRegression fitRegression)
         {
             Series errorSeries = new Series();
+            errorSeries.XValueType = ChartValueType.Date;
             errorSeries.Name = "ErrorSeries_CI_Upper";
             errorSeries.ChartType = SeriesChartType.StackedArea;
             double minX = this.chartArea.AxisX.Minimum;
@@ -230,7 +264,7 @@ namespace DNA_Test
             double q2 = fitRegression.GetValue(xValue);
             double q1 = min + (q2 - min) / 2;
             double q3 = q2 + (max - q2) / 2;
-            BoxPlot boxPlot = new BoxPlot(min, q1, q2, q3, max, q2);
+            BoxPlot boxPlot = new BoxPlot(min, q1, q2, q3, max);
             boxPlotSeries.SetWidth(TimeSeries.Points.Count());
             boxPlotSeries.Add(xValue, boxPlot, FitRegression.GetValue(xValue));
             return boxPlotSeries;
