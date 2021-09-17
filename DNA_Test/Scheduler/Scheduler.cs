@@ -23,8 +23,8 @@ namespace DNA_Test.Scheduler
 
         private Interval? IntervalType { get; set; } = null;
         private double IntervalLength { get; set; }
-        protected DateTime StartDate { get; set; }
-        protected DateTime EndDate { get; set; }
+        private DateTime StartDate { get; set; }
+        private DateTime EndDate { get; set; }
         private DateTime[] Midpoints { get; set; }
         private DateTime[] Endpoints { get; set; }
 
@@ -394,5 +394,8 @@ namespace DNA_Test.Scheduler
             this.Midpoints = null;
             this.Midpoints = GetMidpoints();
         }
+        
+        public DateTime GetStartDate() { return StartDate; }
+        public DateTime GetEndDate() { return EndDate; }
     }
 }

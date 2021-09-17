@@ -71,6 +71,7 @@ namespace DNA_Test
 
         private void SetupXAxisGridlines()
         {
+            double duration = (Schedule.GetEndDate() - Schedule.GetStartDate()).TotalDays;
             switch (Schedule.GetIntervalType())
             {
                 case Scheduler.Scheduler.Interval.Yearly:
@@ -79,15 +80,15 @@ namespace DNA_Test
                     break;
                 case Scheduler.Scheduler.Interval.Monthly:
                     this.chartArea.AxisX.IntervalType = DateTimeIntervalType.Months;
-                    this.chartArea.AxisX.Interval = Schedule.GetIntervalLength();
+                    this.chartArea.AxisX.Interval = Math.Round(duration / 30.417 / 10, 0);
                     break;
                 case Scheduler.Scheduler.Interval.Weekly:
                     this.chartArea.AxisX.IntervalType = DateTimeIntervalType.Weeks;
-                    this.chartArea.AxisX.Interval = Schedule.GetIntervalLength();
+                    this.chartArea.AxisX.Interval = Math.Round(duration / 7 / 10, 0);
                     break;
                 case Scheduler.Scheduler.Interval.Daily:
                     this.chartArea.AxisX.IntervalType = DateTimeIntervalType.Days;
-                    this.chartArea.AxisX.Interval = Schedule.GetIntervalLength();
+                    this.chartArea.AxisX.Interval = Math.Round(duration / 10, 0);
                     break;
                 default:
                     throw new Exception("Unknown interval type");

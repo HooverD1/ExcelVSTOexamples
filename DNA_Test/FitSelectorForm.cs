@@ -161,12 +161,14 @@ namespace DNA_Test
         {
             NodeChanged(fitOptions1, 1);
             UpdateBoxPlot(timeSeries1);
+            SyncChartAxes();
         }
 
         private void fitOptions2_SelectedIndexChanged(object sender, EventArgs e)
         {
             NodeChanged(fitOptions2, 2);
             UpdateBoxPlot(timeSeries2);
+            SyncChartAxes();
         }
 
         private void NodeChanged(TreeView fitOptions, int chartIndex)
@@ -325,6 +327,9 @@ namespace DNA_Test
             fitOptions2.Height = this.flowLayoutPanel_Options.Height / 2 - 2;
             fitOptions2.Width = this.flowLayoutPanel_Options.Width;
 
+            //Make axes line up between chart controls
+            SyncChartAxes();
+
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             this.flowLayoutPanel_Charts.Controls.Add(timeSeries2);
             timeSeries1.Show();
@@ -338,60 +343,35 @@ namespace DNA_Test
             this.flowLayoutPanel_Check1.Controls.Add(this.checkBox_timeSeries1);
             this.flowLayoutPanel_Check2.Controls.Add(this.checkBox_timeSeries2);
         }
-        private void LoadThreeCharts()
+
+        private void SyncChartAxes()
         {
-            this.checkBox_timeSeries1.Checked = false;
-            this.checkBox_timeSeries2.Checked = false;
-            this.checkBox_timeSeries3.Checked = false;
-
-            this.flowLayoutPanel_Check1.Controls.Clear();
-            this.flowLayoutPanel_Check2.Controls.Clear();
-            this.flowLayoutPanel_Check3.Controls.Clear();
-            this.flowLayoutPanel_Checkboxes.Controls.Clear();
-
-            this.flowLayoutPanel_Charts.Controls.Clear();
-            this.flowLayoutPanel_Options.Controls.Clear();
-            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 3 - 2;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
-            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
-
-            fitOptions1 = PopulateFitOptions(fitOptions1);
-            fitOptions2 = PopulateFitOptions(fitOptions2);
-            fitOptions3 = PopulateFitOptions(fitOptions3);
-            fitOptions1.Show();
-            fitOptions2.Show();
-            fitOptions3.Show();
-
-            this.flowLayoutPanel_Charts.Controls.Add(timeSeries1);
-            timeSeries1.Show();
-            this.flowLayoutPanel_Charts.Controls.Add(timeSeries2);
-            timeSeries2.Show();
-            this.flowLayoutPanel_Charts.Controls.Add(timeSeries3);
-            timeSeries3.Show();
-
-            this.flowLayoutPanel_Options.Controls.Add(fitOptions1);
-            fitOptions1.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
-            fitOptions1.Width = this.flowLayoutPanel_Options.Width;
-
-            this.flowLayoutPanel_Options.Controls.Add(fitOptions2);
-            fitOptions2.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
-            fitOptions2.Width = this.flowLayoutPanel_Options.Width;
-
-            this.flowLayoutPanel_Options.Controls.Add(fitOptions3);
-            fitOptions3.Height = this.flowLayoutPanel_Options.Height / 3 - 2;
-            fitOptions3.Width = this.flowLayoutPanel_Options.Width;
-
-            //flowLayoutPanel_Checkboxes.Padding = new Padding(0, 0, 0, timeSeries1.Height);
-            this.flowLayoutPanel_Check1.Height = timeSeries1.Height;
-            this.flowLayoutPanel_Check2.Height = timeSeries2.Height;
-            this.flowLayoutPanel_Check3.Height = timeSeries3.Height;
-
-            flowLayoutPanel_Checkboxes.Controls.Add(this.flowLayoutPanel_Check1);
-            flowLayoutPanel_Checkboxes.Controls.Add(this.flowLayoutPanel_Check2);
-            flowLayoutPanel_Checkboxes.Controls.Add(this.flowLayoutPanel_Check3);
-
-            this.flowLayoutPanel_Check1.Controls.Add(this.checkBox_timeSeries1);
-            this.flowLayoutPanel_Check2.Controls.Add(this.checkBox_timeSeries2);
-            this.flowLayoutPanel_Check3.Controls.Add(this.checkBox_timeSeries3);
+            if(timeSeries1 != null && timeSeries2 != null)
+            {
+                if(!Double.IsNaN(timeSeries1.chartArea.AxisX.Minimum) &&
+                    !Double.IsNaN(timeSeries1.chartArea.AxisX.Maximum) &&
+                    !Double.IsNaN(timeSeries2.chartArea.AxisX.Minimum) &&
+                    !Double.IsNaN(timeSeries2.chartArea.AxisX.Maximum) &&
+                    !Double.IsNaN(timeSeries2.chartArea.AxisY.Minimum) &&
+                    !Double.IsNaN(timeSeries2.chartArea.AxisY.Maximum) &&
+                    !Double.IsNaN(timeSeries2.chartArea.AxisY.Minimum) &&
+                    !Double.IsNaN(timeSeries2.chartArea.AxisY.Maximum))
+                {
+                    double min_x = Math.Min(timeSeries1.chartArea.AxisX.Minimum, timeSeries2.chartArea.AxisX.Minimum);
+                    double max_x = Math.Max(timeSeries1.chartArea.AxisX.Maximum, timeSeries2.chartArea.AxisX.Maximum);
+                    double min_y = Math.Min(timeSeries1.chartArea.AxisY.Minimum, timeSeries2.chartArea.AxisY.Minimum);
+                    double max_y = Math.Max(timeSeries1.chartArea.AxisY.Maximum, timeSeries2.chartArea.AxisY.Maximum);
+                    timeSeries1.chartArea.AxisX.Minimum = min_x;
+                    timeSeries1.chartArea.AxisX.Maximum = max_x;
+                    timeSeries2.chartArea.AxisX.Minimum = min_x;
+                    timeSeries2.chartArea.AxisX.Maximum = max_x;
+                    timeSeries1.chartArea.AxisY.Minimum = min_y;
+                    timeSeries1.chartArea.AxisY.Maximum = max_y;
+                    timeSeries2.chartArea.AxisY.Minimum = min_y;
+                    timeSeries2.chartArea.AxisY.Maximum = max_y;
+                }
+            }
+            
         }
 
         private void UpdateBoxPlots()
