@@ -392,10 +392,14 @@ namespace DNA_Test
                 case 0:
                     this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;
                     this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtNextInterval);
+                    if(this.timeSeries2 != null)
+                        this.timeSeries2.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtNextInterval);
                     break;
                 case 1:
                     this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;
                     this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
+                    if(this.timeSeries2 != null)
+                        this.timeSeries2.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
                     break;
                 case 2:
                     
@@ -403,6 +407,8 @@ namespace DNA_Test
                     if (this.datePicker_PredictAt.Picker.SelectedDate == null)
                         return;
                     this.timeSeries1.UpdateBoxPlotSeries(((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
+                    if(this.timeSeries2 != null)
+                        this.timeSeries2.UpdateBoxPlotSeries(((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
                     break;
             }
         }
