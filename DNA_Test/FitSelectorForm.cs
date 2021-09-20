@@ -14,6 +14,7 @@ namespace DNA_Test
 {
     public partial class FitSelectorForm : Form
     {
+        private bool CancelEvent { get; set; } = false;
         public OptimizationResult[] SelectedResults { get; set; }
         private TimeSeriesChart timeSeries1 { get; set; }
         private TimeSeriesChart timeSeries2 { get; set; }
@@ -37,7 +38,9 @@ namespace DNA_Test
             InitializeComponent();
 
             this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;        //Default to hidden
+            this.datePicker_PredictAt.PreviewMouseLeftButtonDown += AllowPredictAtEvent;
             this.datePicker_PredictAt.Picker.SelectedDateChanged += DatePicker_Changed;
+
 
             this.button_SelectFit.Enabled = false;  //Disable until the user has selected a fit
             fitOptions1.AfterSelect += fitOptions1_SelectedIndexChanged;
@@ -416,9 +419,46 @@ namespace DNA_Test
         {
             UpdateBoxPlots();
         }
+
+        private void AllowPredictAtEvent(object sender, EventArgs e)
+        {
+            //Only allow the predictAt date picker selected date change event after a mouse click.
+            CancelEvent = false;
+        }
+
         private void DatePicker_Changed(object sender, EventArgs e)
         {
+            if (CancelEvent)
+            {
+                return;
+            }
+            if (datePicker_PredictAt.Picker.SelectedDate == null)
+                return;
+            //Move to nearest midpoint in the schedule
+            var schedule = this.timeSeries1.Schedule;
+            double minDistance = double.MaxValue;
+            int minDex = -1;
+            for(int i=0; i < schedule.GetMidpoints().Length; i++)
+            {
+                double distance = Math.Abs((schedule.GetMidpoints()[i] - (DateTime)datePicker_PredictAt.Picker.SelectedDate).TotalSeconds);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    minDex = i;
+                }
+            }
+            if(minDex == -1)
+            {
+                throw new Exception("Find smallest date distance error");
+            }
+            else
+            {
+                //Event fires twice in a row unexpectedly here... first time is handled, second time screws it up.
+                datePicker_PredictAt.Picker.SelectedDate = schedule.GetMidpoints()[minDex];
+            }
+            //Update
             UpdateBoxPlots();
+            CancelEvent = true;
         }
 
     }

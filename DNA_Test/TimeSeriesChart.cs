@@ -12,7 +12,7 @@ namespace DNA_Test
 {
     public class TimeSeriesChart : Chart
     {
-        private Scheduler.Scheduler Schedule { get; set; }
+        public Scheduler.Scheduler Schedule { get; set; }
         private Point MouseCoords { get; set; }      
         private const double alpha = 0.98;
         public static int default_chartHeight = 100;    //Overwritable defaults

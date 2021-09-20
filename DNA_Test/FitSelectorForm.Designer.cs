@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FitSelectorForm));
             this.button_SelectFit = new System.Windows.Forms.Button();
             this.flowLayoutPanel_Charts = new System.Windows.Forms.FlowLayoutPanel();
             this.comboBox_DisplayCount = new System.Windows.Forms.ComboBox();
@@ -112,6 +113,7 @@
             this.Controls.Add(this.comboBox_DisplayCount);
             this.Controls.Add(this.flowLayoutPanel_Charts);
             this.Controls.Add(this.button_SelectFit);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FitSelectorForm";
             this.Text = "Select Desired Fit";
             this.ResumeLayout(false);
