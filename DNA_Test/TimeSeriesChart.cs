@@ -48,7 +48,7 @@ namespace DNA_Test
             Description.Text = $"{fitRegression.ToString()}\nStart: {Schedule.GetStartDate().ToString()}\nEnd: {Schedule.GetEndDate().ToString()}";
             Description.BackColor = System.Drawing.Color.White;
             Description.BorderColor = System.Drawing.Color.Black;
-            double scale = 528 / this.Height * 10;
+            double scale = 528 / this.Height * 10;      //528 is the pixel height of the single chart. this.height = 528. 10 is the relative height of the single chart
             Description.Position = new ElementPosition(chartArea.InnerPlotPosition.X, chartArea.InnerPlotPosition.Y, 25, Convert.ToInt32(scale));
             this.Titles.Add(Description);
 
