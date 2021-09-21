@@ -213,7 +213,8 @@ namespace DNA_Test
         public enum Prediction
         {
             AtNextInterval,
-            AtMean
+            AtMean,
+            AtValue
         }
         public void UpdateBoxPlotSeries(Prediction prediction)
         {
@@ -223,21 +224,38 @@ namespace DNA_Test
                 case Prediction.AtNextInterval:
                     //Need to pull the scheduler in as a property and get the next
                     xValue = this.Schedule.GetNextMidpoint().ToOADate();
-                    SetAxes(this.TimeSeries.Points.First().XValue, this.Schedule.GetNextEndpoint().ToOADate());
                     break;
                 case Prediction.AtMean:
                     xValue = (from DataPoint dp in this.TimeSeries.Points select dp.XValue).Average();
-                    SetAxes(this.TimeSeries.Points.First().XValue, this.Schedule.GetMidpoints().Last().ToOADate());
                     break;
+                case Prediction.AtValue:
+                    throw new Exception("Must provide xValue parameter");
                 default:
                     throw new Exception("Unknown enum");
             }
             
-            UpdateBoxPlotSeries(xValue);
+            UpdateBoxPlotSeries(prediction, xValue);
 
         }
-        public void UpdateBoxPlotSeries(double xValue)
+        public void UpdateBoxPlotSeries(Prediction predictAt, double xValue)
         {
+            switch (predictAt)
+            {
+                case Prediction.AtNextInterval:
+                    //Need to pull the scheduler in as a property and get the next
+                    SetAxes(this.TimeSeries.Points.First().XValue, this.Schedule.GetNextEndpoint().ToOADate());
+                    break;
+                case Prediction.AtMean:
+                    SetAxes(this.TimeSeries.Points.First().XValue, this.Schedule.GetMidpoints().Last().ToOADate());
+                    break;
+                case Prediction.AtValue:
+
+                    SetAxes(this.TimeSeries.Points.First().XValue, this.Schedule.GetEndpoints().Last().ToOADate());
+                    break;
+                default:
+                    throw new Exception("Unknown enum");
+            }
+
             if (BoxPlot_Series != null)
             {
                 if (Series.Contains(BoxPlot_Series.PrimarySeries))
@@ -249,6 +267,10 @@ namespace DNA_Test
             }
             this.BoxPlot_Series = GenerateBoxPlotSeries(this.FitRegression, xValue);
             this.BoxPlot_Series.SetBoxPlotColor_OnFitSeries();
+            Scheduler.Scheduler valueSchedule = new Scheduler.Scheduler(Schedule.GetIntervalLength(), (Scheduler.Scheduler.Interval)Schedule.GetIntervalType(), Schedule.GetStartDate(), DateTime.FromOADate(xValue));
+            double max = Math.Max(this.chartArea.AxisX.Maximum, valueSchedule.GetEndpoints().Last().ToOADate());
+            SetAxes(this.chartArea.AxisX.Minimum, max);
+
             this.Series.Add(this.BoxPlot_Series.PrimarySeries);
             this.Series.Add(this.BoxPlot_Series.LabelSeries);
             this.Series.Add(this.BoxPlot_Series.MeanSeries);

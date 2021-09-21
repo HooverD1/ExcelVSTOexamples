@@ -14,7 +14,7 @@ namespace DNA_Test
 {
     public partial class FitSelectorForm : Form
     {
-        private bool CancelEvent { get; set; } = false;
+        private bool CancelPredictAtChangedEvent { get; set; } = false;
         public OptimizationResult[] SelectedResults { get; set; }
         private TimeSeriesChart timeSeries1 { get; set; }
         private TimeSeriesChart timeSeries2 { get; set; }
@@ -233,23 +233,6 @@ namespace DNA_Test
             }
         }
 
-        private void checkBox_timeSeries3_Checked_Changed(object sender, EventArgs e)
-        {
-            if (checkBox_timeSeries3.Checked == true)
-            {
-                this.button_SelectFit.Enabled = true;
-                checkBox_timeSeries1.Checked = false;
-                checkBox_timeSeries2.Checked = false;
-            }
-            else
-            {
-                if (!(checkBox_timeSeries1.Checked || checkBox_timeSeries2.Checked || checkBox_timeSeries3.Checked))
-                {   //If none are checked, disable the selection button
-                    this.button_SelectFit.Enabled = false;
-                }
-            }
-        }
-
         private void comboBox_DisplayCount_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Add or remove TimeSeriesCharts from the flowlayout
@@ -278,6 +261,7 @@ namespace DNA_Test
 
         private void LoadOneChart()
         {
+            this.timeSeries2 = null;
             this.checkBox_timeSeries1.Checked = true;
             this.checkBox_timeSeries2.Checked = false;
             this.checkBox_timeSeries3.Checked = false;
@@ -405,13 +389,12 @@ namespace DNA_Test
                         this.timeSeries2.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
                     break;
                 case 2:
-                    
                     this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Visible;
                     if (this.datePicker_PredictAt.Picker.SelectedDate == null)
                         return;
-                    this.timeSeries1.UpdateBoxPlotSeries(((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
+                    this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtValue, ((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
                     if(this.timeSeries2 != null)
-                        this.timeSeries2.UpdateBoxPlotSeries(((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
+                        this.timeSeries2.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtValue, ((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
                     break;
             }
         }
@@ -423,19 +406,19 @@ namespace DNA_Test
         private void AllowPredictAtEvent(object sender, EventArgs e)
         {
             //Only allow the predictAt date picker selected date change event after a mouse click.
-            CancelEvent = false;
+            CancelPredictAtChangedEvent = false;
         }
 
         private void DatePicker_Changed(object sender, EventArgs e)
         {
-            if (CancelEvent)
+            if (CancelPredictAtChangedEvent)
             {
                 return;
             }
             if (datePicker_PredictAt.Picker.SelectedDate == null)
                 return;
             //Move to nearest midpoint in the schedule
-            var schedule = this.timeSeries1.Schedule;
+            var schedule = new Scheduler.Scheduler(this.timeSeries1.Schedule.GetIntervalLength(), (Scheduler.Scheduler.Interval)timeSeries1.Schedule.GetIntervalType(), timeSeries1.Schedule.GetStartDate(), (DateTime)datePicker_PredictAt.Picker.SelectedDate);
             double minDistance = double.MaxValue;
             int minDex = -1;
             for(int i=0; i < schedule.GetMidpoints().Length; i++)
@@ -458,7 +441,7 @@ namespace DNA_Test
             }
             //Update
             UpdateBoxPlots();
-            CancelEvent = true;
+            CancelPredictAtChangedEvent = true;
         }
 
     }
