@@ -156,7 +156,19 @@ namespace DNA_Test.Scheduler
 
         public string ToIntervalString()
         {
-            return $"{this.IntervalType.ToString()} Interval: {this.IntervalLength}";
+            switch (this.IntervalType)
+            {
+                case Interval.Daily:
+                    return $"{this.IntervalLength}-Day Interval: ";
+                case Interval.Weekly:
+                    return $"{this.IntervalLength}-Week Interval: ";
+                case Interval.Monthly:
+                    return $"{this.IntervalLength}-Month Interval: ";
+                case Interval.Yearly:
+                    return $"{this.IntervalLength}-Year Interval: ";
+                default:
+                    throw new Exception("Unexpected interval type");
+            }
         }
 
         private int GetNumberOfEndpoints()      //Daily
