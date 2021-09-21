@@ -26,6 +26,7 @@ namespace DNA_Test
         public BoxPlotSeries BoxPlot_Series { get; set; }
         private double predictAt { get; set; }
         private IRegression FitRegression { get; set; }
+        private Title Description { get; set; }
 
         public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression, Scheduler.Scheduler schedule, int predictAtIndex) : base()
         {
@@ -43,7 +44,12 @@ namespace DNA_Test
             chartArea.Position = new ElementPosition(0, 0, 100, 100);
             chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
             SetupXAxisGridlines();
-            //chartArea.AxisX.MajorTickMark.IntervalType = DateTimeIntervalType.
+            Description = new Title();
+            Description.Text = $"{fitRegression.ToString()}\nStart: {Schedule.GetStartDate().ToString()}\nEnd: {Schedule.GetEndDate().ToString()}";
+            Description.BackColor = System.Drawing.Color.White;
+            Description.BorderColor = System.Drawing.Color.Black;
+            Description.Position = new ElementPosition(chartArea.InnerPlotPosition.X, chartArea.InnerPlotPosition.Y, 25, 10);
+            this.Titles.Add(Description);
 
             this.EnableUserSelection();     //Has to come after chartArea
 
