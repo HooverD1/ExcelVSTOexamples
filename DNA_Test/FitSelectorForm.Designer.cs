@@ -37,6 +37,7 @@
             this.comboBox_PredictAt = new System.Windows.Forms.ComboBox();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.datePicker_PredictAt = new DNA_Test.DatePicker_Custom();
+            this.button_TestPrint = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_SelectFit
@@ -101,11 +102,22 @@
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.datePicker_PredictAt;
             // 
+            // button_TestPrint
+            // 
+            this.button_TestPrint.Location = new System.Drawing.Point(600, 555);
+            this.button_TestPrint.Name = "button_TestPrint";
+            this.button_TestPrint.Size = new System.Drawing.Size(75, 23);
+            this.button_TestPrint.TabIndex = 10;
+            this.button_TestPrint.Text = "Print";
+            this.button_TestPrint.UseVisualStyleBackColor = true;
+            this.button_TestPrint.Click += new System.EventHandler(this.button_TestPrint_Click);
+            // 
             // FitSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1455, 593);
+            this.Controls.Add(this.button_TestPrint);
             this.Controls.Add(this.elementHost1);
             this.Controls.Add(this.comboBox_PredictAt);
             this.Controls.Add(this.flowLayoutPanel_Checkboxes);
@@ -129,5 +141,6 @@
         private System.Windows.Forms.ComboBox comboBox_PredictAt;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         private DatePicker_Custom datePicker_PredictAt;
+        private System.Windows.Forms.Button button_TestPrint;
     }
 }

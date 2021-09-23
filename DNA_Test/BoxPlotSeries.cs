@@ -57,7 +57,7 @@ namespace DNA_Test
 
         public void SetWidth(int points)
         {
-            PrimarySeries["PixelPointWidth"] = "20";
+            PrimarySeries["PixelPointWidth"] = "24";
         }
 
         public void Add(double x, BoxPlot boxPlot, double mean)

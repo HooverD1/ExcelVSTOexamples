@@ -45,11 +45,12 @@ namespace DNA_Test
             chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
             SetupXAxisGridlines();
             Description = new Title();
-            Description.Text = $"{fitRegression.ToString()}\nStart: {Schedule.GetStartDate().ToString()}\nEnd: {Schedule.GetEndDate().ToString()}";
+            Description.Visible = false;
+            Description.Text = $"{fitRegression.ToString()};  Start: {Schedule.GetStartDate().ToString()};  End: {Schedule.GetEndDate().ToString()}";
             Description.BackColor = System.Drawing.Color.White;
-            Description.BorderColor = System.Drawing.Color.Black;
-            double scale = 528 / this.Height * 10;      //528 is the pixel height of the single chart. this.height = 528. 10 is the relative height of the single chart
-            Description.Position = new ElementPosition(chartArea.InnerPlotPosition.X, chartArea.InnerPlotPosition.Y, 25, Convert.ToInt32(scale));
+            //Description.BorderColor = System.Drawing.Color.Black;
+            double scale = 528 / this.Height * 4;      //528 is the pixel height of the single chart. this.height = 528. 10 is the relative height of the single chart
+            Description.Position = new ElementPosition(chartArea.InnerPlotPosition.X, (float)0.3/*chartArea.InnerPlotPosition.Y*/, 88, Convert.ToInt32(scale));
             this.Titles.Add(Description);
 
             this.EnableUserSelection();     //Has to come after chartArea
@@ -344,7 +345,16 @@ namespace DNA_Test
             }
             else if(sp.parent.Name == "TimeSeries")
             {
-                sp.LoadDataLabel();
+                if (sp.datapoint.Label != "")
+                {   //Not blank, then clear it
+                    sp.datapoint.Label = "";
+                }
+                else
+                {   //If it is blank, clear all other labels and print this one
+                    foreach (DataPoint dp in this.TimeSeries.Points)
+                        dp.Label = "";
+                    sp.LoadDataLabel("date");
+                }
             }
         }
 
@@ -416,6 +426,15 @@ namespace DNA_Test
             double yRange = maxY - minY;
             return yRange / chartAreaHeight;
         }
-
+        public void PrintChartImageToFile(string savePath)
+        {
+            //Place the Description label
+            this.Description.Visible = true;
+            //Test if the path is valid
+            //Print image
+            this.SaveImage($"{savePath}/test_save_file.png", ChartImageFormat.Png);
+            //Remove the Description label
+            this.Description.Visible = false;
+        }
     }
 }

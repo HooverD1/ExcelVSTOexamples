@@ -177,6 +177,15 @@ namespace DNA_Test
         private void NodeChanged(TreeView fitOptions, int chartIndex)
         {
             TreeNode node = fitOptions.SelectedNode;
+            foreach(TreeNode n in fitOptions.Nodes)
+            {
+                n.BackColor = System.Drawing.Color.White;
+                foreach (TreeNode n2 in n.Nodes)
+                {
+                    n2.BackColor = System.Drawing.Color.White;
+                }
+            }
+            fitOptions.SelectedNode.BackColor = System.Drawing.Color.FromArgb(200, 200, 200);  //Set selection to grey
             if (node.Nodes.Count > 0)       //Don't load off parent nodes
                 return;
             flowLayoutPanel_Charts.Controls.Remove(timeSeries1);
@@ -444,5 +453,10 @@ namespace DNA_Test
             CancelPredictAtChangedEvent = true;
         }
 
+        private void button_TestPrint_Click(object sender, EventArgs e)
+        {
+            //Test print method
+            this.timeSeries1.PrintChartImageToFile(@"C:\Users\grins\Desktop");
+        }
     }
 }

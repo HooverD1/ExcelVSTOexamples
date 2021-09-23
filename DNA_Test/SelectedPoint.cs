@@ -28,12 +28,20 @@ namespace DNA_Test
         {
             ResetSeries();
             datapoint.Color = Color.Orange;
-            LoadDataLabel();
         }
 
-        public void LoadDataLabel()
+        public void LoadDataLabel(string type)
         {
-            datapoint.Label = $"({Math.Round(datapoint.XValue, 2)}, {Math.Round(datapoint.YValues.First(), 2)})";
+            if(type == "date")
+            {
+                DateTime date = DateTime.FromOADate(datapoint.XValue);
+                datapoint.Label = $"({date.ToString("MM/dd/yyyy")}, {Math.Round(datapoint.YValues.First(), 2)})";
+                datapoint.LabelBackColor = System.Drawing.Color.White;
+            }
+            else
+            {
+                throw new Exception("Unexpected data type");
+            }
         }
 
         public void ResetSeries()
