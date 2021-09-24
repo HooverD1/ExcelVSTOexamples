@@ -53,8 +53,6 @@ namespace DNA_Test
             Description.Position = new ElementPosition(chartArea.InnerPlotPosition.X, (float)0.3/*chartArea.InnerPlotPosition.Y*/, 88, Convert.ToInt32(scale));
             this.Titles.Add(Description);
 
-            this.EnableUserSelection();     //Has to come after chartArea
-
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
             this.Series.Add(TimeSeries);
 
@@ -101,16 +99,6 @@ namespace DNA_Test
                 default:
                     throw new Exception("Unknown interval type");
             }
-        }
-
-        private void EnableUserSelection()
-        {
-            if (this.chartArea == null)
-                throw new Exception("Define chartArea first.");
-            this.chartArea.CursorX.IsUserEnabled = true;
-            this.chartArea.CursorY.IsUserEnabled = true;
-            this.chartArea.CursorX.Interval = 0.01;
-            this.chartArea.CursorY.Interval = 0.01;
         }
 
         private Series GenerateTimeSeries(Dictionary<DateTime, double> timeSeriesDataPoints)
