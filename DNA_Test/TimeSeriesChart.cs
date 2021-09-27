@@ -30,6 +30,10 @@ namespace DNA_Test
 
         public TimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression, Scheduler.Scheduler schedule, int predictAtIndex) : base()
         {
+            //Change the fit options and it loads a new time series chart
+            //Each time series chart can have multiple time series, fit series -- and thus regressions & boxplot series.
+            //Currently only works with one of each, but will need adapted at some point.
+
             /*  Set the default xAxis
              *  Load the Chart series'
              */
