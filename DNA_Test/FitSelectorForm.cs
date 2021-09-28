@@ -366,9 +366,9 @@ namespace DNA_Test
                     timeSeries2.chartArea.AxisY.Minimum = min_y;
                     timeSeries2.chartArea.AxisY.Maximum = max_y;
                 }
-                double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
-                timeSeries1.chartArea.AxisY.Interval = axStep;
-                timeSeries2.chartArea.AxisY.Interval = axStep;
+                //double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
+                //timeSeries1.chartArea.AxisY.Interval = axStep;
+                //timeSeries2.chartArea.AxisY.Interval = axStep;
             }
         }
 
@@ -474,7 +474,9 @@ namespace DNA_Test
             else if (dDesired > 20)
                 dDesired = 20;
 
-            double d10 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 10) / Math.Log(10)));
+            //Minimize dDistance to the desired step size -- dDistance is the number of steps we can actually do - hopefully the same as dDesired, but not always
+            //
+            double d10 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 10)) / Math.Log(10));
             if (d10 < 2) d10 = 1000;
             if(d10 <= dDesired + 2)
             {
@@ -482,7 +484,7 @@ namespace DNA_Test
                 dDistance = Math.Abs(dDesired - d10);
             }
 
-            double d2 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 2) / Math.Log(10)));
+            double d2 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 2)) / Math.Log(10));
             if (d2 < 2) d2 = 1000;
             if (d2 <= Math.Abs(dDesired - d2) && d2 <= dDesired + 2)
             {
@@ -490,7 +492,7 @@ namespace DNA_Test
                 dDistance = Math.Abs(dDesired - d2);
             }
 
-            double d2_5 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 2.5) / Math.Log(10)));
+            double d2_5 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 2.5)) / Math.Log(10));
             if (d2_5 < 2) d2_5 = 1000;
             if (d2_5 <= Math.Abs(dDesired - d2_5) && d2_5 <= dDesired + 2)
             {
@@ -498,7 +500,7 @@ namespace DNA_Test
                 dDistance = Math.Abs(dDesired - d2_5);
             }
 
-            double d20 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 20) / Math.Log(10)));
+            double d20 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 20)) / Math.Log(10));
             if (d20 < 2) d20 = 1000;
             if (d20 <= Math.Abs(dDesired - d20) && d20 <= dDesired + 2)
             {
@@ -506,7 +508,7 @@ namespace DNA_Test
                 dDistance = Math.Abs(dDesired - d20);
             }
 
-            double d25 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 25) / Math.Log(10)));
+            double d25 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 25)) / Math.Log(10));
             if (d25 < 2) d25 = 1000;
             if (d25 <= Math.Abs(dDesired - d25) && d25 <= dDesired + 2)
             {
@@ -514,7 +516,7 @@ namespace DNA_Test
                 dDistance = Math.Abs(dDesired - d25);
             }
 
-            double d5 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 5) / Math.Log(10)));
+            double d5 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 5)) / Math.Log(10));
             if (d5 < 2) d5 = 1000;
             if (d5 <= Math.Abs(dDesired - d5) && d5 <= dDesired + 2)
             {
@@ -522,7 +524,7 @@ namespace DNA_Test
                 dDistance = Math.Abs(dDesired - d5);
             }
 
-            double d50 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 50) / Math.Log(10)));
+            double d50 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 50)) / Math.Log(10));
             if (d50 < 2) d50 = 1000;
             if (d50 <= Math.Abs(dDesired - d50) && d50 <= dDesired + 2)
             {
@@ -530,7 +532,7 @@ namespace DNA_Test
                 dDistance = Math.Abs(dDesired - d50);
             }
 
-            double d100 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 100) / Math.Log(10)));
+            double d100 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 100)) / Math.Log(10));
             if (d100 < 2) d100 = 1000;
             if (d100 <= Math.Abs(dDesired - d100) && d100 <= dDesired + 2)
             {
