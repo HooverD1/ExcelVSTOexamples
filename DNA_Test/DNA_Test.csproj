@@ -86,6 +86,9 @@
     <Compile Include="BoxPlotSeries.cs" />
     <Compile Include="Bucketer.cs" />
     <Compile Include="ChartUtilities.cs" />
+    <Compile Include="DataChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DatePicker_Custom.xaml.cs">
       <DependentUpon>DatePicker_Custom.xaml</DependentUpon>
     </Compile>
@@ -102,14 +105,26 @@
       <DependentUpon>DateTimePicker_Custom.cs</DependentUpon>
     </Compile>
     <Compile Include="DNA_Sandbox.cs" />
+    <Compile Include="DualScatterChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DualTimeSeriesChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FitSelectorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FitSelectorForm.Designer.cs">
       <DependentUpon>FitSelectorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FitTimeSeriesChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="InflationCalculator.cs" />
     <Compile Include="IRegression.cs" />
+    <Compile Include="JointScatterChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Keybinds.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MyAddin.cs" />
@@ -117,6 +132,9 @@
     <Compile Include="Optimizers.cs" />
     <Compile Include="PDF_Popup.cs" />
     <Compile Include="RefParser.cs" />
+    <Compile Include="ScatterChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Scheduler\Scheduler.cs" />
     <Compile Include="Scheduler\SchedulerForm.cs">
       <SubType>Form</SubType>
@@ -126,6 +144,12 @@
     </Compile>
     <Compile Include="Regression_SimpleLinear.cs" />
     <Compile Include="SelectedPoint.cs" />
+    <Compile Include="SingleScatterChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SingleTimeSeriesChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TimeSeriesChart.cs">
       <SubType>Component</SubType>
     </Compile>

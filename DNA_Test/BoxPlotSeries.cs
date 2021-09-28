@@ -10,7 +10,7 @@ namespace DNA_Test
 {
     public class BoxPlotSeries
     {
-        private TimeSeriesChart Parent { get; set; }
+        private FitTimeSeriesChart Parent { get; set; }
         public Series PrimarySeries { get; }
         public Series LabelSeries { get; }
         public Series MeanSeries { get; }
@@ -25,7 +25,7 @@ namespace DNA_Test
         //        PrimarySeries.Points.Add(boxPlot.GetBoxPlot(point.Item1));
         //    }
         //}
-        public BoxPlotSeries(TimeSeriesChart parent)
+        public BoxPlotSeries(FitTimeSeriesChart parent)
         {
             this.Parent = parent;
             

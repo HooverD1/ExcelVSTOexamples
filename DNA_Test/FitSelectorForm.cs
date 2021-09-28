@@ -16,9 +16,9 @@ namespace DNA_Test
     {
         private bool CancelPredictAtChangedEvent { get; set; } = false;
         public OptimizationResult[] SelectedResults { get; set; }
-        private TimeSeriesChart timeSeries1 { get; set; }
-        private TimeSeriesChart timeSeries2 { get; set; }
-        private TimeSeriesChart timeSeries3 { get; set; }
+        private FitTimeSeriesChart timeSeries1 { get; set; }
+        private FitTimeSeriesChart timeSeries2 { get; set; }
+        private FitTimeSeriesChart timeSeries3 { get; set; }
         private TreeView fitOptions1 { get; set; } = new TreeView();
         private TreeView fitOptions2 { get; set; } = new TreeView();
         private TreeView fitOptions3 { get; set; } = new TreeView();
@@ -196,9 +196,9 @@ namespace DNA_Test
                                  where or.Schedule.ToIntervalString() == parentText && or.RegressionUnderTest.ToString() == selectedText
                                  select or).First();
             if (chartIndex == 1)
-                timeSeries1 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest, selectedResult.Schedule, comboBox_PredictAt.SelectedIndex);
+                timeSeries1 = new FitTimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest, selectedResult.Schedule, comboBox_PredictAt.SelectedIndex);
             else if (chartIndex == 2)
-                timeSeries2 = new TimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest, selectedResult.Schedule, comboBox_PredictAt.SelectedIndex);
+                timeSeries2 = new FitTimeSeriesChart(selectedResult.BucketedSums, selectedResult.RegressionUnderTest, selectedResult.Schedule, comboBox_PredictAt.SelectedIndex);
             else
                 throw new Exception("Unexpected TimeSeriesChart index");
 
@@ -282,8 +282,8 @@ namespace DNA_Test
             this.flowLayoutPanel_Checkboxes.Controls.Clear();
             this.flowLayoutPanel_Charts.Controls.Clear();
             this.flowLayoutPanel_Options.Controls.Clear();
-            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height - 3;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
-            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width - 3;
+            FitTimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height - 3;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
+            FitTimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width - 3;
             PopulateFitOptions(fitOptions1);
             NodeChanged(fitOptions1, 1);
             fitOptions1.Show();
@@ -306,8 +306,8 @@ namespace DNA_Test
             this.flowLayoutPanel_Checkboxes.Controls.Clear();
             this.flowLayoutPanel_Charts.Controls.Clear();
             this.flowLayoutPanel_Options.Controls.Clear();
-            TimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 2 - 6;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
-            TimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
+            FitTimeSeriesChart.default_chartHeight = flowLayoutPanel_Charts.Height / 2 - 6;        //Overwrite the chart's default size -- allows you to not have to reset every time a different fit option is selected
+            FitTimeSeriesChart.default_chartWidth = flowLayoutPanel_Charts.Width;
             fitOptions1 = PopulateFitOptions(fitOptions1);
             NodeChanged(fitOptions1, 1);
             fitOptions2 = PopulateFitOptions(fitOptions2);
@@ -389,23 +389,23 @@ namespace DNA_Test
             {
                 case 0:
                     this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;
-                    this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtNextInterval);
+                    this.timeSeries1.UpdateBoxPlotSeries(FitTimeSeriesChart.Prediction.AtNextInterval);
                     if(this.timeSeries2 != null)
-                        this.timeSeries2.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtNextInterval);
+                        this.timeSeries2.UpdateBoxPlotSeries(FitTimeSeriesChart.Prediction.AtNextInterval);
                     break;
                 case 1:
                     this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Hidden;
-                    this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
+                    this.timeSeries1.UpdateBoxPlotSeries(FitTimeSeriesChart.Prediction.AtMean);
                     if(this.timeSeries2 != null)
-                        this.timeSeries2.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtMean);
+                        this.timeSeries2.UpdateBoxPlotSeries(FitTimeSeriesChart.Prediction.AtMean);
                     break;
                 case 2:
                     this.datePicker_PredictAt.Visibility = System.Windows.Visibility.Visible;
                     if (this.datePicker_PredictAt.Picker.SelectedDate == null)
                         return;
-                    this.timeSeries1.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtValue, ((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
+                    this.timeSeries1.UpdateBoxPlotSeries(FitTimeSeriesChart.Prediction.AtValue, ((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
                     if(this.timeSeries2 != null)
-                        this.timeSeries2.UpdateBoxPlotSeries(TimeSeriesChart.Prediction.AtValue, ((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
+                        this.timeSeries2.UpdateBoxPlotSeries(FitTimeSeriesChart.Prediction.AtValue, ((DateTime)this.datePicker_PredictAt.Picker.SelectedDate).ToOADate());
                     break;
             }
         }
