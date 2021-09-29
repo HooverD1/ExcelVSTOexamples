@@ -135,8 +135,6 @@ namespace DNA_Test
                 throw new Exception("ChartArea is null");
             if (chartArea.AxisX == null)
                 throw new Exception("Axis is null");
-            if(Double.IsNaN(chartArea.AxisX.Minimum) || Double.IsNaN(chartArea.AxisX.Maximum))
-                throw new Exception("Min/Max have not been set manually");
             //Need to account for the small gap between the datapoint and the end?
             float scalar = this.chartArea.InnerPlotPosition.Width / 100;
             double chartAreaWidth = scalar * this.Width;
@@ -153,8 +151,6 @@ namespace DNA_Test
                 throw new Exception("ChartArea is null");
             if (chartArea.AxisY == null)
                 throw new Exception("Axis is null");
-            if (Double.IsNaN(chartArea.AxisY.Minimum) || Double.IsNaN(chartArea.AxisY.Maximum))
-                throw new Exception("Min/Max have not been set manually");
             //Need to account for the small gap between the datapoint and the end?
             float scalar = (this.chartArea.Position.Height / 100) * (this.chartArea.InnerPlotPosition.Height / 100);
             double chartAreaHeight = scalar * this.Height;
