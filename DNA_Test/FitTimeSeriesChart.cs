@@ -13,13 +13,6 @@ namespace DNA_Test
     public class FitTimeSeriesChart : TimeSeriesChart
     {
         public Scheduler.Scheduler Schedule { get; set; }
-        
-        public Series TimeSeries { get; set; } //The data (potentially bucketed)
-        public Series FitSeries { get; set; }  //The regression line
-        public Series ErrorSeries_CI_Upper { get; set; }  //The regression line + error band
-        public Series ErrorSeries_CI_Lower { get; set; }  //The regression line - error band
-        public Series PDF_Series { get; set; }
-        public BoxPlotSeries BoxPlot_Series { get; set; }
         private double predictAt { get; set; }
 
         public FitTimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression, Scheduler.Scheduler schedule, int predictAtIndex) : base(timeSeriesDataPoints, fitRegression)
@@ -32,32 +25,9 @@ namespace DNA_Test
              *  Load the Chart series'
              */
             this.Schedule = schedule;
-            this.FitRegression = fitRegression;
-            
             SetupXAxisGridlines();
-            Description = new Title();
-            Description.Visible = false;
-            Description.Text = $"{fitRegression.ToString()};  Start: {Schedule.GetStartDate().ToString()};  End: {Schedule.GetEndDate().ToString()}";
-            Description.BackColor = System.Drawing.Color.White;
-            //Description.BorderColor = System.Drawing.Color.Black;
-            double scale = 528 / this.Height * 4;      //528 is the pixel height of the single chart. this.height = 528. 10 is the relative height of the single chart
-            Description.Position = new ElementPosition(chartArea.InnerPlotPosition.X, (float)0.3/*chartArea.InnerPlotPosition.Y*/, 88, Convert.ToInt32(scale));
-            this.Titles.Add(Description);
-
             TimeSeries = GenerateTimeSeries(timeSeriesDataPoints);
             this.Series.Add(TimeSeries);
-
-            this.BorderlineDashStyle = ChartDashStyle.Solid;
-            this.BorderlineColor = System.Drawing.Color.Black;
-            this.BorderlineWidth = 2;
-            this.chartArea.AxisX.MajorTickMark.Enabled = false;
-            this.chartArea.AxisY.MajorTickMark.Enabled = false;
-            this.chartArea.BorderDashStyle = ChartDashStyle.Solid;
-            this.chartArea.BorderColor = System.Drawing.Color.Black;
-            this.chartArea.BorderWidth = 2;
-
-
-            this.chartArea.AxisY.LabelStyle.Format = "{0:n0}";
 
             this.SetAxes(TimeSeries.Points.First().XValue, TimeSeries.Points.Last().XValue);
             if (predictAtIndex == 0)
@@ -66,7 +36,7 @@ namespace DNA_Test
                 this.UpdateBoxPlotSeries(Prediction.AtMean);
         }
 
-        private void SetupXAxisGridlines()
+        protected override void SetupXAxisGridlines()
         {
             double duration = (Schedule.GetEndDate() - Schedule.GetStartDate()).TotalDays;
             switch (Schedule.GetIntervalType())
@@ -112,7 +82,7 @@ namespace DNA_Test
             fitSeries.Color = System.Drawing.Color.Red;
             return fitSeries;
         }
-        private Series GenerateErrorSeries_Lower(IRegression fitRegression)
+        protected override Series GenerateErrorSeries_Lower()
         {
             Series errorSeries = new Series();
             errorSeries.XValueType = ChartValueType.Date;
@@ -124,14 +94,14 @@ namespace DNA_Test
             for (int i = 0; i <= 100; i++)
             {
                 double xVal = minX + (i * step);
-                double yVal = fitRegression.GetConfidenceInterval(xVal, alpha).Min;
+                double yVal = FitRegression.GetConfidenceInterval(xVal, alpha).Min;
                 DataPoint newDP = new DataPoint(xVal, yVal);
                 errorSeries.Points.Add(newDP);
             }
             errorSeries.Color = System.Drawing.Color.FromArgb(0, errorSeries.Color);
             return errorSeries;
         }
-        private Series GenerateErrorSeries_Upper(IRegression fitRegression)
+        protected override Series GenerateErrorSeries_Upper()
         {
             Series errorSeries = new Series();
             errorSeries.XValueType = ChartValueType.Date;
@@ -143,39 +113,14 @@ namespace DNA_Test
             for (int i = 0; i <= 100; i++)
             {
                 double xVal = minX + (i * ((maxX - minX) / 100));
-                double yVal = fitRegression.GetConfidenceInterval(xVal, alpha).Max;
-                double offset = fitRegression.GetConfidenceInterval(xVal, alpha).Min;
+                double yVal = FitRegression.GetConfidenceInterval(xVal, alpha).Max;
+                double offset = FitRegression.GetConfidenceInterval(xVal, alpha).Min;
                 //Because this is a stacked area, we need to subtract off the min to align the upper boundary with the CI max
                 DataPoint newDP = new DataPoint(xVal, yVal - offset);
                 errorSeries.Points.Add(newDP);
             }
             errorSeries.Color = System.Drawing.Color.FromArgb(50, System.Drawing.Color.Gray);
             return errorSeries;
-        }
-
-        private void FixSeriesOrder()
-        {
-            //Re-order the series so they appear correctly.
-            Queue<Series> mySeries = new Queue<Series>();
-            if (this.Series.IndexOf("ErrorSeries_CI_Lower") != -1)
-                mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Lower"));
-            if (this.Series.IndexOf("ErrorSeries_CI_Upper") != -1)
-                mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Upper"));
-            if (this.Series.IndexOf("TimeSeries") != -1)
-                mySeries.Enqueue(this.Series.FindByName("TimeSeries"));
-            if (this.Series.IndexOf("BoxPlotSeries_BoxPlots") != -1)
-                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_BoxPlots"));
-            if (this.Series.IndexOf("FitSeries") != -1)
-                mySeries.Enqueue(this.Series.FindByName("FitSeries"));
-            if (this.Series.IndexOf("BoxPlotSeries_Labels") != -1)
-                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Labels"));
-            if (this.Series.IndexOf("BoxPlotSeries_Means") != -1)
-                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Means"));
-            this.Series.Clear();
-            while (mySeries.Any())
-            {
-                this.Series.Add(mySeries.Dequeue());
-            }
         }
 
         public enum Prediction
@@ -312,13 +257,7 @@ namespace DNA_Test
                 }
             }
         }
-
-        public void SetAxes(double xMin, double xMax)
-        {
-            this.chartArea.AxisX.Minimum = xMin;
-            this.chartArea.AxisX.Maximum = xMax;
-        }
-
+        
         private void ScaleToAxes()
         {
             //You have been given the x min and x max.
@@ -326,12 +265,12 @@ namespace DNA_Test
             //Redraw fit & error for the new axes
             if (this.Series.Contains(this.ErrorSeries_CI_Lower))
                 this.Series.Remove(this.ErrorSeries_CI_Lower);
-            this.ErrorSeries_CI_Lower = GenerateErrorSeries_Lower(FitRegression);
+            this.ErrorSeries_CI_Lower = GenerateErrorSeries_Lower();
             this.Series.Add(this.ErrorSeries_CI_Lower);
 
             if (this.Series.Contains(this.ErrorSeries_CI_Upper))
                 this.Series.Remove(this.ErrorSeries_CI_Upper);
-            this.ErrorSeries_CI_Upper = GenerateErrorSeries_Upper(FitRegression);
+            this.ErrorSeries_CI_Upper = GenerateErrorSeries_Upper();
             this.Series.Add(this.ErrorSeries_CI_Upper);
 
             if (this.Series.Contains(this.FitSeries))
@@ -380,6 +319,19 @@ namespace DNA_Test
             double maxY = this.chartArea.AxisY.Maximum;
             double yRange = maxY - minY;
             return yRange / chartAreaHeight;
+        }
+
+        protected override void SetupDescription()
+        {
+            Description = new Title();
+            Description.Visible = false;
+            
+            Description.BackColor = System.Drawing.Color.White;
+            //Description.BorderColor = System.Drawing.Color.Black;
+            double scale = 528 / this.Height * 4;      //528 is the pixel height of the single chart. this.height = 528. 10 is the relative height of the single chart
+            Description.Position = new ElementPosition(chartArea.InnerPlotPosition.X, (float)0.3/*chartArea.InnerPlotPosition.Y*/, 88, Convert.ToInt32(scale));
+            this.Description.Text = $"{FitRegression.ToString()};  Start: {Schedule.GetStartDate().ToString()};  End: {Schedule.GetEndDate().ToString()}";
+            this.Titles.Add(Description);
         }
     }
 }

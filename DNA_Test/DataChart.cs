@@ -11,6 +11,12 @@ namespace DNA_Test
 {
     public class DataChart : Chart
     {
+        public Series FitSeries { get; set; }  //The regression line
+        public Series ErrorSeries_CI_Upper { get; set; }  //The regression line + error band
+        public Series ErrorSeries_CI_Lower { get; set; }  //The regression line - error band
+        public BoxPlotSeries BoxPlot_Series { get; set; }
+        public Series PDF_Series { get; set; }      //Pop-up on-click PDF
+
         protected Title Description { get; set; }
         protected Point MouseCoords { get; set; }       //for identifying controls being clicked
         public ChartArea chartArea { get; set; }        //The x-Axis -- potentially overwritten for non-uniform
@@ -19,19 +25,49 @@ namespace DNA_Test
 
         public DataChart()
         {
-            chartArea = new ChartArea();
-            this.ChartAreas.Add(chartArea);
+            //Setup events
+            this.MouseMove += OnMouseMoved;
+            //Setup elements
+            SetupChartArea();
 
-            this.Height = default_chartHeight;
-            this.Width = default_chartWidth;
-            chartArea.Position = new ElementPosition(0, 0, 100, 100);
-            chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
+            this.BorderlineDashStyle = ChartDashStyle.Solid;
+            this.BorderlineColor = System.Drawing.Color.Black;
+            this.BorderlineWidth = 2;
+        }
+
+        protected virtual void SetupDescription() { throw new NotImplementedException(); }
+        protected virtual void SetupChartArea() { throw new NotImplementedException(); }
+        protected virtual Series GenerateErrorSeries_Lower() { throw new NotImplementedException(); }
+        protected virtual Series GenerateErrorSeries_Upper() { throw new NotImplementedException(); }
+        protected virtual void SetupXAxisGridlines() { throw new NotImplementedException(); }
+
+        protected virtual void FixSeriesOrder()
+        {
+            //Re-order the series so they appear correctly.
+            Queue<Series> mySeries = new Queue<Series>();
+            if (this.Series.IndexOf("ErrorSeries_CI_Lower") != -1)
+                mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Lower"));
+            if (this.Series.IndexOf("ErrorSeries_CI_Upper") != -1)
+                mySeries.Enqueue(this.Series.FindByName("ErrorSeries_CI_Upper"));
+            if (this.Series.IndexOf("TimeSeries") != -1)
+                mySeries.Enqueue(this.Series.FindByName("TimeSeries"));
+            if (this.Series.IndexOf("BoxPlotSeries_BoxPlots") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_BoxPlots"));
+            if (this.Series.IndexOf("FitSeries") != -1)
+                mySeries.Enqueue(this.Series.FindByName("FitSeries"));
+            if (this.Series.IndexOf("BoxPlotSeries_Labels") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Labels"));
+            if (this.Series.IndexOf("BoxPlotSeries_Means") != -1)
+                mySeries.Enqueue(this.Series.FindByName("BoxPlotSeries_Means"));
+            this.Series.Clear();
+            while (mySeries.Any())
+            {
+                this.Series.Add(mySeries.Dequeue());
+            }
         }
 
         public virtual void PrintChartImageToFile(string path)
         {
-            //Setup events
-            this.MouseMove += OnMouseMoved;
             //Place the Description label
             this.Description.Visible = true;
             //Test if the path is valid
@@ -45,6 +81,7 @@ namespace DNA_Test
         {
             MouseCoords = new Point(e.X, e.Y);
         }
+        
         protected virtual void OnChartClick(object sender, EventArgs e)
         {
             HitTestResult htr = this.HitTest(MouseCoords.X, MouseCoords.Y);

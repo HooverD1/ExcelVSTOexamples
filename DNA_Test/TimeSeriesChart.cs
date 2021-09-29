@@ -12,23 +12,25 @@ namespace DNA_Test
 {
     public abstract class TimeSeriesChart : DataChart
     {
+        public Series TimeSeries { get; set; } //The data (potentially bucketed)
+        
         public Dictionary<DateTime, double> DataPoints { get; set; }
         protected IRegression FitRegression { get; set; }
         protected const double alpha = 0.98;
 
+        #region CONSTRUCTORS
         public TimeSeriesChart(Dictionary<DateTime, double> dataPoints)
         {
             //Set up the datapoints
             this.DataPoints = dataPoints;
             this.Click += OnChartClick;           
-
         }
-
         public TimeSeriesChart(Dictionary<DateTime, double> dataPoints, IRegression fitRegression) : this(dataPoints)
         {
             //Call the constructor that doesn't add fit series then tack on the fit
             this.FitRegression = fitRegression;
         }
+        #endregion
 
         protected Series GenerateTimeSeries(Dictionary<DateTime, double> timeSeriesDataPoints)
         {
@@ -54,5 +56,30 @@ namespace DNA_Test
         {
             throw new NotImplementedException();
         }
+
+
+        public void SetAxes(double xMin, double xMax)
+        {
+            this.chartArea.AxisX.Minimum = xMin;
+            this.chartArea.AxisX.Maximum = xMax;
+        }
+
+        protected override void SetupChartArea()
+        {
+            chartArea = new ChartArea();
+            this.ChartAreas.Add(chartArea);
+            this.Height = default_chartHeight;
+            this.Width = default_chartWidth;
+            chartArea.Position = new ElementPosition(0, 0, 100, 100);
+            chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
+            this.chartArea.AxisX.MajorTickMark.Enabled = false;
+            this.chartArea.AxisY.MajorTickMark.Enabled = false;
+            this.chartArea.BorderDashStyle = ChartDashStyle.Solid;
+            this.chartArea.BorderColor = System.Drawing.Color.Black;
+            this.chartArea.BorderWidth = 2;
+            this.chartArea.AxisY.LabelStyle.Format = "{0:n0}";
+        }
+
+        protected override void SetupXAxisGridlines() { throw new NotImplementedException(); }
     }
 }
