@@ -15,20 +15,22 @@ namespace DNA_Test
         public Series TimeSeries { get; set; } //The data (potentially bucketed)
         
         public Dictionary<DateTime, double> DataPoints { get; set; }
-        protected IRegression FitRegression { get; set; }
         protected const double alpha = 0.98;
 
         #region CONSTRUCTORS
-        public TimeSeriesChart(Dictionary<DateTime, double> dataPoints)
+        public void ConstructThis(Dictionary<DateTime, double> dataPoints)
         {
-            //Set up the datapoints
+            //Most basic constructor -- allows the constructor methods to have base calls instead of this() calls without repeating code
             this.DataPoints = dataPoints;
-            this.Click += OnChartClick;           
+            this.Click += OnChartClick;
         }
-        public TimeSeriesChart(Dictionary<DateTime, double> dataPoints, IRegression fitRegression) : this(dataPoints)
+        public TimeSeriesChart(Dictionary<DateTime, double> dataPoints) : base()
         {
-            //Call the constructor that doesn't add fit series then tack on the fit
-            this.FitRegression = fitRegression;
+            ConstructThis(dataPoints);
+        }
+        public TimeSeriesChart(Dictionary<DateTime, double> dataPoints, IRegression fitRegression) : base(fitRegression)
+        {
+            ConstructThis(dataPoints);
         }
         #endregion
 

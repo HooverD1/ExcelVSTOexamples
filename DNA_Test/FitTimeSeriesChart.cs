@@ -34,6 +34,8 @@ namespace DNA_Test
                 this.UpdateBoxPlotSeries(Prediction.AtNextInterval);
             if (predictAtIndex == 1)
                 this.UpdateBoxPlotSeries(Prediction.AtMean);
+
+            this.SetupDescription();
         }
 
         protected override void SetupXAxisGridlines()
@@ -63,25 +65,7 @@ namespace DNA_Test
         }
 
         
-        private Series GenerateFitSeries(IRegression fitRegression)     //Feed this the regression used to fit the time series
-        {
-            //Assumes axis max & min have been set correctly. Fills in 100 fit points
-            Series fitSeries = new Series();
-            fitSeries.XValueType = ChartValueType.Date;
-            fitSeries.Name = "FitSeries";
-            fitSeries.ChartType = SeriesChartType.Spline;
-            /*  Create a series from the regression fit to the data
-             */
-            double step = (chartArea.AxisX.Maximum - chartArea.AxisX.Minimum) / 100;
-            for (int i = 0; i <= 100; i++)
-            {
-                double xVal = chartArea.AxisX.Minimum + (step * i);
-                fitSeries.Points.AddXY(xVal, fitRegression.GetValue(xVal));
-            }
-            fitSeries.BorderWidth = 3;
-            fitSeries.Color = System.Drawing.Color.Red;
-            return fitSeries;
-        }
+        
         protected override Series GenerateErrorSeries_Lower()
         {
             Series errorSeries = new Series();
@@ -275,7 +259,7 @@ namespace DNA_Test
 
             if (this.Series.Contains(this.FitSeries))
                 this.Series.Remove(this.FitSeries);
-            this.FitSeries = GenerateFitSeries(FitRegression);
+            this.FitSeries = GenerateFitSeries();
             this.Series.Add(this.FitSeries);
 
             //Search the fitseries for minimum & maximum

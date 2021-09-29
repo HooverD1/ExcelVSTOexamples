@@ -11,7 +11,9 @@ namespace DNA_Test
 {
     public class DataChart : Chart
     {
+        //Not all DataCharts will have a FitSeries & FitRegression, but they all should be capable of having one.
         public Series FitSeries { get; set; }  //The regression line
+        public IRegression FitRegression { get; set; }
         public Series ErrorSeries_CI_Upper { get; set; }  //The regression line + error band
         public Series ErrorSeries_CI_Lower { get; set; }  //The regression line - error band
         public BoxPlotSeries BoxPlot_Series { get; set; }
@@ -23,7 +25,7 @@ namespace DNA_Test
         public static int default_chartHeight = 100;    //Overwritable defaults
         public static int default_chartWidth = 100;
 
-        public DataChart()
+        public DataChart()      //Chart with no regression
         {
             //Setup events
             this.MouseMove += OnMouseMoved;
@@ -33,6 +35,12 @@ namespace DNA_Test
             this.BorderlineDashStyle = ChartDashStyle.Solid;
             this.BorderlineColor = System.Drawing.Color.Black;
             this.BorderlineWidth = 2;
+        }
+
+        public DataChart(IRegression fitRegression) : this()    //Chart with a regression
+        {
+            //Call the constructor that doesn't add fit series then tack on the fit
+            this.FitRegression = fitRegression;
         }
 
         protected virtual void SetupDescription() { throw new NotImplementedException(); }
@@ -69,12 +77,20 @@ namespace DNA_Test
         public virtual void PrintChartImageToFile(string path)
         {
             //Place the Description label
-            this.Description.Visible = true;
-            //Test if the path is valid
-            //Print image
-            this.SaveImage($"{path}/test_save_file.png", ChartImageFormat.Png);
-            //Remove the Description label
-            this.Description.Visible = false;
+            if (this.Description != null && this.Description is Title)
+            {
+                this.Description.Visible = true;
+                //Description is null?
+                //Test if the path is valid
+                //Print image
+                this.SaveImage($"{path}/test_save_file.png", ChartImageFormat.Png);
+                //Remove the Description label
+                this.Description.Visible = false;
+            }
+            else
+            {
+                throw new Exception("Description is null");
+            }
         }
 
         protected void OnMouseMoved(object sender, MouseEventArgs e)
@@ -88,5 +104,28 @@ namespace DNA_Test
             //Handle what happens if a generic element is clicked
         }
 
+        protected virtual Series GenerateFitSeries()     //Feed this the regression used to fit the time series
+        {
+            if (FitRegression == null)
+                throw new Exception("FitRegression is null");
+            if(chartArea == null)
+                throw new Exception("chartArea is null");
+            //Assumes axis max & min have been set correctly. Fills in 100 fit points
+            Series fitSeries = new Series();
+            fitSeries.XValueType = ChartValueType.Date;
+            fitSeries.Name = "FitSeries";
+            fitSeries.ChartType = SeriesChartType.Spline;
+            /*  Create a series from the regression fit to the data
+             */
+            double step = (chartArea.AxisX.Maximum - chartArea.AxisX.Minimum) / 100;
+            for (int i = 0; i <= 100; i++)
+            {
+                double xVal = chartArea.AxisX.Minimum + (step * i);
+                fitSeries.Points.AddXY(xVal, FitRegression.GetValue(xVal));
+            }
+            fitSeries.BorderWidth = 3;
+            fitSeries.Color = System.Drawing.Color.Red;
+            return fitSeries;
+        }
     }
 }
