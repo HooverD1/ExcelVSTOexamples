@@ -43,6 +43,7 @@ namespace DNA_Test
             this.FitRegression = fitRegression;
         }
 
+        protected virtual void ScaleAxesToY() { throw new NotImplementedException(); }
         protected virtual void SetupDescription() { throw new NotImplementedException(); }
         protected virtual void SetupChartArea() { throw new NotImplementedException(); }
         protected virtual Series GenerateErrorSeries_Lower() { throw new NotImplementedException(); }
@@ -126,6 +127,43 @@ namespace DNA_Test
             fitSeries.BorderWidth = 3;
             fitSeries.Color = System.Drawing.Color.Red;
             return fitSeries;
+        }
+
+        public double Get_X_Coords_Per_Pixel()
+        {
+            if (chartArea == null)
+                throw new Exception("ChartArea is null");
+            if (chartArea.AxisX == null)
+                throw new Exception("Axis is null");
+            if(Double.IsNaN(chartArea.AxisX.Minimum) || Double.IsNaN(chartArea.AxisX.Maximum))
+                throw new Exception("Min/Max have not been set manually");
+            //Need to account for the small gap between the datapoint and the end?
+            float scalar = this.chartArea.InnerPlotPosition.Width / 100;
+            double chartAreaWidth = scalar * this.Width;
+            if (chartAreaWidth <= 0)
+                throw new Exception("Scaled chart width must be positive");
+            double minX = this.chartArea.AxisX.Minimum;
+            double maxX = this.chartArea.AxisX.Maximum;
+            double xRange = maxX - minX;
+            return xRange / chartAreaWidth;
+        }
+        public double Get_Y_Coords_Per_Pixel()
+        {
+            if (chartArea == null)
+                throw new Exception("ChartArea is null");
+            if (chartArea.AxisY == null)
+                throw new Exception("Axis is null");
+            if (Double.IsNaN(chartArea.AxisY.Minimum) || Double.IsNaN(chartArea.AxisY.Maximum))
+                throw new Exception("Min/Max have not been set manually");
+            //Need to account for the small gap between the datapoint and the end?
+            float scalar = (this.chartArea.Position.Height / 100) * (this.chartArea.InnerPlotPosition.Height / 100);
+            double chartAreaHeight = scalar * this.Height;
+            if (chartAreaHeight <= 0)
+                throw new Exception("Scaled chart height must be positive");
+            double minY = this.chartArea.AxisY.Minimum;
+            double maxY = this.chartArea.AxisY.Maximum;
+            double yRange = maxY - minY;
+            return yRange / chartAreaHeight;
         }
     }
 }

@@ -174,7 +174,7 @@ namespace DNA_Test
 
             //Adapt min/max -- next interval max is endpoint. boxplot goes to midpoint.
             //Redraw fit, error
-            ScaleToAxes();
+            ScaleAxesToY();
         }
         protected override BoxPlotSeries GenerateBoxPlotSeries(IRegression fitRegression, double xValue)
         {
@@ -193,7 +193,6 @@ namespace DNA_Test
         protected override void OnChartClick(object sender, EventArgs e)
         {
             SelectedPoint sp;
-
             //Make the selection -- Requires MouseCoords to be set by OnMouseMoved event handler
             HitTestResult htr = this.HitTest(MouseCoords.X, MouseCoords.Y);
             if (htr.ChartElementType == ChartElementType.DataPoint)
@@ -242,7 +241,7 @@ namespace DNA_Test
             }
         }
         
-        private void ScaleToAxes()
+        protected override void ScaleAxesToY()
         {
             //You have been given the x min and x max.
             //Derive the y min and y max
@@ -284,26 +283,7 @@ namespace DNA_Test
             FixSeriesOrder();
         }
 
-        public double Get_X_Coords_Per_Pixel()
-        {
-            //Need to account for the small gap between the datapoint and the end?
-            float scalar = this.chartArea.InnerPlotPosition.Width / 100;
-            double chartAreaWidth = scalar * this.Width;
-            double minX = this.chartArea.AxisX.Minimum;
-            double maxX = this.chartArea.AxisX.Maximum;
-            double xRange = maxX - minX;
-            return xRange / chartAreaWidth;
-        }
-        public double Get_Y_Coords_Per_Pixel()
-        {
-            //Need to account for the small gap between the datapoint and the end?
-            float scalar = (this.chartArea.Position.Height / 100) * (this.chartArea.InnerPlotPosition.Height / 100);
-            double chartAreaHeight = scalar * this.Height;
-            double minY = this.chartArea.AxisY.Minimum;
-            double maxY = this.chartArea.AxisY.Maximum;
-            double yRange = maxY - minY;
-            return yRange / chartAreaHeight;
-        }
+        
 
         protected override void SetupDescription()
         {
