@@ -201,27 +201,34 @@ namespace DNA_Test
             }
             else
             {
-                sp = null;
+                return;
             }
 
-            //Handle the selection
-            if (sp == null)
-                return;
-            else if (sp.parent.Name == "BoxPlotSeries_BoxPlots" || sp.parent.Name == "BoxPlotSeries_Labels")
+            if (sp.parent.Name == "BoxPlotSeries_BoxPlots" || sp.parent.Name == "BoxPlotSeries_Labels")
             {
                 //Load the pop-up PDF
+                //If pdf is shown (contains the series) then remove it. Re-work it and add it back if the selection is not the same as the previous selection
                 if (this.Series.Contains(PDF_Series))
                 {
-                    this.Series.Add(this.PDF_Series);
-                    this.Series.Add(this.BoxPlot_Series.LabelSeries);
+                    //Remove the PDF
+                    this.Series.Remove(this.PDF_Series);
+                    //If the new selection is the same as the old, replace the labels
+                    if(this.LastSelectedPoint.datapoint == sp.datapoint)
+                    {
+                        if(this.BoxPlot_Series.LabelSeries != null)
+                            this.Series.Add(this.BoxPlot_Series.LabelSeries);
+                    }
+                    //If the selected point has changed, redraw a new pdf in the new position
+                    else
+                    {
+                        this.Series.Remove(PDF_Series);
+                        this.PDF_Series = GeneratePDFPopUp(sp);
+                        this.Series.Add(PDF_Series);
+                    }
                 }
                 else
                 {
-                    double xMin = this.chartArea.AxisX.Minimum;
-                    double xMax = this.chartArea.AxisX.Maximum;
-                    double xWidth = xMax - xMin;
-                    PDF_Popup pdfPopUp = new PDF_Popup(sp.datapoint.XValue, xWidth, this.chartArea.AxisY.Minimum, this.chartArea.AxisY.Maximum);
-                    this.PDF_Series = pdfPopUp.GetSeries(new NormalDistribution(sp.datapoint.YValues[4], sp.datapoint.YValues[4] / 3));
+                    this.PDF_Series = GeneratePDFPopUp(sp);
                     this.Series.Add(PDF_Series);
                     this.Series.Remove(this.BoxPlot_Series.LabelSeries);
                 }
@@ -239,6 +246,16 @@ namespace DNA_Test
                     sp.LoadDataLabel("date");
                 }
             }
+            LastSelectedPoint = sp;     //set the class property last so that selectedPoint remains the previous selection
+        }
+
+        protected Series GeneratePDFPopUp(SelectedPoint sp)
+        {
+            double xMin = this.chartArea.AxisX.Minimum;
+            double xMax = this.chartArea.AxisX.Maximum;
+            double xWidth = xMax - xMin;
+            PDF_Popup pdfPopUp = new PDF_Popup(sp.datapoint.XValue, xWidth, this.chartArea.AxisY.Minimum, this.chartArea.AxisY.Maximum);
+            return pdfPopUp.GetSeries(new NormalDistribution(sp.datapoint.YValues[4], sp.datapoint.YValues[4] / 3));
         }
         
         protected override void ScaleAxesToY()

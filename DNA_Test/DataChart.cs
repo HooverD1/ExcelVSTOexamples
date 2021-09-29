@@ -11,6 +11,7 @@ namespace DNA_Test
 {
     public class DataChart : Chart
     {
+        protected SelectedPoint LastSelectedPoint { get; set; }
         //Not all DataCharts will have a FitSeries & FitRegression, but they all should be capable of having one.
         public Series FitSeries { get; set; }  //The regression line
         public IRegression FitRegression { get; set; }

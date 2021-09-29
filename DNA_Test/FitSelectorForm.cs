@@ -366,10 +366,12 @@ namespace DNA_Test
                     timeSeries2.chartArea.AxisY.Minimum = min_y;
                     timeSeries2.chartArea.AxisY.Maximum = max_y;
                 }
+                /*
                 double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
                 timeSeries1.chartArea.AxisY.Interval = axStep;
                 if(timeSeries2 != null)
                     timeSeries2.chartArea.AxisY.Interval = axStep;
+                */
             }
         }
 
