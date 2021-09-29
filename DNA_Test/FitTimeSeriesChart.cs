@@ -10,14 +10,10 @@ using Accord.Statistics.Distributions.Univariate;
 
 namespace DNA_Test
 {
-    public class FitTimeSeriesChart : SingleTimeSeriesChart
+    public class FitTimeSeriesChart : TimeSeriesChart
     {
         public Scheduler.Scheduler Schedule { get; set; }
-        private Point MouseCoords { get; set; }
-        private const double alpha = 0.98;
-        public static int default_chartHeight = 100;    //Overwritable defaults
-        public static int default_chartWidth = 100;
-        public ChartArea chartArea { get; set; }        //The x-Axis -- potentially overwritten for non-uniform
+        
         public Series TimeSeries { get; set; } //The data (potentially bucketed)
         public Series FitSeries { get; set; }  //The regression line
         public Series ErrorSeries_CI_Upper { get; set; }  //The regression line + error band
@@ -25,11 +21,9 @@ namespace DNA_Test
         public Series PDF_Series { get; set; }
         public BoxPlotSeries BoxPlot_Series { get; set; }
         private double predictAt { get; set; }
-        private IRegression FitRegression { get; set; }
 
-
-        public FitTimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression, Scheduler.Scheduler schedule, int predictAtIndex) : base()
-        {
+        public FitTimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression, Scheduler.Scheduler schedule, int predictAtIndex) : base(timeSeriesDataPoints, fitRegression)
+        {            
             //Change the fit options and it loads a new time series chart
             //Each time series chart can have multiple time series, fit series -- and thus regressions & boxplot series.
             //Currently only works with one of each, but will need adapted at some point.
@@ -39,14 +33,7 @@ namespace DNA_Test
              */
             this.Schedule = schedule;
             this.FitRegression = fitRegression;
-            this.MouseMove += OnMouseMoved;
-            this.Click += OnChartClick;
-            this.Height = default_chartHeight;
-            this.Width = default_chartWidth;
-            chartArea = new ChartArea();
-            this.ChartAreas.Add(chartArea);
-            chartArea.Position = new ElementPosition(0, 0, 100, 100);
-            chartArea.InnerPlotPosition = new ElementPosition(10, 5, 88, 88);
+            
             SetupXAxisGridlines();
             Description = new Title();
             Description.Visible = false;
@@ -105,26 +92,7 @@ namespace DNA_Test
             }
         }
 
-        private Series GenerateTimeSeries(Dictionary<DateTime, double> timeSeriesDataPoints)
-        {
-            Series timeSeries = new Series();
-            timeSeries.XValueType = ChartValueType.Date;
-            timeSeries.Name = "TimeSeries";
-            timeSeries.ChartType = SeriesChartType.Line;
-            timeSeries.MarkerStyle = MarkerStyle.Circle;
-            foreach (KeyValuePair<DateTime, double> datapoint in timeSeriesDataPoints)
-            {
-                DataPoint dp = new DataPoint(datapoint.Key.ToOADate(), datapoint.Value);
-                dp.ToolTip = $"({datapoint.Key.ToShortDateString()}, {datapoint.Value})";
-                timeSeries.Points.Add(dp);
-            }
-            timeSeries.MarkerBorderColor = System.Drawing.Color.Black;
-            timeSeries.MarkerSize = 12;
-            timeSeries.MarkerColor = System.Drawing.Color.Blue;
-            timeSeries.BorderWidth = 2;     //Line thickness
-            timeSeries.Color = System.Drawing.Color.Black;
-            return timeSeries;
-        }
+        
         private Series GenerateFitSeries(IRegression fitRegression)     //Feed this the regression used to fit the time series
         {
             //Assumes axis max & min have been set correctly. Fills in 100 fit points
@@ -279,7 +247,7 @@ namespace DNA_Test
             //Redraw fit, error
             ScaleToAxes();
         }
-        private BoxPlotSeries GenerateBoxPlotSeries(IRegression fitRegression, double xValue)
+        protected override BoxPlotSeries GenerateBoxPlotSeries(IRegression fitRegression, double xValue)
         {
             BoxPlotSeries boxPlotSeries = new BoxPlotSeries(this);
             double min = fitRegression.GetConfidenceInterval(xValue, alpha).Min;
@@ -293,12 +261,7 @@ namespace DNA_Test
             return boxPlotSeries;
         }
 
-        private void OnMouseMoved(object sender, MouseEventArgs e)
-        {
-            MouseCoords = new Point(e.X, e.Y);
-        }
-
-        private void OnChartClick(object sender, EventArgs e)
+        protected override void OnChartClick(object sender, EventArgs e)
         {
             SelectedPoint sp;
 

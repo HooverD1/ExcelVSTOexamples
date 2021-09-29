@@ -8,6 +8,9 @@ namespace DNA_Test
 {
     public class SingleTimeSeriesChart : TimeSeriesChart
     {
-        
+        public SingleTimeSeriesChart(Dictionary<DateTime, double> dataPoints) : base(dataPoints)
+        {
+
+        }
     }
 }

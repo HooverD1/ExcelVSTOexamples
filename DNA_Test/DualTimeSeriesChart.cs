@@ -8,9 +8,11 @@ namespace DNA_Test
 {
     public class DualTimeSeriesChart : TimeSeriesChart
     {
-        public DualTimeSeriesChart(Dictionary<DateTime, double> points) : base()
-        {
+        public Dictionary<DateTime, double> DataPoints2 { get; set; }
 
+        public DualTimeSeriesChart(Dictionary<DateTime, double> dataPoints1, Dictionary<DateTime, double> dataPoints2) : base(dataPoints1)
+        {
+            this.DataPoints2 = dataPoints2;
         }
     }
 }

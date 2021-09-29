@@ -8,6 +8,7 @@ namespace DNA_Test
 {
     public abstract class ScatterChart : DataChart
     {
+        public double[,] DataPoints { get; set; }
 
     }
 }
