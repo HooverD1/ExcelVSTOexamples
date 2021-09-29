@@ -366,9 +366,10 @@ namespace DNA_Test
                     timeSeries2.chartArea.AxisY.Minimum = min_y;
                     timeSeries2.chartArea.AxisY.Maximum = max_y;
                 }
-                //double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
-                //timeSeries1.chartArea.AxisY.Interval = axStep;
-                //timeSeries2.chartArea.AxisY.Interval = axStep;
+                double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
+                timeSeries1.chartArea.AxisY.Interval = axStep;
+                if(timeSeries2 != null)
+                    timeSeries2.chartArea.AxisY.Interval = axStep;
             }
         }
 
@@ -464,7 +465,7 @@ namespace DNA_Test
         public double Axis_Step(double dRange, double dDesired)
         {
             double max = 0;
-            double dDistance;
+            double dDistance = double.MaxValue ;
             if (dRange == 0)
                 return 0;
             else if (dRange < 0)
@@ -476,65 +477,57 @@ namespace DNA_Test
 
             //Minimize dDistance to the desired step size -- dDistance is the number of steps we can actually do - hopefully the same as dDesired, but not always
             //
-            double d10 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 10)) / Math.Log(10));
-            if (d10 < 2) d10 = 1000;
-            if(d10 <= dDesired + 2)
+            double d10 = dRange/ (10 * Math.Pow(10, (int)(Math.Log(dRange / 10) / Math.Log(10))));
+            if(d10 <= dDesired + 2 && d10 >= 2)
             {
                 max = 10;
                 dDistance = Math.Abs(dDesired - d10);
             }
 
-            double d2 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 2)) / Math.Log(10));
-            if (d2 < 2) d2 = 1000;
-            if (d2 <= Math.Abs(dDesired - d2) && d2 <= dDesired + 2)
+            double d2 = dRange / (2 * Math.Pow(10, (int)(Math.Log(dRange / 2) / Math.Log(10))));
+            if (d2 <= Math.Abs(dDesired - d2) && d2 <= dDesired + 2 && d2 >= 2)
             {
                 max = 2;
                 dDistance = Math.Abs(dDesired - d2);
             }
 
-            double d2_5 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 2.5)) / Math.Log(10));
-            if (d2_5 < 2) d2_5 = 1000;
-            if (d2_5 <= Math.Abs(dDesired - d2_5) && d2_5 <= dDesired + 2)
-            {
-                max = 2.5;
-                dDistance = Math.Abs(dDesired - d2_5);
-            }
-
-            double d20 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 20)) / Math.Log(10));
-            if (d20 < 2) d20 = 1000;
-            if (d20 <= Math.Abs(dDesired - d20) && d20 <= dDesired + 2)
+            double d20 = dRange / (2 * Math.Pow(10, (int)(Math.Log(dRange / 20) / Math.Log(10))));
+            if (d20 <= Math.Abs(dDesired - d20) && d20 <= dDesired + 2 && d20 >= 2)
             {
                 max = 20;
                 dDistance = Math.Abs(dDesired - d20);
             }
 
-            double d25 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 25)) / Math.Log(10));
-            if (d25 < 2) d25 = 1000;
-            if (d25 <= Math.Abs(dDesired - d25) && d25 <= dDesired + 2)
+            double d2_5 = dRange / (2.5 * Math.Pow(10, (int)(Math.Log(dRange / 2.5) / Math.Log(10))));
+            if (d2_5 <= Math.Abs(dDesired - d2_5) && d2_5 <= dDesired + 2 && d2_5 >= 2)
+            {
+                max = 2.5;
+                dDistance = Math.Abs(dDesired - d2_5);
+            }
+
+            double d25 = dRange / (2.5 * Math.Pow(10, (int)Math.Log(dRange / 25) / Math.Log(10)));
+            if (d25 <= Math.Abs(dDesired - d25) && d25 <= dDesired + 2 && d25 >= 2)
             {
                 max = 25;
                 dDistance = Math.Abs(dDesired - d25);
             }
 
-            double d5 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 5)) / Math.Log(10));
-            if (d5 < 2) d5 = 1000;
-            if (d5 <= Math.Abs(dDesired - d5) && d5 <= dDesired + 2)
+            double d5 = dRange / (5 * Math.Pow(10, (int)(Math.Log(dRange / 5) / Math.Log(10))));
+            if (d5 <= Math.Abs(dDesired - d5) && d5 <= dDesired + 2 && d5 >= 2)
             {
                 max = 5;
                 dDistance = Math.Abs(dDesired - d5);
             }
 
-            double d50 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 50)) / Math.Log(10));
-            if (d50 < 2) d50 = 1000;
-            if (d50 <= Math.Abs(dDesired - d50) && d50 <= dDesired + 2)
+            double d50 = dRange / (50 * Math.Pow(10, (int)(Math.Log(dRange / 50) / Math.Log(10))));
+            if (d50 <= Math.Abs(dDesired - d50) && d50 <= dDesired + 2 && d50 >= 2)
             {
                 max = 50;
                 dDistance = Math.Abs(dDesired - d50);
             }
 
-            double d100 = dRange / (10 * Math.Pow(10, Math.Log(dRange / 100)) / Math.Log(10));
-            if (d100 < 2) d100 = 1000;
-            if (d100 <= Math.Abs(dDesired - d100) && d100 <= dDesired + 2)
+            double d100 = dRange / (10 * Math.Pow(10, (int)(Math.Log(dRange / 100) / Math.Log(10))));
+            if (d100 <= Math.Abs(dDesired - d100) && d100 <= dDesired + 2 && d100 >= 2)
             {
                 max = 100;
                 dDistance = Math.Abs(dDesired - d100);
@@ -543,35 +536,35 @@ namespace DNA_Test
             //MAX SET
             if(max == 100)
             {
-                return 10 * Math.Pow(10, Math.Log(dRange / 100) / Math.Log(10));
+                return 10 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 100) / Math.Log(10)));
             }
             else if(max == 10)
             {
-                return 10 * Math.Pow(10, Math.Log(dRange / 10) / Math.Log(10));
+                return 10 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 10) / Math.Log(10)));
             }
             else if (max == 20)
             {
-                return 2 * Math.Pow(10, Math.Log(dRange / 20) / Math.Log(10));
+                return 2 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 20) / Math.Log(10)));
             }
             else if (max == 2)
             {
-                return 2 * Math.Pow(10, Math.Log(dRange / 2) / Math.Log(10));
+                return 2 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 2) / Math.Log(10)));
             }
             else if (max == 2.5)
             {
-                return 2.5 * Math.Pow(10, Math.Log(dRange / 2.5) / Math.Log(10));
+                return 2.5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 2.5) / Math.Log(10)));
             }
             else if (max == 25)
             {
-                return 2.5 * Math.Pow(10, Math.Log(dRange / 25) / Math.Log(10));
+                return 2.5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 25) / Math.Log(10)));
             }
             else if (max == 50)
             {
-                return 5 * Math.Pow(10, Math.Log(dRange / 50) / Math.Log(10));
+                return 5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 50) / Math.Log(10)));
             }
             else if (max == 5)
             {
-                return 5 * Math.Pow(10, Math.Log(dRange / 5) / Math.Log(10));
+                return 5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 5) / Math.Log(10)));
             }
             else
             {
