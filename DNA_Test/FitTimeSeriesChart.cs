@@ -14,6 +14,7 @@ namespace DNA_Test
     {
         public Scheduler.Scheduler Schedule { get; set; }
         private double predictAt { get; set; }
+        protected Label pdf_description { get; set; } = new Label();
 
         public FitTimeSeriesChart(Dictionary<DateTime, double> timeSeriesDataPoints, IRegression fitRegression, Scheduler.Scheduler schedule, int predictAtIndex) : base(timeSeriesDataPoints, fitRegression)
         {            
@@ -212,8 +213,11 @@ namespace DNA_Test
                 {
                     //Remove the PDF
                     this.Series.Remove(this.PDF_Series);
+                    //Remove the label
+                    if (this.Controls.Contains(pdf_description))
+                        this.Controls.Remove(pdf_description);
                     //If the new selection is the same as the old, replace the labels
-                    if(this.LastSelectedPoint.datapoint == sp.datapoint)
+                    if (this.LastSelectedPoint.datapoint == sp.datapoint)
                     {
                         if(this.BoxPlot_Series.LabelSeries != null)
                             this.Series.Add(this.BoxPlot_Series.LabelSeries);
@@ -222,15 +226,24 @@ namespace DNA_Test
                     else
                     {
                         this.Series.Remove(PDF_Series);
-                        this.PDF_Series = GeneratePDFPopUp(sp);
+                        if (this.Controls.Contains(pdf_description))
+                            this.Controls.Remove(pdf_description);
+                        this.PDF_Series = GeneratePopUpSeries(GeneratePDFPopUp(sp));
                         this.Series.Add(PDF_Series);
+
+                        this.pdf_description = GeneratePDF_Description(sp);
+                        this.Controls.Add(pdf_description);
                     }
                 }
+                //If no pdf is on the chart, draw a new pdf
                 else
                 {
-                    this.PDF_Series = GeneratePDFPopUp(sp);
+                    this.PDF_Series = GeneratePopUpSeries(GeneratePDFPopUp(sp));
                     this.Series.Add(PDF_Series);
                     this.Series.Remove(this.BoxPlot_Series.LabelSeries);
+
+                    this.pdf_description = GeneratePDF_Description(sp);
+                    this.Controls.Add(pdf_description);
                 }
             }
             else if (sp.parent.Name == "TimeSeries")
@@ -249,12 +262,34 @@ namespace DNA_Test
             LastSelectedPoint = sp;     //set the class property last so that selectedPoint remains the previous selection
         }
 
-        protected Series GeneratePDFPopUp(SelectedPoint sp)
+        protected Label GeneratePDF_Description(SelectedPoint sp)
+        {
+            Label pdf_description = new Label();
+            //Add a description label to summarize the distribution
+            pdf_description.BorderStyle = BorderStyle.FixedSingle;
+            pdf_description.Height = 200;
+            pdf_description.Width = 200;
+            pdf_description.BackColor = System.Drawing.Color.White;
+            pdf_description.Text = $"Max: {sp.datapoint.YValues[1]}";
+            double xPerPix = this.Get_X_Coords_Per_Pixel();
+            double xVal = sp.datapoint.XValue;
+            double xMin = this.chartArea.AxisX.Minimum;
+            double chartOffset = this.Width * (this.chartArea.Position.X / 100);
+            double innerPlotOffset = this.Width * (this.chartArea.InnerPlotPosition.X / 100);
+            pdf_description.Location = new Point(Convert.ToInt32((xVal - xMin) / xPerPix + innerPlotOffset) + 50, this.Height / 2 - pdf_description.Height / 2);
+            return pdf_description;
+        }
+        protected PDF_Popup GeneratePDFPopUp(SelectedPoint sp)
         {
             double xMin = this.chartArea.AxisX.Minimum;
             double xMax = this.chartArea.AxisX.Maximum;
             double xWidth = xMax - xMin;
-            PDF_Popup pdfPopUp = new PDF_Popup(sp.datapoint.XValue, xWidth, this.chartArea.AxisY.Minimum, this.chartArea.AxisY.Maximum);
+            PDF_Popup pdfPopUp = new PDF_Popup(sp, xWidth, this.chartArea.AxisY.Minimum, this.chartArea.AxisY.Maximum);
+            return pdfPopUp;
+        }
+        protected Series GeneratePopUpSeries(PDF_Popup pdfPopUp)
+        {
+            SelectedPoint sp = pdfPopUp.selectedPoint;
             return pdfPopUp.GetSeries(new NormalDistribution(sp.datapoint.YValues[4], sp.datapoint.YValues[4] / 3));
         }
         

@@ -10,6 +10,7 @@ namespace DNA_Test
 {
     public class PDF_Popup
     {
+        public SelectedPoint selectedPoint { get; set; }
         private int orientation { get; set; } = -1;     // -1 for a leftward pdf, 1 for a rightward pdf
         private double xValue { get; set; }
         private double pdf_Height { get; set; }
@@ -19,7 +20,7 @@ namespace DNA_Test
         private double xWidth { get; set; }
         private IUnivariateDistribution PDF { get; set; }
 
-        public PDF_Popup(double xValue, double xWidth, double yMin, double yMax)
+        public PDF_Popup(SelectedPoint selectedPoint, double xWidth, double yMin, double yMax)
         {
             // xValue of the selected point
             // xWidth width of the x-valued axis (not pixels)
@@ -30,8 +31,9 @@ namespace DNA_Test
              *  pdf_Builder: helper class for providing PDF data
              *  pdf_Height: the height of the PDF in pixels scaled to the parent
              */
+            this.selectedPoint = selectedPoint;
             this.xWidth = xWidth;
-            this.xValue = xValue;
+            this.xValue = selectedPoint.datapoint.XValue;
             this.pdf_Height = xWidth * heightScalar;
             this.yMin = yMin;
             this.yMax = yMax;

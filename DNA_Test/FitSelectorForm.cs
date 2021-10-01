@@ -204,8 +204,12 @@ namespace DNA_Test
 
             flowLayoutPanel_Charts.Controls.Add(timeSeries1);
             if (DisplayCount >= 2)
+            {
                 flowLayoutPanel_Charts.Controls.Add(timeSeries2);
-            
+                
+            }
+            SyncChartAxes();
+
         }
 
         private void checkBox_timeSeries1_Checked_Changed(object sender, EventArgs e)
@@ -348,8 +352,8 @@ namespace DNA_Test
                     !Double.IsNaN(timeSeries1.chartArea.AxisX.Maximum) &&
                     !Double.IsNaN(timeSeries2.chartArea.AxisX.Minimum) &&
                     !Double.IsNaN(timeSeries2.chartArea.AxisX.Maximum) &&
-                    !Double.IsNaN(timeSeries2.chartArea.AxisY.Minimum) &&
-                    !Double.IsNaN(timeSeries2.chartArea.AxisY.Maximum) &&
+                    !Double.IsNaN(timeSeries1.chartArea.AxisY.Minimum) &&
+                    !Double.IsNaN(timeSeries1.chartArea.AxisY.Maximum) &&
                     !Double.IsNaN(timeSeries2.chartArea.AxisY.Minimum) &&
                     !Double.IsNaN(timeSeries2.chartArea.AxisY.Maximum))
                 {
@@ -357,21 +361,40 @@ namespace DNA_Test
                     double max_x = Math.Max(timeSeries1.chartArea.AxisX.Maximum, timeSeries2.chartArea.AxisX.Maximum);
                     double min_y = Math.Min(timeSeries1.chartArea.AxisY.Minimum, timeSeries2.chartArea.AxisY.Minimum);
                     double max_y = Math.Max(timeSeries1.chartArea.AxisY.Maximum, timeSeries2.chartArea.AxisY.Maximum);
-                    timeSeries1.chartArea.AxisX.Minimum = min_x;
-                    timeSeries1.chartArea.AxisX.Maximum = max_x;
-                    timeSeries2.chartArea.AxisX.Minimum = min_x;
-                    timeSeries2.chartArea.AxisX.Maximum = max_x;
-                    timeSeries1.chartArea.AxisY.Minimum = min_y;
-                    timeSeries1.chartArea.AxisY.Maximum = max_y;
-                    timeSeries2.chartArea.AxisY.Minimum = min_y;
-                    timeSeries2.chartArea.AxisY.Maximum = max_y;
+                    timeSeries1.chartArea.AxisX.Minimum = (int)(min_x / 100) * 100;
+                    timeSeries1.chartArea.AxisX.Maximum = ((int)(max_x / 100) + 1) * 100;
+                    timeSeries2.chartArea.AxisX.Minimum = (int)(min_x / 100) * 100;
+                    timeSeries2.chartArea.AxisX.Maximum = ((int)(max_x / 100) + 1) * 100;
+                    timeSeries1.chartArea.AxisY.Minimum = (int)(min_y / 100) * 100;
+                    timeSeries1.chartArea.AxisY.Maximum = ((int)(max_y / 100) + 1) * 100;
+                    timeSeries2.chartArea.AxisY.Minimum = (int)(min_y / 100) * 100;
+                    timeSeries2.chartArea.AxisY.Maximum = ((int)(max_y / 100) + 1) * 100;
+
+                    double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
+                    timeSeries1.chartArea.AxisY.Interval = axStep;
+                    if (timeSeries2 != null)
+                        timeSeries2.chartArea.AxisY.Interval = axStep;
                 }
-                /*
-                double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
-                timeSeries1.chartArea.AxisY.Interval = axStep;
-                if(timeSeries2 != null)
-                    timeSeries2.chartArea.AxisY.Interval = axStep;
-                */
+            }
+            else if(timeSeries1 != null)        //Only one chart shown -- round its min/max and setup the axis step interval
+            {
+                if (!Double.IsNaN(timeSeries1.chartArea.AxisX.Minimum) &&
+                    !Double.IsNaN(timeSeries1.chartArea.AxisX.Maximum) &&
+                    !Double.IsNaN(timeSeries1.chartArea.AxisY.Minimum) &&
+                    !Double.IsNaN(timeSeries1.chartArea.AxisY.Maximum))
+                {
+                    double min_x = timeSeries1.chartArea.AxisX.Minimum;
+                    double max_x = timeSeries1.chartArea.AxisX.Maximum;
+                    double min_y = timeSeries1.chartArea.AxisY.Minimum;
+                    double max_y = timeSeries1.chartArea.AxisY.Maximum;
+                    timeSeries1.chartArea.AxisX.Minimum = (int)(min_x / 100) * 100;
+                    timeSeries1.chartArea.AxisX.Maximum = ((int)(max_x / 100) + 1) * 100;
+                    timeSeries1.chartArea.AxisY.Minimum = (int)(min_y / 100) * 100;
+                    timeSeries1.chartArea.AxisY.Maximum = ((int)(max_y / 100) + 1) * 100;
+
+                    double axStep = Axis_Step(timeSeries1.chartArea.AxisY.Maximum - timeSeries1.chartArea.AxisY.Minimum, 5);
+                    timeSeries1.chartArea.AxisY.Interval = axStep;
+                }
             }
         }
 
@@ -487,49 +510,49 @@ namespace DNA_Test
             }
 
             double d2 = dRange / (2 * Math.Pow(10, (int)(Math.Log(dRange / 2) / Math.Log(10))));
-            if (d2 <= Math.Abs(dDesired - d2) && d2 <= dDesired + 2 && d2 >= 2)
+            if (Math.Abs(dDesired - d2) < dDistance && d2 <= dDesired + 2 && d2 >= 2)
             {
                 max = 2;
                 dDistance = Math.Abs(dDesired - d2);
             }
 
             double d20 = dRange / (2 * Math.Pow(10, (int)(Math.Log(dRange / 20) / Math.Log(10))));
-            if (d20 <= Math.Abs(dDesired - d20) && d20 <= dDesired + 2 && d20 >= 2)
+            if (Math.Abs(dDesired - d20) < dDistance && d20 <= dDesired + 2 && d20 >= 2)
             {
                 max = 20;
                 dDistance = Math.Abs(dDesired - d20);
             }
 
             double d2_5 = dRange / (2.5 * Math.Pow(10, (int)(Math.Log(dRange / 2.5) / Math.Log(10))));
-            if (d2_5 <= Math.Abs(dDesired - d2_5) && d2_5 <= dDesired + 2 && d2_5 >= 2)
+            if (Math.Abs(dDesired - d2_5) < dDistance && d2_5 <= dDesired + 2 && d2_5 >= 2)
             {
                 max = 2.5;
                 dDistance = Math.Abs(dDesired - d2_5);
             }
 
-            double d25 = dRange / (2.5 * Math.Pow(10, (int)Math.Log(dRange / 25) / Math.Log(10)));
-            if (d25 <= Math.Abs(dDesired - d25) && d25 <= dDesired + 2 && d25 >= 2)
+            double d25 = dRange / (2.5 * Math.Pow(10, (int)(Math.Log(dRange / 25) / Math.Log(10))));
+            if (Math.Abs(dDesired - d25) < dDistance && d25 <= dDesired + 2 && d25 >= 2)
             {
                 max = 25;
                 dDistance = Math.Abs(dDesired - d25);
             }
 
             double d5 = dRange / (5 * Math.Pow(10, (int)(Math.Log(dRange / 5) / Math.Log(10))));
-            if (d5 <= Math.Abs(dDesired - d5) && d5 <= dDesired + 2 && d5 >= 2)
+            if (Math.Abs(dDesired - d5) < dDistance && d5 <= dDesired + 2 && d5 >= 2)
             {
                 max = 5;
                 dDistance = Math.Abs(dDesired - d5);
             }
 
-            double d50 = dRange / (50 * Math.Pow(10, (int)(Math.Log(dRange / 50) / Math.Log(10))));
-            if (d50 <= Math.Abs(dDesired - d50) && d50 <= dDesired + 2 && d50 >= 2)
+            double d50 = dRange / (5 * Math.Pow(10, (int)(Math.Log(dRange / 50) / Math.Log(10))));
+            if (Math.Abs(dDesired - d50) < dDistance && d50 <= dDesired + 2 && d50 >= 2)
             {
                 max = 50;
                 dDistance = Math.Abs(dDesired - d50);
             }
 
             double d100 = dRange / (10 * Math.Pow(10, (int)(Math.Log(dRange / 100) / Math.Log(10))));
-            if (d100 <= Math.Abs(dDesired - d100) && d100 <= dDesired + 2 && d100 >= 2)
+            if (Math.Abs(dDesired - d100) < dDistance && d100 <= dDesired + 2 && d100 >= 2)
             {
                 max = 100;
                 dDistance = Math.Abs(dDesired - d100);
@@ -538,35 +561,35 @@ namespace DNA_Test
             //MAX SET
             if(max == 100)
             {
-                return 10 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 100) / Math.Log(10)));
+                return 10 * Math.Pow(10, (int)(Math.Log(dRange / 100) / Math.Log(10)));
             }
             else if(max == 10)
             {
-                return 10 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 10) / Math.Log(10)));
+                return 10 * Math.Pow(10, (int)(Math.Log(dRange / 10) / Math.Log(10)));
             }
             else if (max == 20)
             {
-                return 2 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 20) / Math.Log(10)));
+                return 2 * Math.Pow(10, (int)(Math.Log(dRange / 20) / Math.Log(10)));
             }
             else if (max == 2)
             {
-                return 2 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 2) / Math.Log(10)));
+                return 2 * Math.Pow(10, (int)(Math.Log(dRange / 2) / Math.Log(10)));
             }
             else if (max == 2.5)
             {
-                return 2.5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 2.5) / Math.Log(10)));
+                return 2.5 * Math.Pow(10, (int)(Math.Log(dRange / 2.5) / Math.Log(10)));
             }
             else if (max == 25)
             {
-                return 2.5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 25) / Math.Log(10)));
+                return 2.5 * Math.Pow(10, (int)(Math.Log(dRange / 25) / Math.Log(10)));
             }
             else if (max == 50)
             {
-                return 5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 50) / Math.Log(10)));
+                return 5 * Math.Pow(10, (int)(Math.Log(dRange / 50) / Math.Log(10)));
             }
             else if (max == 5)
             {
-                return 5 * Convert.ToInt32(Math.Pow(10, Math.Log(dRange / 5) / Math.Log(10)));
+                return 5 * Math.Pow(10, (int)(Math.Log(dRange / 5) / Math.Log(10)));
             }
             else
             {
